@@ -1,0 +1,13 @@
+.container{
+    max-width: 200px;
+    display: flex;
+    border: 1px solid red;
+}
+.container ul{
+    margin: 0;
+    display: flex;
+    list-style: none;
+}
+.container li{
+    margin: 0;
+}

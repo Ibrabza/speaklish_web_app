@@ -1,0 +1,19 @@
+.container {
+    position: sticky !important;
+    bottom: 20px;
+    /*top: 550px;*/
+    display: flex;
+    width: 328px;
+    height: 70px;
+    margin: 0 auto;
+    flex-direction: row;
+    justify-content: space-between;
+    justify-items: center;
+    align-items: center;
+    z-index: 10;
+    background-color: #5A616D14;
+    border: 0 solid black;
+    border-radius: 50px;
+    padding: 0.1rem 0.8rem;
+}
+
