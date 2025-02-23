@@ -1,0 +1,22 @@
+.link a{
+    font-size: 16px;
+    font-weight: 600;
+    color: #606E80;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    padding: 0 0.5rem;
+}
+.link{
+    height: 38px;
+    display: flex;
+    align-items: center;
+}
+
+.content{
+    display: flex;
+    gap: 0.5rem;
+}
+
+.icon{
+    width: 30px;
+    height: 30px;
+}

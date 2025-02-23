@@ -9,7 +9,7 @@ const AppLayout = () => {
         <div className={styles.layout}>
             <Header/>
             <div className={styles.content}>
-                <Outlet/>
+                <Outlet />
             </div>
             <NavigationButtons/>
         </div>

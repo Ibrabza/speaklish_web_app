@@ -1,5 +1,11 @@
 .header {
-    border: 1px solid black;
+    margin-top: 1rem;
+    height: 50px;
     display: flex;
     justify-content: space-between;
+    position: relative;
+}
+
+.container{
+    position: relative;
 }

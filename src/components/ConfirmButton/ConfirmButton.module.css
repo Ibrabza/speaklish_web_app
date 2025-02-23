@@ -1,0 +1,18 @@
+.container {
+    width: 100%;
+    font-size: 16px;
+    line-height: 23px;
+    font-weight: 600;
+    height: 50px;
+    text-align: center;
+    color: #FFFFFF;
+    outline: none;
+    border: 0 solid black;
+    border-radius: 12px;
+    padding: 6px 12px;
+    background-color: #929FB1;
+}
+
+.container:active, .container:hover{
+    background-color: #07DA83;
+}

@@ -1,0 +1,28 @@
+.container{
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    justify-content: space-between;
+    height: 45px;
+    width: 100%;
+    border: 0 solid black;
+    border-radius: 8px;
+    background-color: #F5F6FA;
+}
+.rcontainer{
+    display: flex;
+    gap: 1rem;
+}
+.container h2{
+    display: flex;
+    gap: 0.5rem;
+    color: #181D25;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    align-items: center;
+}
+.rcontainer p{
+    color: #606E80;
+    font-size: 12px;
+}

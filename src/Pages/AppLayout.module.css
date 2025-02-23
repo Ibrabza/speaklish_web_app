@@ -1,13 +1,14 @@
 .layout {
     display: flex;
     flex-direction: column;
-    position: relative;
     max-width: 400px;
     padding: 0.5rem 1rem;
+    margin: 0 auto;
+    position: relative;
 }
 
 .content {
     overflow: visible;
     height: 200vh;
-    /*flex: 1;*/
+    position: relative;
 }

@@ -1,9 +1,12 @@
 import {FC} from "react";
+import LessonsList from "@/components/LessonsList/LessonsList.tsx";
 
 
 const Lessons: FC = () => {
     return (
-        <div>this is lessons</div>
+        <div className={"lessons"}>
+            <LessonsList/>
+        </div>
     )
 }
 
