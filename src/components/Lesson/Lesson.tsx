@@ -31,7 +31,7 @@ const Lesson: FC = () => {
                     </div>
                 </div>
                 <div className={styles.lesson_video}>
-                    <VideoPlayer link={"https://www.youtube.com/watch?v=okMw2NpowSY"}/>
+                    <VideoPlayer link={"https://www.youtube.com/watch?v=j0RDYa8lbjA"}/>
                 </div>
                 <div className={styles.lesson_meetingLink}>
                     <div className={styles.meeting}>
