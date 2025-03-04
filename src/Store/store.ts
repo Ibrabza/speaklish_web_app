@@ -1,10 +1,14 @@
 import {configureStore} from "@reduxjs/toolkit";
 import userSlice from "@/Features/User/userSlice.ts";
+import sessionSlice from "@/Features/Speaking/Session/sessionSlice.ts"
+import quizSlice from "@/Features/Quiz/quizSlice.ts";
 
 
 const store = configureStore({
     reducer: {
         user : userSlice,
+        session : sessionSlice,
+        quiz: quizSlice,
     }
 })
 

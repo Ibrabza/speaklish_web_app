@@ -3,8 +3,21 @@ import NavigationButtons from "../components/NavigationButtons/NavigationButtons
 
 import styles from "./AppLayout.module.css"
 import Header from "../components/Header/Header.tsx";
+import {useSelector} from "react-redux";
+import {RootState} from "@/Store/store.ts";
+import ErrorPage from "@/Pages/Error/ErrorPage.tsx";
 
 const AppLayout = () => {
+
+    const isAuthenticated = useSelector( (state: RootState) => state.user.isAuthorized);
+
+
+    function handler() {
+        window.location.href = "https://t.me/ibrabza_managerbot";
+    }
+
+    if(!isAuthenticated) return <ErrorPage message={"You are not authenticated"} button={"Go back to Telegram"} onClick={handler}/>
+
     return (
         <div className={styles.layout}>
             <Header/>

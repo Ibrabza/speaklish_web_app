@@ -1,0 +1,28 @@
+.container{
+    display: flex;
+    max-width: 400px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100dvh;
+    gap: 0.5rem;
+}
+.container p{
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19.6px;
+    text-align: center;
+    color: #606E80;
+}
+.container img{
+    width: 130px;
+    height: 130px;
+    margin-bottom: 1rem;
+}
+.error_button{
+    background-color: transparent;
+    color: #07DA83;
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: 600;
+}

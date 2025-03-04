@@ -1,12 +1,32 @@
 .container{
     max-width: 200px;
     display: flex;
+    /*position: relative;*/
 }
-.container ul{
-    margin: 0;
-    display: flex;
-    list-style: none;
+.images{
+    width: 200px;
+    position: relative;
 }
-.container li{
-    margin: 0;
+.fimg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 50px;
+    height: 50px;
+}
+
+.simg img{
+    max-width: 50px;
+    max-height: 50px;
+    border: 0 solid black;
+    border-radius: 50%;
+}
+
+.simg{
+    position: absolute;
+    top: 0;
+    left: 2rem;
+    border: 0 solid black;
+    border-radius: 50%;
 }

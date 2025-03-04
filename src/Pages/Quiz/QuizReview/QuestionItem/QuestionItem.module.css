@@ -1,0 +1,28 @@
+.container, .correct, .wrong {
+    border: 0 solid black;
+    border-radius: 12px;
+    padding: 8px 12px;
+    gap: 10px;
+}
+.container h3, .correct h3, .wrong h3{
+
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 20px;
+    /*letter-spacing: 0.0001rem;*/
+
+}
+
+.container {
+    background-color: #F5F6FA;
+    color: #606E80;
+}
+.correct {
+    background-color: #07DA83;
+    color: #FFFFFF;
+}
+.wrong{
+    background-color: #FE9C95;
+    color: #FFFFFF;
+}
+

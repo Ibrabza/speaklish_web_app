@@ -9,6 +9,6 @@
 
 .content {
     overflow: visible;
-    height: 200vh;
+    min-height: 100vh;
     position: relative;
 }

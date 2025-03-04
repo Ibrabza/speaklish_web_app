@@ -9,6 +9,11 @@ import Quiz from "@/Features/Quiz/Quiz.tsx";
 import Auth from "@/Pages/Auth/Auth.tsx";
 import {Provider} from "react-redux";
 import Store from "@/Store/store.ts";
+import QuizResult from "@/Features/Quiz/QuizResult/QuizResult.tsx";
+import Pronunciation from "@/Features/Pronunciation/Pronunciation.tsx";
+import LessonsLayout from "@/Pages/Lessons/LessonsLayout.tsx";
+import ErrorPage from "@/Pages/Error/ErrorPage.tsx";
+import QuizReview from "@/Pages/Quiz/QuizReview/QuizReview.tsx";
 
 
 const App = () => {
@@ -22,10 +27,16 @@ const App = () => {
                         <Route index element={<Navigate replace to={'home'}/>}/>
                         <Route path={'home'} element={<Home/>}/>
                         <Route path={'lessons'} element={<Lessons/>}/>
-                        <Route path={'lessons/:id'} element={<Lesson/>}/>
-                        <Route path={'lessons/quiz/:id'} element={<Quiz/>}/>
-                        <Route path={'speaking'} element={<Speaking/>}/>
                     </Route>
+                    <Route path={'/test/lessons'} element={<LessonsLayout/>}>
+                        <Route path={'lesson/:id'} element={<Lesson/>}/>
+                        <Route path={'quiz/:id'} element={<Quiz/>}/>
+                        <Route path={'quiz/result/:id'} element={<QuizResult/>}/>
+                        <Route path={'quiz/result/review'} element={<QuizReview/>}/>
+                        <Route path={'pronunciation/:id'} element={<Pronunciation/>}/>
+                    </Route>
+                    <Route path={'/test/speaking'} element={<Speaking/>}/>
+                    <Route path={"*"} element={<ErrorPage message={"something went wrong"}/>}/>
                 </Routes>
             </BrowserRouter>
         </Provider>

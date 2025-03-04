@@ -16,6 +16,17 @@ interface ILessonsItem {
 }
 
 const LessonsListItem: FC<ILessonsItem> = (props) =>{
+
+    if(!props.status) return (
+        <div className={styles.container}>
+            <h2>{props.index}.<span>{props.title}</span></h2>
+            <div className={styles.rcontainer}>
+                <p>{props.date}</p>
+                <div className={styles.icon}>{props.status ? <OpenIcon/> : <BlockIcon/>}</div>
+            </div>
+        </div>
+    )
+
     return (
         <NavLink to={props.to}>
             <div className={styles.container}>

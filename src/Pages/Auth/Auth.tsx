@@ -12,11 +12,10 @@ import {handleAuth} from "@/Features/User/userSlice.ts";
 const Auth :FC = () => {
     const dispatch = useDispatch<AppDispatch>()
     const {isAuthorized, refresh, loading, access,} = useSelector((state: RootState) => state.user);
-    console.log(isAuthorized)
 
     useEffect(()=>{
         if(!access && !refresh){
-            dispatch(handleAuth({initData: window.location.hash, password: "123456", username: "ibrabza", phoneNumber: "123456789"}))
+            dispatch(handleAuth({initData: window.location.hash, password: "123456", username: "ibrabza"}))
         }
     },[access, dispatch, refresh])
 

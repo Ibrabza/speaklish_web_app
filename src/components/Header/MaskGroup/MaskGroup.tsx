@@ -2,18 +2,22 @@ import {FC} from "react";
 
 import styles from "./MaskGroup.module.css"
 import mask1 from "./../../../assets/Container.png"
-import mask2 from "./../../../assets/Mask-group1.png"
+import {useSelector} from "react-redux";
+import {RootState} from "@/Store/store.ts";
 
 const MaskGroup:FC = () => {
+
+    const photo_url = useSelector( (state: RootState) => state.user.photo_url)
+
     return <div className={styles.container}>
-        <ul>
-            <li key={"1312"}>
+        <div className={styles.images}>
+            <div className={styles.fimg}>
                 <img src={mask1} alt={"speaklish1"}/>
-            </li>
-            <li key={"1112"}>
-                <img src={mask2} alt={"speaklish2"}/>
-            </li>
-        </ul>
+            </div>
+            <div className={styles.simg}>
+                <img src={photo_url} alt={"speaklish2"}/>
+            </div>
+        </div>
     </div>
 }
 

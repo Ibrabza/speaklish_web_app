@@ -2,8 +2,10 @@
     display: flex;
     flex-direction: column;
     gap: 28px;
-    width: 100%;
-    height: 100%;
+    max-width: 400px;
+    height: 100dvh;
+    margin: 0 auto;
+    padding: 0.5rem 1rem;
 }
 .quiz_header{
     display: flex;

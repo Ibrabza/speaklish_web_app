@@ -4,8 +4,19 @@
     border-radius: 12px;
     padding: 8px 12px;
     background-color: #F5F6FA;
-
 }
+
+.container_clicked{
+    width: 100%;
+    border: 0 solid black;
+    border-radius: 12px;
+    padding: 8px 12px;
+    color: #F5F6FA;
+    font-size: 18px;
+    font-weight: 600;
+    background-color: #929FB1;
+}
+
 .container span{
     line-height: 20px;
     font-size: 15px;

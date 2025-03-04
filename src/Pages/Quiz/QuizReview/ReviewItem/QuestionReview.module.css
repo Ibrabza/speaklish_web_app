@@ -1,0 +1,22 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.question{
+    font-size: 16px;
+    line-height: 23px;
+    font-weight: 600;
+    color: #181D25;
+}
+
+.list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+.list li {
+    font-size: 14px;
+}

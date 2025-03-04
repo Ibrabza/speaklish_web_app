@@ -1,0 +1,16 @@
+.container {
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #E1E5EA;
+    border-radius: 8px;
+    padding: 8px 12px;
+    /*height: 75px;*/
+}
+
+.lesson_action__button{
+    /*height: 75px;*/
+    /*width: 100%;*/
+    display: flex;
+    gap: 8px;
+}

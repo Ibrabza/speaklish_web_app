@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {handleLogin} from "@/services/apiServices.ts";
+import {getLesson, getLessons, handleLogin} from "@/services/apiServices.ts";
 
 interface IUser  {
     access : string,
@@ -8,30 +8,101 @@ interface IUser  {
     loading: boolean,
     error : string | null,
     balance : number,
+    photo_url : string,
+    first_name : string,
     isAuthorized : boolean,
+    question_list: {
+        "course_id": number,
+        "course_title": string,
+        "lessons":
+            {
+                "id": number,
+                "title": string,
+                "start_date": string,
+                "end_date": string,
+                "is_completed": boolean
+            }[]
+    } | null,
+    lesson: {
+        id: number,
+        title: string,
+        description: string,
+        start_date: string,
+        end_date: string,
+        video: string,
+        meeting_link: string,
+        files:
+            {
+                url: string,
+                name: string,
+                size: number
+            }[] | null,
+        "quiz": {
+            id: number,
+            lesson: number,
+            question: number,
+            options: [
+                string,
+                string,
+                string,
+                string
+            ] | null
+        }[] | null,
+    } | null,
 }
 
 
 const initialState: IUser = {
-    access: '',
-    refresh: '',
+    access: "",
+    refresh: "",
     loading: false,
+    photo_url: "",
+    first_name: "",
     error: "",
-    role: '',
+    role: "",
     balance: 0,
     isAuthorized : false,
+    question_list: null,
+    lesson: null,
 }
 
 
 export const handleAuth = createAsyncThunk('user/handleAuth',
-    async ({ initData, password, username, phoneNumber }:
-               { initData: string; password: string; username?: string; phoneNumber?: string }) => {
+    async ({ initData, password, username }:
+               { initData: string; password: string; username?: string;}) => {
         try {
-            return await handleLogin(initData, password, username, phoneNumber);
+            return await handleLogin(initData, password, username);
         }
         catch (error) {
             console.log("error inside the thunk: ", error);
             return Promise.reject(error);
+        }
+    }
+)
+
+
+export const handleGetLessons = createAsyncThunk(
+    'user/handleGetLessons',
+    async (_, { rejectWithValue }) => {
+        try {
+            // console.log(access_token);
+            return await getLessons();
+        } catch (error) {
+            console.error(error);
+            return rejectWithValue(error);
+        }
+    }
+);
+
+export const handleGetLesson = createAsyncThunk(
+    'user/getLesson',
+    async ({lesson_id}:{lesson_id:number}, { rejectWithValue }) => {
+        try {
+            // console.log(lesson_id, access_token)
+            return await getLesson(lesson_id)
+        }catch (error) {
+            console.log(error)
+            return rejectWithValue(error)
         }
     }
 )
@@ -61,14 +132,48 @@ const userSlice = createSlice({
                 state.error = action.payload as string || "something went wrong";
             })
             .addCase(handleAuth.fulfilled, (state, action) => {
-                state.role = action.payload.role;
-                state.error = null;
-                state.loading = false;
-                state.access = action.payload.access;
-                state.refresh = action.payload.refresh;
-                state.isAuthorized = true;
-                console.log(action.payload);
+                if(!action.payload.access){
+                    state.error = "Not authorized to access";
+                    state.isAuthorized = false;
+                }else {
+                    state.role = action.payload.role;
+                    state.error = null;
+                    state.loading = false;
+                    state.access = action.payload.access;
+                    state.refresh = action.payload.refresh;
+                    state.isAuthorized = true;
+                    const {first_name, photo_url} = window.Telegram.WebApp.initDataUnsafe.user;
+                    state.first_name = first_name;
+                    state.photo_url = photo_url;
+                }
+                // console.log(action.payload);
+                // localStorage.setItem()
+                // localStorage.setItem("access_token", JSON.stringify(action.payload.access));
             })
+            .addCase(handleGetLessons.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(handleGetLessons.rejected, (state, action) => {
+                state.error = action.payload as string || "something went wrong";
+                state.loading = false;
+            })
+            .addCase(handleGetLessons.fulfilled, (state, action) => {
+                state.question_list = action.payload;
+                state.loading = false;
+            })
+            .addCase(handleGetLesson.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(handleGetLesson.rejected, (state, action) => {
+                state.error = action.payload as string || "something went wrong";
+                state.loading = false;
+            })
+            .addCase(handleGetLesson.fulfilled, (state, action) => {
+                // state.lesson = action.payload;
+                state.lesson = action.payload ?? null;
+                state.loading = false;
+            })
+
     }
 })
 
