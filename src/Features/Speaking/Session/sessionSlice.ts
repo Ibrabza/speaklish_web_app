@@ -62,6 +62,7 @@ export const getSessionData = createAsyncThunk(
             const response = await apiClient.get('/school/session-create/', {
                 params: {user_id, is_test},
             });
+            console.log(response.data);
             return response.data;
         } catch (error) {
             console.error('Failed to get data from session:', error);
@@ -109,13 +110,14 @@ const sessionSlice = createSlice({
                 state.loading = false;
             })
             .addCase(getSessionData.fulfilled, (state, action) => {
+                console.log(action.payload);
                 state.session = action.payload;
                 state.questions = {
-                    part1: action.payload.part1_question,
-                    part2: action.payload.part2_question,
-                    part3: action.payload.part3_question,
+                    part1: action.payload.part1_questions,
+                    part2: action.payload.part2_questions,
+                    part3: action.payload.part3_questions,
                 }
-                state.currentQuestion = action.payload.part1_question[0];
+                state.currentQuestion = action.payload.part1_questions[0];
                 state.loading = false;
             });
     },

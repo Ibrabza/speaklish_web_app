@@ -10,7 +10,7 @@ interface INQButton {
 const NextQuestionButton :FC<INQButton> = (props) => {
     return (
         <div className="flex justify-between">
-            <button className={"px-4 py-2 flex items-center bg-primary text-white rounded-lg disabled:bg-gray-400"}
+            <button className={"px-4 py-2 flex items-center bg-green-400 text-white rounded-lg disabled:bg-gray-400"}
                     onClick={props.onClick} disabled={props.disabled}>
                 Next
                 <ChevronRight size={20} className="ml-1"/>

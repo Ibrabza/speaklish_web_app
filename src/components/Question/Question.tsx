@@ -29,6 +29,8 @@ const Question: FC = () => {
     const questionSet: QuestionType[] | undefined = questions?.[partKey];
     const question = questionSet?.[currentQuestionIndex] ?? null;
 
+    console.log(currentPart, questions)
+
     useEffect(() => {
         setCurrentQuestion(question);
     }, [question]);

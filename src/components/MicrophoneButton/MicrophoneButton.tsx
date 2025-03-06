@@ -14,7 +14,7 @@ const MicrophoneButton: FC<IMButton> = ({ isRecording, setIsRecording }) => {
     return (
         <button
             className={`w-16 h-16 rounded-full flex items-center justify-center transition-colors 
-            ${isRecording ? 'bg-red-500' : 'bg-primary'} text-white mx-auto py-4`}
+            ${isRecording ? 'bg-red-500' : 'bg-green-400'} text-white mx-auto py-4`}
             onClick={handleClick}
         >
             {isRecording ? <Pause size={24} /> : <Mic size={24} />}
