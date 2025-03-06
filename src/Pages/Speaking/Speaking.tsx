@@ -2,13 +2,15 @@ import {FC, useState} from "react";
 import {getSessionData} from "@/Features/Speaking/Session/sessionSlice.ts";
 import {useDispatch} from "react-redux";
 import PartTitle from "@/Features/Speaking/PartTitle.tsx";
+import SpeakingTest from "@/Pages/Speaking/SpeakingTest/SpeakingTest.tsx";
+import {Toaster} from "react-hot-toast";
+import BackButton from "@/components/ui/BackButton.tsx";
+import {AppDispatch} from "@/Store/store.ts";
 
 const Speaking: FC = () => {
-    const [stream, setStream] = useState(null);
-    const dispatch = useDispatch();
-    // useEffect(() => {
-    //     dispatch(getSessionData({user_id: 6616, is_test: true}))
-    // }, [dispatch]);
+    const [stream, setStream] = useState<MediaStream | null>(null);
+    const dispatch = useDispatch<AppDispatch>();
+
 
     function handleGetSessionData(){
         dispatch(getSessionData({user_id: 6616, is_test: true}))
@@ -35,10 +37,13 @@ const Speaking: FC = () => {
     }
 
     return (
-        <div className={"max-w-md mx-auto h-dvh  overflow-y-hidden"}>
+        <div className={"max-w-[400px] mx-auto overflow-y-hidden h-dvh bg-gray-50  px-2"}>
+            <div className={""}>
+                <BackButton/>
+            </div>
             <PartTitle/>
-            {/*<TestComponent handleGetSessionData={handleGetSessionData} handleGetMicro={handleGetMicro} stream={stream}/>*/}
-            {/*<Toaster position="top-right"/>*/}
+            <SpeakingTest handleGetMicro={handleGetMicro} handleGetSessionData={handleGetSessionData} stream={stream}/>
+            <Toaster position="top-right"/>
 
         </div>
     )

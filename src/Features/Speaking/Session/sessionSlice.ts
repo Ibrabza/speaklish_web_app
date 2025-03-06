@@ -1,37 +1,53 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import apiClient from "@/services/apiClient";
 
-interface Question {
+export interface IQuestion {
     id: number;
-    question: string;
     options?: string[];
     answer?: string;
+    question_txt: string,
+    voice_url: string,
+    mobile_voice_url: string,
+    category: string
 }
 
-interface Questions {
-    [key: string]: Question[] | undefined;
+// interface Questions {
+//     [key: string]: IQuestion[] | undefined;
+// }
+
+interface ISession {
+    user_id: number,
+    session_id: string,
+    referral_code: string | number | null,
+    part1_question: IQuestion[],
+    part2_question: IQuestion[],
+    part3_question: IQuestion[],
 }
 
 interface SessionState {
     currentPart: number;
     currentQuestionIndex: number;
-    questions: Questions;
+    currentQuestion: IQuestion | null;
+    session: ISession | null;
+    questions : {
+        part1 : IQuestion[];
+        part2 : IQuestion[];
+        part3 : IQuestion[];
+    } | null;
+    showPartComplete: boolean;
     loading: boolean;
     error: boolean | string;
-    session: string | null; // You may replace 'any' with a specific type if session data structure is known
-    currentQuestion: Question | null;
-    showPartComplete: boolean;
 }
 
 const initialState: SessionState = {
     currentPart: 0,
     currentQuestionIndex: 0,
-    questions: {},
+    currentQuestion: null,
+    session: null,
+    questions: null,
+    showPartComplete: false,
     loading: false,
     error: false,
-    session: null,
-    currentQuestion: null,
-    showPartComplete: false,
 };
 
 interface IRecord {
@@ -41,15 +57,15 @@ interface IRecord {
 
 export const getSessionData = createAsyncThunk(
     'session/getSessionData',
-    async (params: IRecord, thunkAPI) => {
+    async ({user_id, is_test} : IRecord) => {
         try {
             const response = await apiClient.get('/school/session-create/', {
-                params: params,
+                params: {user_id, is_test},
             });
             return response.data;
-        } catch (error: any) {
+        } catch (error) {
             console.error('Failed to get data from session:', error);
-            return thunkAPI.rejectWithValue(error.response?.data || 'Failed to fetch data');
+            // return rejectWithValue(error.response.data || 'Failed to fetch data');
         }
     }
 );
@@ -63,15 +79,18 @@ const sessionSlice = createSlice({
         },
         setCurrentQuestionIndex: (state, action: PayloadAction<number>) => {
             state.currentQuestionIndex = action.payload;
-            const questionSet = state.questions[`part${state.currentPart}`];
-
-            state.currentQuestion = questionSet?.length ? questionSet[action.payload] : null;
+            if(state.questions){
+                const partKey = `part${state.currentPart}` as keyof typeof state.questions;
+                state.currentQuestion = state.questions[partKey]?.[action.payload];
+            }
         },
         setCurrentPart: (state, action: PayloadAction<number>) => {
             state.currentPart = action.payload;
-            const questionSet = state.questions[`part${action.payload}`];
-
-            state.currentQuestion = questionSet?.length ? questionSet[state.currentQuestionIndex] : null;
+            if(state.questions){
+                const partKey = `part${action.payload}` as keyof typeof state.questions;
+                state.currentQuestion = state.questions[partKey]?.[0] || null;
+                state.currentQuestionIndex = 0;
+            }
         },
         setLoading: (state, action: PayloadAction<boolean>) => {
             state.loading = action.payload;
@@ -90,13 +109,14 @@ const sessionSlice = createSlice({
                 state.loading = false;
             })
             .addCase(getSessionData.fulfilled, (state, action) => {
-                state.questions = {
-                    part1: action.payload.part1_questions,
-                    part2: action.payload.part2_question, // Ensure correct key name
-                    part3: action.payload.part3_questions,
-                };
-                state.loading = false;
                 state.session = action.payload;
+                state.questions = {
+                    part1: action.payload.part1_question,
+                    part2: action.payload.part2_question,
+                    part3: action.payload.part3_question,
+                }
+                state.currentQuestion = action.payload.part1_question[0];
+                state.loading = false;
             });
     },
 });
