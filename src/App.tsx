@@ -1,4 +1,4 @@
-import {BrowserRouter, Navigate, Route, Routes, useNavigate} from "react-router-dom";
+import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
 
 import AppLayout from "./Pages/AppLayout.tsx";
 import Lessons from "./Pages/Lessons/Lessons.tsx";
@@ -17,7 +17,6 @@ import QuizReview from "@/Pages/Quiz/QuizReview/QuizReview.tsx";
 
 
 const App = () => {
-    const navigate = useNavigate();
     return (
         <Provider store={Store}>
             <BrowserRouter>
@@ -40,7 +39,7 @@ const App = () => {
                     <Route path={"*"} element={<ErrorPage
                         button={"Go to homepage"}
                         message={"something went wrong"}
-                        onClick={() => navigate("/auth") }
+                        onClick={() => <Navigate to={"/auth"}/> }
                     />}/>
                 </Routes>
             </BrowserRouter>
