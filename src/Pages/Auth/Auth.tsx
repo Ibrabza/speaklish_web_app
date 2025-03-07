@@ -7,6 +7,7 @@ import Button1 from "@/components/ui/Button1.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/Store/store.ts";
 import {handleAuth} from "@/Features/User/userSlice.ts";
+import ErrorPage from "@/Pages/Error/ErrorPage.tsx";
 
 
 const Auth :FC = () => {
@@ -27,11 +28,13 @@ const Auth :FC = () => {
 
     const textToButton = !isAuthorized ? "Not authorized yet" : "Continue"
 
+    if(!loading && !isAuthorized) return <ErrorPage button={"Back to telegram bot"} onClick={() => window.open("https://t.me/your_bot_username", "_self")} message={"Authentication has been failed "}/>
+
     return (
         <div className={" h-dvh text-green-800"}>
             <div className={" h-dvh bg-gray-50 w-dvw flex flex-col items-center gap-4 justify-center "}>
                 <div className=" flex flex-col items-center gap-5">
-                    {(!isAuthorized || loading) ? <>
+                    {(loading) ? <>
                             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"/>
                             <span className={"text-sm font-medium text-gray-700"}>
                                 Authorizing checking...

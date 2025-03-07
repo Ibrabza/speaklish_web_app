@@ -55,7 +55,7 @@ interface IUser  {
 const initialState: IUser = {
     access: "",
     refresh: "",
-    loading: false,
+    loading: true,
     photo_url: "",
     first_name: "",
     error: "",
@@ -130,6 +130,8 @@ const userSlice = createSlice({
         })
             .addCase(handleAuth.rejected, (state, action) => {
                 state.error = action.payload as string || "something went wrong";
+                state.loading = false;
+                state.isAuthorized = false;
             })
             .addCase(handleAuth.fulfilled, (state, action) => {
                 if(!action.payload.access){
