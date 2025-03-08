@@ -9,14 +9,14 @@ import ErrorPage from "@/Pages/Error/ErrorPage.tsx";
 
 const AppLayout = () => {
 
-    const isAuthenticated = useSelector( (state: RootState) => state.user.isAuthorized);
-
-
-    function handler() {
-        window.location.href = "https://t.me/ibrabza_managerbot";
-    }
-
-    if(!isAuthenticated) return <ErrorPage message={"You are not authenticated"} button={"Go back to Telegram"} onClick={handler}/>
+    // const isAuthenticated = useSelector( (state: RootState) => state.user.isAuthorized);
+    //
+    //
+    // function handler() {
+    //     window.location.href = "https://t.me/ibrabza_managerbot";
+    // }
+    //
+    // if(!isAuthenticated) return <ErrorPage message={"You are not authenticated"} button={"Go back to Telegram"} onClick={handler}/>
 
     return (
         <div className={styles.layout}>
