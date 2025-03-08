@@ -113,9 +113,10 @@ const quizSlice = createSlice({
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(handleGetQuiz.pending, (state) => {
+        builder
+            .addCase(handleGetQuiz.pending, (state) => {
             state.loading = true;
-        })
+            })
             .addCase(handleGetQuiz.rejected, (state, action) => {
                 state.error = action.payload as string || "something went wrong";
                 state.loading = false;
