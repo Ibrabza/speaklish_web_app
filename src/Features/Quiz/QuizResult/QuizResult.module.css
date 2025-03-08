@@ -1,19 +1,15 @@
 .container{
-    /*max-width: 400px;*/
     width: 100%;
     height: 100dvh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /*background: radial-gradient(84.4% 84.4% at 50% 15.6%, rgba(7, 218, 131, 0.11) 0%, rgba(215, 255, 239, 0.19) 100%);*/
     background-image: url("/public/Quiz-result_bg.png");
     object-fit: cover;
     background-repeat: no-repeat;
-    /*background-size: max(400px, 100%);*/
     background-size: cover;
     position: relative;
     margin: 0 auto;
-    /*border: 1px solid orange;*/
 }
 
 .result_back__button{
