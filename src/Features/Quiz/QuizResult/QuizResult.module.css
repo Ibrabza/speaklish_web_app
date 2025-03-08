@@ -3,13 +3,17 @@
     height: 100dvh;
     display: flex;
     flex-direction: column;
-    /*justify-content: center;*/
-    /*position: relative;*/
     align-items: center;
-    /*background: linear-gradient(180deg, #07DA831C 11%, #D7FFEF30 19%);*/
-    background: radial-gradient(84.4% 84.4% at 50% 15.6%, rgba(7, 218, 131, 0.11) 0%, rgba(215, 255, 239, 0.19) 100%);
+    /*background: radial-gradient(84.4% 84.4% at 50% 15.6%, rgba(7, 218, 131, 0.11) 0%, rgba(215, 255, 239, 0.19) 100%);*/
+    background-image: url("/public/Quiz-result_bg.png");
+    object-fit: cover;
+    background-repeat: no-repeat;
+    /*background-size: max(400px, 100%);*/
+    background-size: contain;
     position: relative;
     margin: 0 auto;
+    border: 1px solid orange;
+    /*justify-content: center;*/
 }
 
 .result_back__button{
@@ -20,44 +24,38 @@
 
 
 .result_score{
-    margin-top: 12rem;
+    margin-top: 8rem;
     margin-bottom: 3rem;
     position: relative;
-    width: 170px;
+    width: 200px;
     height: 200px;
     max-height: 245px;
-    /*border: 1px solid red;*/
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-.result_profile{
+.result_profile {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: absolute;
     width: 90px;
     height: 90px;
-    top: 0;
-    left: 2.35rem;
     background-color: #F5F6FA;
-    /*border: 1px solid;*/
-    /*border-image-source: linear-gradient(146.01deg, #07DA83 14.46%, #D7FFEF 84.76%);*/
     z-index: 5;
     border-radius: 24px;
-    border-image-slice: 1;
     padding: 1px;
+    position: relative; /* Ensures the pseudo-element is scoped to this div */
 }
-
 
 .result_profile::before {
     content: "";
     position: absolute;
     inset: 0;
-    padding: 2px;
+    padding: 2px; /* This might be affecting the overflow */
     border-radius: inherit;
     background: linear-gradient(146.01deg, #07DA83 14.46%, #D7FFEF 84.76%);
-    -webkit-mask:
-            linear-gradient(white 0 0) content-box,
-            linear-gradient(white 0 0);
+    -webkit-mask: linear-gradient(white 0 0) content-box, linear-gradient(white 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
@@ -65,23 +63,17 @@
 
 
 .result_user_info{
-    position: absolute;
-    z-index: 6;
-    top: 6rem;
-    left: 2.8rem;
-    text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
-    border: 1px solid red;
+    /*gap: 1rem;*/
 }
 .result_user_info h3{
     text-align: center;
     font-weight: 600;
     font-size: 18px;
-    line-height: 25.2px;
+    line-height: 26px;
     letter-spacing: 1px;
     color: #181D25;
 }
@@ -90,7 +82,9 @@
     font-size: 16px;
     line-height: 23px;
     letter-spacing: 1px;
+    text-align: center;
     color: #606E80;
+    display: block;
 }
 
 .green_rect{
