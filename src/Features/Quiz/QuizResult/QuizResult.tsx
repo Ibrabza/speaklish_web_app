@@ -27,7 +27,7 @@ const QuizResult : FC = () => {
     return (
         <div className={styles.container}>
             <div className={styles.result_back__button}>
-                <BackButton/>
+                <BackButton to={"/test/home"}/>
             </div>
 
             <div className={styles.result_score}>

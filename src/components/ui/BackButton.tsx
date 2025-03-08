@@ -2,11 +2,16 @@ import {FC} from "react";
 import styles from "./BackButton.module.css";
 import {useNavigate} from "react-router-dom";
 
-const BackButton: FC = () => {
+interface IBBtn{
+    to?: string;
+}
+
+const BackButton: FC<IBBtn> = (props) => {
     const navigate = useNavigate();
 
     function handleClick(){
-        navigate(-1);
+        const newTo = props.to || -1
+        navigate(newTo as string);
     }
 
     return (

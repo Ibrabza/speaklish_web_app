@@ -2,7 +2,7 @@ import {IAnswer} from "@/Features/Quiz/quizSlice.ts";
 // https://dashboard.speaklish.uz/api/v1/auth/login/
 
 export const apiURL = {
-    login: "https://dashboard.speaklish.uz/api/v1/auth/login/",
+    login: "https://dashboard.speaklish.uz/api/v1/auth/login/\n",
     session: "https://api.speaklish.uz/",
     question_list:"https://dashboard.speaklish.uz/api/v1/courses/lessons/",
     lesson: "https://dashboard.speaklish.uz/api/v1/courses/lesson/",
