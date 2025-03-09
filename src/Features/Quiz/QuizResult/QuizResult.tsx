@@ -6,7 +6,7 @@ import { FaUser } from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/Store/store.ts";
 import Loading from "@/components/Loading.tsx";
-import { handleSubmitQuiz } from "@/Features/Quiz/quizSlice.ts";
+import {handleSubmitQuiz, setLoading} from "@/Features/Quiz/quizSlice.ts";
 
 
 
@@ -22,6 +22,12 @@ const QuizResult : FC = () => {
         console.log(answers);
         dispatch(handleSubmitQuiz({lesson_id: 1, answers}));
     }, [dispatch,answers]);
+    useEffect(() => {
+        if(!loading) {
+            dispatch(setLoading(true))
+        }
+        setTimeout(() => dispatch(setLoading(false)), 4000)
+    }, [dispatch, loading]);
 
     if(loading || !result) return <Loading/>
 
