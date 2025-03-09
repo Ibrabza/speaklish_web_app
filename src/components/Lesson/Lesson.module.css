@@ -63,7 +63,7 @@
 
 .backButton{
     position: absolute;
-    left: 0;
+    left: 1rem;
     top: 5px;
 }
 

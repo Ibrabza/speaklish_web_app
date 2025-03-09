@@ -11,7 +11,6 @@ const VideoPlayer: FC<IVPlayer> = (props) => {
         <ReactPlayer
             url={props.link}
             controls
-            playing
             config={{ file: { attributes: { controlsList: "nodownload" } } }}
             style={{ border: "0 solid black", borderRadius: "24px" }}
             width="100%"
