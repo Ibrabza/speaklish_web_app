@@ -6,17 +6,18 @@ import {GrStatusGood} from "react-icons/gr";
 import Button1 from "@/components/ui/Button1.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/Store/store.ts";
-import {handleAuth} from "@/Features/User/userSlice.ts";
+import {getGroupData, handleAuth} from "@/Features/User/userSlice.ts";
 import ErrorPage from "@/Pages/Error/ErrorPage.tsx";
 
 
 const Auth :FC = () => {
     const dispatch = useDispatch<AppDispatch>()
-    const {isAuthorized, refresh, loading, access,} = useSelector((state: RootState) => state.user);
+    const {isAuthorized, error, refresh, loading, access,} = useSelector((state: RootState) => state.user);
 
     useEffect(()=>{
         if(!access && !refresh){
             dispatch(handleAuth({initData: window.location.hash, password: "123456", username: "ibrabza"}))
+            dispatch(getGroupData())
         }
     },[access, dispatch, refresh])
 
@@ -28,41 +29,51 @@ const Auth :FC = () => {
 
     const textToButton = !isAuthorized ? "Not authorized yet" : "Continue"
 
-    if(!loading && !isAuthorized) return <ErrorPage button={"Back to telegram bot"} onClick={() => window.open("https://t.me/your_bot_username", "_self")} message={"Authentication has been failed "}/>
-
+    if(!loading && !isAuthorized && error) return <ErrorPage button={"Back to telegram bot"} onClick={() => window.open("https://t.me/mySpeaky_bot", "_self")} message={"Authentication has been failed "}/>
+    if(!loading && isAuthorized) {
+        navigate("/test/home")
+        // return (
+        //     <div className={"h-dvh text-green-800"}>
+        //         <div className={" h-dvh bg-gray-50 w-dvw flex flex-col items-center gap-4 justify-center "}>
+        //
+        //         </div>
+        //     </div>
+        // )
+    }
     return (
-        <div className={" h-dvh text-green-800"}>
-            <div className={" h-dvh bg-gray-50 w-dvw flex flex-col items-center gap-4 justify-center "}>
-                <div className=" flex flex-col items-center gap-5">
-                    {(loading) ? <>
-                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"/>
-                            <span className={"text-sm font-medium text-gray-700"}>
+                <div className={" h-dvh text-green-800"}>
+                    <div className={" h-dvh bg-gray-50 w-dvw flex flex-col items-center gap-4 justify-center "}>
+                        <div className=" flex flex-col items-center gap-5">
+                            {(loading) ? <>
+                                    <div
+                                        className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"/>
+                                    <span className={"text-sm font-medium text-gray-700"}>
                                 Authorizing checking...
                             </span>
-                        </>
-                        :
-                        <>
-                            <GrStatusGood color={'green'} size={40}/>
-                            <span>
+                                </>
+                                :
+                                <>
+                                    <GrStatusGood color={'green'} size={40}/>
+                                    <span>
                                 Authorized
                             </span>
 
-                        </>
-                    }
-                    {/*<label className={"text-2xl font-medium"} htmlFor='phoneNumber'>Enter phone number</label>*/}
-                    {/*<input className={"text-center py-3 px-3 block border-1 overflow-hidden border-solid border-black rounded-3xl"} placeholder={"(00)-000-00-00"} value={tel} onChange={(e) => setTel(e.target.value)} name="phoneNumber" type="tel"  />*/}
+                                </>
+                            }
+                            {/*<label className={"text-2xl font-medium"} htmlFor='phoneNumber'>Enter phone number</label>*/}
+                            {/*<input className={"text-center py-3 px-3 block border-1 overflow-hidden border-solid border-black rounded-3xl"} placeholder={"(00)-000-00-00"} value={tel} onChange={(e) => setTel(e.target.value)} name="phoneNumber" type="tel"  />*/}
+                        </div>
+                        {isAuthorized &&
+                            <Button1
+                                className={"px-4 py-2 flex items-center bg-primary text-black rounded-lg disabled:bg-gray-400"}
+                                disabled={!isAuthorized}
+                                onClick={handleClick}
+                                text={textToButton}
+                            />
+                        }
+                    </div>
                 </div>
-                {isAuthorized &&
-                    <Button1
-                        className={"px-4 py-2 flex items-center bg-primary text-black rounded-lg disabled:bg-gray-400"}
-                        disabled={!isAuthorized}
-                        onClick={handleClick}
-                        text={textToButton}
-                    />
+                )
                 }
-            </div>
-        </div>
-    )
-}
 
-export default Auth;
+                export default Auth;

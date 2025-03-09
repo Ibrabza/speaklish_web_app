@@ -5,7 +5,8 @@
     align-items: center;
     justify-content: center;
     height: 100dvh;
-    gap: 0.5rem;
+    gap: 1rem;
+    margin: 0 auto;
 }
 .container p{
     font-weight: 500;
@@ -20,9 +21,13 @@
     margin-bottom: 1rem;
 }
 .error_button{
+    /*border: 1px solid red;*/
     background-color: transparent;
     color: #07DA83;
     font-size: 18px;
-    line-height: 20px;
+    line-height: 22px;
     font-weight: 600;
+}
+.error_button:hover, :focus{
+    text-decoration: underline;
 }

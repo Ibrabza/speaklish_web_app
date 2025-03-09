@@ -13,7 +13,8 @@ const AppLayout = () => {
 
 
     function handler() {
-        window.location.href = "https://t.me/ibrabza_managerbot";
+        // window.location.href = "https://t.me/@mySpeaky_bot";
+        window.open("https://t.me/mySpeaky_bot", "_self")
     }
 
     if(!isAuthenticated) return <ErrorPage message={"You are not authenticated"} button={"Go back to Telegram"} onClick={handler}/>

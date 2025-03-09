@@ -1,15 +1,25 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {getLesson, getLessons, handleLogin} from "@/services/apiServices.ts";
+import {getLesson, getLessons, getUserProfile, handleLogin} from "@/services/apiServices.ts";
 
 interface IUser  {
+    id: number | null,
+    first_name : string,
+    last_name: string,
+    role : string,
+    balance : number,
+    request_balance: number,
+    phone: number,
+    photo_url : string,
+    telegram_id: number,
+    email: string,
+    group: {
+        id: number,
+        name: string,
+    }
     access : string,
     refresh : string,
-    role : string,
     loading: boolean,
     error : string | null,
-    balance : number,
-    photo_url : string,
-    first_name : string,
     isAuthorized : boolean,
     question_list: {
         "course_id": number,
@@ -53,6 +63,16 @@ interface IUser  {
 
 
 const initialState: IUser = {
+    id: 0,
+    request_balance: 0,
+    phone: 0,
+    telegram_id: 0,
+    email: "",
+    group : {
+      id: 0,
+      name: "",
+    },
+    last_name: "",
     access: "",
     refresh: "",
     loading: true,
@@ -79,6 +99,16 @@ export const handleAuth = createAsyncThunk('user/handleAuth',
         }
     }
 )
+
+export const getGroupData = createAsyncThunk('user/getGroupData',
+    async () => {
+        try {
+            return await getUserProfile();
+        }catch (error){
+            console.log(error)
+            return Promise.reject(error);
+        }
+    })
 
 
 export const handleGetLessons = createAsyncThunk(
@@ -144,9 +174,9 @@ const userSlice = createSlice({
                     state.access = action.payload.access;
                     state.refresh = action.payload.refresh;
                     state.isAuthorized = true;
-                    const {first_name, photo_url} = window.Telegram.WebApp.initDataUnsafe.user;
-                    state.first_name = first_name;
-                    state.photo_url = photo_url;
+                    // const {first_name, photo_url} = window.Telegram.WebApp.initDataUnsafe.user;
+                    // state.first_name = first_name;
+                    // state.photo_url = photo_url;
                 }
                 // console.log(action.payload);
                 // localStorage.setItem()
@@ -174,6 +204,21 @@ const userSlice = createSlice({
                 // state.lesson = action.payload;
                 state.lesson = action.payload ?? null;
                 state.loading = false;
+            })
+            .addCase(getGroupData.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getGroupData.fulfilled, (state, action) => {
+                state.id = action.payload.id;
+                state.request_balance = action.payload.request_balance
+                state.email = action.payload.email;
+                state.telegram_id = action.payload.telegram_id;
+                state.group.id = action.payload.group.id;
+                state.group.name = action.payload.group.name;
+            })
+            .addCase(getGroupData.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string || "something went wrong";
             })
 
     }

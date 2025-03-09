@@ -3,6 +3,7 @@ import {IAnswer} from "@/Features/Quiz/quizSlice.ts";
 
 export const apiURL = {
     login: "https://dashboard.speaklish.uz/api/v1/auth/login/\n",
+    userProfile: "https://dashboard.speaklish.uz/api/v1/user-profile/",
     session: "https://api.speaklish.uz/",
     question_list:"https://dashboard.speaklish.uz/api/v1/courses/lessons/",
     lesson: "https://dashboard.speaklish.uz/api/v1/courses/lesson/",
@@ -25,6 +26,24 @@ export const getQuizResult = async (lesson_id:number) => {
         }
         return await response.json()
 
+    }catch (error) {
+        console.log(error)
+    }
+}
+
+export const getUserProfile = async () => {
+    try {
+        const response = await fetch(apiURL.userProfile,{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization" : `Bearer ${localStorage.getItem('token')}`,
+            }
+        })
+        if (!response.ok) {
+            console.log(response)
+        }
+        return await response.json()
     }catch (error) {
         console.log(error)
     }
@@ -76,7 +95,7 @@ export const getQuizzes = async (lessonID: number) => {
 
 export const handleLogin = async (initData: string,password: string, username? : string) => {
     try {
-        console.log("Logging")
+        console.log("Logging", initData)
         const data = await fetch(apiURL.login, {
             method: "POST",
             headers: {
@@ -86,6 +105,7 @@ export const handleLogin = async (initData: string,password: string, username? :
                 "username": username,
                 "password": password,
                 "tma": initData,
+                // "tma": "#tgWebAppData=user%3D%257B%2522id%2522%253A606299917%252C%2522first_name%2522%253A%2522Abzal%2522%252C%2522last_name%2522%253A%2522%2522%252C%2522username%2522%253A%2522ibrabza%2522%252C%2522language_code%2522%253A%2522en%2522%252C%2522allows_write_to_pm%2522%253Atrue%252C%2522photo_url%2522%253A%2522https%253A%255C%252F%255C%252Ft.me%255C%252Fi%255C%252Fuserpic%255C%252F320%255C%252FPm-eMQY1b4e0lD0r_7hAJDHXhx-2dA5UaY1estneYKk.svg%2522%257D%26chat_instance%3D-2236416619848632369%26chat_type%3Dprivate%26auth_date%3D1741523541%26signature%3DwVbi70ykSEwGLK7A9WHmRedGvxuwAd1FI_1KgGjtH2sJJGY_g-SkVN3ol-xszYUQnZs8IUr8JkMMa_zJoElnDw%26hash%3Dee3e5748334b865ecc720d4a9f6f22628f2be08f8ca9c8d46ed02adf8ff04136&tgWebAppVersion=8.0&tgWebAppPlatform=macos&tgWebAppThemeParams=%7B%22header_bg_color%22%3A%22%23efeff3%22%2C%22accent_text_color%22%3A%22%23008d94%22%2C%22section_bg_color%22%3A%22%23ffffff%22%2C%22link_color%22%3A%22%23008d94%22%2C%22section_separator_color%22%3A%22%23eaeaea%22%2C%22hint_color%22%3A%22%23999999%22%2C%22button_text_color%22%3A%22%23ffffff%22%2C%22subtitle_text_color%22%3A%22%23999999%22%2C%22bottom_bar_bg_color%22%3A%22%23e4e4e4%22%2C%22bg_color%22%3A%22%23ffffff%22%2C%22button_color%22%3A%22%23008d94%22%2C%22section_header_text_color%22%3A%22%236d6d71%22%2C%22secondary_bg_color%22%3A%22%23efeff3%22%2C%22destructive_text_color%22%3A%22%23ff3b30%22%2C%22text_color%22%3A%22%23000000%22%7D",
             })
         }).then((response) => {
             return response.json();
