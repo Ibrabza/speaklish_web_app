@@ -215,6 +215,7 @@ const userSlice = createSlice({
                 state.telegram_id = action.payload.telegram_id;
                 state.group.id = action.payload.group.id;
                 state.group.name = action.payload.group.name;
+                state.photo_url = action.payload.photo || state.photo_url;
             })
             .addCase(getGroupData.rejected, (state, action) => {
                 state.loading = false;
