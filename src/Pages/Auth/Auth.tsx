@@ -29,9 +29,9 @@ const Auth :FC = () => {
 
     const textToButton = !isAuthorized ? "Not authorized yet" : "Continue"
 
-    if(!loading && !isAuthorized && error) return <ErrorPage button={"Back to telegram bot"} onClick={() => window.open("https://t.me/mySpeaky_bot", "_self")} message={"Authentication has been failed "}/>
+    if(!isAuthorized && error) return <ErrorPage button={"Register"} onClick={() => navigate("/test/register")} message={error}/>
     if(!loading && isAuthorized) {
-        navigate("/test/home")
+        navigate("/test/register")
         // return (
         //     <div className={"h-dvh text-green-800"}>
         //         <div className={" h-dvh bg-gray-50 w-dvw flex flex-col items-center gap-4 justify-center "}>
@@ -40,11 +40,14 @@ const Auth :FC = () => {
         //     </div>
         // )
     }
+    console.log("loading:", loading);
+    console.log("isAuth:", isAuthorized);
+    console.log("error:", error);
     return (
                 <div className={" h-dvh text-green-800"}>
                     <div className={" h-dvh bg-gray-50 w-dvw flex flex-col items-center gap-4 justify-center "}>
                         <div className=" flex flex-col items-center gap-5">
-                            {(loading) ? <>
+                            {(loading && !error) ? <>
                                     <div
                                         className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"/>
                                     <span className={"text-sm font-medium text-gray-700"}>

@@ -4,6 +4,7 @@ import {useNavigate} from "react-router-dom";
 
 interface IBBtn{
     to?: string;
+    handler?: () => void;
 }
 
 const BackButton: FC<IBBtn> = (props) => {
@@ -15,7 +16,7 @@ const BackButton: FC<IBBtn> = (props) => {
     }
 
     return (
-        <div onClick={handleClick} className={styles.container}>&larr;</div>
+        <div onClick={props.handler || handleClick} className={styles.container}>&larr;</div>
     )
 }
 

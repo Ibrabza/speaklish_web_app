@@ -14,6 +14,7 @@ import Pronunciation from "@/Features/Pronunciation/Pronunciation.tsx";
 import LessonsLayout from "@/Pages/Lessons/LessonsLayout.tsx";
 import ErrorPage from "@/Pages/Error/ErrorPage.tsx";
 import QuizReview from "@/Pages/Quiz/QuizReview/QuizReview.tsx";
+import Register from "@/Pages/Register/Register.tsx";
 
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
             <BrowserRouter>
                 <Routes>
                     <Route index element={<Navigate replace to={'auth'}/>}/>
+                    <Route path={'/test/register'} element={<Register/>}/>
                     <Route index path={'auth'} element={<Auth/>}/>
                     <Route path={'/test'} element={<AppLayout/>}>
                         <Route index element={<Navigate replace to={'home'}/>}/>

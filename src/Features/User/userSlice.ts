@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {getLesson, getLessons, getUserProfile, handleLogin} from "@/services/apiServices.ts";
+import {getLesson, getLessons, getUserProfile, handleLogin, handleRegister} from "@/services/apiServices.ts";
 
 interface IUser  {
     id: number | null,
@@ -75,7 +75,7 @@ const initialState: IUser = {
     last_name: "",
     access: "",
     refresh: "",
-    loading: true,
+    loading: false,
     photo_url: "",
     first_name: "",
     error: "",
@@ -87,18 +87,31 @@ const initialState: IUser = {
 }
 
 
-export const handleAuth = createAsyncThunk('user/handleAuth',
-    async ({ initData, password, username }:
-               { initData: string; password: string; username?: string;}) => {
+export const handleReg = createAsyncThunk(
+    'user/register',
+    async ({password,phone, telegram_id} : {password: string, phone: string, telegram_id: number}, { rejectWithValue }) => {
         try {
-            return await handleLogin(initData, password, username);
+            return await handleRegister({password, phone, telegram_id})
         }
         catch (error) {
-            console.log("error inside the thunk: ", error);
-            return Promise.reject(error);
+            console.error(error);
+            return rejectWithValue(error);
         }
     }
 )
+
+export const handleAuth = createAsyncThunk(
+    'user/handleAuth',
+    async ({ initData, password, username }:
+               { initData: string; password: string; username?: string; }, { rejectWithValue }) => {
+        try {
+            return await handleLogin(initData, password, username);
+        } catch (error) {
+            console.log("error inside the thunk: ", error);
+            return rejectWithValue(error);
+        }
+    }
+);
 
 export const getGroupData = createAsyncThunk('user/getGroupData',
     async () => {
@@ -158,6 +171,18 @@ const userSlice = createSlice({
         builder.addCase(handleAuth.pending, (state) => {
             state.loading = true;
         })
+            .addCase(handleReg.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(handleReg.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string || 'Error occurred';
+            })
+            .addCase(handleReg.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = "";
+                console.log(action.payload);
+            })
             .addCase(handleAuth.rejected, (state, action) => {
                 state.error = action.payload as string || "something went wrong";
                 state.loading = false;
