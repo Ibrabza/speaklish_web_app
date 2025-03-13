@@ -30,7 +30,7 @@ const Auth :FC = () => {
     const textToButton = !isAuthorized ? "Not authorized yet" : "Continue"
 
     if(!isAuthorized && error) return <ErrorPage button={"Register"} onClick={() => navigate("/test/register")} message={error}/>
-    if(!loading && isAuthorized) {
+    if(error && isAuthorized) {
         navigate("/test/register")
         // return (
         //     <div className={"h-dvh text-green-800"}>
@@ -39,6 +39,9 @@ const Auth :FC = () => {
         //         </div>
         //     </div>
         // )
+    }
+    if(!error && isAuthorized){
+        navigate("/test")
     }
     console.log("loading:", loading);
     console.log("isAuth:", isAuthorized);

@@ -199,9 +199,9 @@ const userSlice = createSlice({
                     state.access = action.payload.access;
                     state.refresh = action.payload.refresh;
                     state.isAuthorized = true;
-                    const {first_name, photo_url} = window.Telegram.WebApp.initDataUnsafe.user;
-                    state.first_name = first_name;
-                    state.photo_url = photo_url;
+                    // const {first_name, photo_url} = window.Telegram.WebApp.initDataUnsafe.user;
+                    // state.first_name = first_name;
+                    // state.photo_url = photo_url;
                 }
                 // console.log(action.payload);
                 // localStorage.setItem()
