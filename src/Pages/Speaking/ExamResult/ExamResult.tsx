@@ -31,17 +31,12 @@ const ExamResult : FC<IExamResult> = (props) => {
         dispatch(setShowPartComplete(false));
     };
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 20000); // 10 seconds
+    console.log(isLoading, school_id, sessionId)
 
-        // Cleanup the timer if the component unmounts
-        return () => clearTimeout(timer);
-    }, []);
 
     useEffect(() => {
-        if(isLoading || !sessionId || !school_id) return;
+        if(!isLoading || !sessionId || !school_id) return;
+        // setIsLoading(true)
 
         const fetchExamResult = async () => {
             try {
@@ -59,7 +54,7 @@ const ExamResult : FC<IExamResult> = (props) => {
         };
 
 
-        if (!isLoading && sessionId) {
+        if (school_id && sessionId) {
             fetchExamResult().then(response => setExamResult(response.json_result));
         }
     }, [isLoading,school_id,sessionId]);

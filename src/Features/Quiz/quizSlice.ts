@@ -135,9 +135,9 @@ const quizSlice = createSlice({
                 state.loading = false;
             })
             .addCase(handleSubmitQuiz.fulfilled, (state, action) => {
-                state.result = action.payload;
                 state.loading = false;
                 state.error = null;
+                state.result = action.payload;
                 console.log(action.payload);
             })
             .addCase(handleGetQuizResult.pending, (state) => {

@@ -1,11 +1,16 @@
 import { FC, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/Store/store.ts";
+import Loading from "@/components/Loading.tsx";
 
-interface QuestionType {
-    question_txt: string;
-    options?: string[];
-    answer?: string;
+
+
+interface IQuestion {
+    category? : string,
+    id: number,
+    mobile_voice_url?: string,
+    question_txt : string,
+    voice_url?: string,
 }
 
 // Function to properly format the text with line breaks
@@ -19,15 +24,18 @@ function formattedQuestionTxt(question_txt: string) {
 }
 
 const Question: FC = () => {
-    const [currentQuestion, setCurrentQuestion] = useState<QuestionType | null>(null);
+    const [currentQuestion, setCurrentQuestion] = useState<IQuestion | null>(null);
 
     const { loading, currentPart, currentQuestionIndex, questions } = useSelector(
         (state: RootState) => state.session
     );
 
     const partKey = `part${currentPart}` as keyof typeof questions;
-    const questionSet: QuestionType[] | undefined = questions?.[partKey];
-    const question = questionSet?.[currentQuestionIndex] ?? null;
+
+    const questionSet: IQuestion[] | IQuestion | undefined = questions?.[partKey];
+    console.log(partKey, questionSet,questions)
+    // const question = p`part2` ? questionSet![currentQuestionIndex] : questionSet  ?? null;
+    const question = (currentPart === 2 ? questionSet : questionSet?.[currentQuestionIndex]) ?? null;
 
     console.log(currentPart, questions)
 
@@ -35,7 +43,7 @@ const Question: FC = () => {
         setCurrentQuestion(question);
     }, [question]);
 
-    if (loading || !questions) return null;
+    if (loading || !questions) return <Loading/>;
 
     return (
         <div className="text-lg text-gray-800 mb-4 text-left">

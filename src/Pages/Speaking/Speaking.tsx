@@ -37,13 +37,13 @@ const Speaking: FC = () => {
     }
 
     return (
-        <div className={"max-w-[400px] mx-auto overflow-y-hidden h-dvh bg-gray-50  px-2"}>
+        <div className={"max-w-[400px] mx-auto overflow-y-scroll h-dvh bg-gray-50  px-2"}>
             <div className={""}>
                 <BackButton/>
             </div>
             <PartTitle/>
             <SpeakingTest handleGetMicro={handleGetMicro} handleGetSessionData={handleGetSessionData} stream={stream}/>
-            <Toaster position="top-right"/>
+            <Toaster position="top-center"/>
 
         </div>
     )

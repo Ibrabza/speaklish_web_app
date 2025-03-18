@@ -7,7 +7,7 @@
     background-image: url("/public/Quiz-result_bg.png");
     object-fit: cover;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
     position: relative;
     margin: 0 auto;
 }

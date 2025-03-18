@@ -161,7 +161,11 @@ const QuestionCompound : FC<IQCompound> = (props) => {
                 const partKey = `part${currentPart}` as keyof typeof questions;
                 const partQuestions = questions[partKey] ?? [];
 
-                if (currentQuestionIndex < partQuestions.length - 1) {
+                if(partKey === `part2`){
+                    dispatch(setCurrentQuestionIndex(0))
+                    dispatch(setShowPartComplete(true))
+                }
+                else if (Array.isArray(partQuestions) && currentQuestionIndex < partQuestions.length - 1) {
                     dispatch(setCurrentQuestionIndex(currentQuestionIndex + 1));
                     dispatch(setShowPartComplete(false));
                 }

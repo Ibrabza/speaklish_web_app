@@ -32,7 +32,7 @@ const PartComplete : FC = () => {
             </p>
             <button
                 onClick={handleOnNext}
-                className="mt-4 px-4 py-2 bg-primary text-white rounded-lg"
+                className="mt-4 px-4 py-2 bg-green-400 text-white rounded-lg"
             >
                 Start Part {currentPart + 1}
             </button>

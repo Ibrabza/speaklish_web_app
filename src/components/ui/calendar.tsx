@@ -5,18 +5,25 @@ import { DayPicker } from "react-day-picker"
 import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 
-export type CalendarProps = React.ComponentProps<typeof DayPicker>
+export type CalendarProps = React.ComponentProps<typeof DayPicker> & {
+    selectedDates?: Date[]; // Add this to accept API-fetched dates
+};
 
 function Calendar({
   className,
   classNames,
   showOutsideDays = true,
+    selectedDates = [],
   ...props
 }: CalendarProps) {
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
       className={cn("p-3", className)}
+      modifiers={{ apiSelected: selectedDates }}
+      modifiersClassNames={{
+          apiSelected: "bg-green-600 text-white hover:bg-green-400",
+      }}
       classNames={{
         months: "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0",
         month: "space-y-4",

@@ -8,7 +8,7 @@ import Timer from "@/components/Timer/Timer.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/Store/store.ts";
 import Loading from "@/components/Loading.tsx";
-import {handleGetQuiz, setCurrentIndex, setLoading, submitAnswer} from "@/Features/Quiz/quizSlice.ts";
+import {handleGetQuiz, setCurrentIndex, submitAnswer} from "@/Features/Quiz/quizSlice.ts";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -36,7 +36,7 @@ const Quiz : FC = () => {
             answer: answer,
         }))
         if( currentIndex+1 === quizzes?.length) {
-            dispatch(setLoading(true))
+            // dispatch(setLoading(true))
             navigate(`/test/lessons/quiz/result/1`)
         }
     }
@@ -65,13 +65,11 @@ const Quiz : FC = () => {
         }
     }
 
-
     if(loading && !quizzes) return <Loading/>
     if(error) {
         console.log(error)
         return null;
     }
-
 
     return (
         <div className={styles.container}>

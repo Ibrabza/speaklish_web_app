@@ -64,7 +64,7 @@ const Lesson: FC = () => {
                 </div>
                 <div className={styles.lesson_action__block}>
                     <h3>Attached Files</h3>
-                    {state!.files!.map((item,i) => <DownloadFIle fileName={`File ${i+1}`} link={`https://dashboard.speaklish.uz/${item.url}`}/>)}
+                    {state!.files!.map((item,i) => <DownloadFIle fileName={`File ${i+1}`} link={`https://dashboard.speaklish.uz${item.url}`}/>)}
                 </div>
 
                 <div className={styles.lesson_action__block}>

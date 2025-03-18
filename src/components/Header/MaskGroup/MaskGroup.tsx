@@ -15,7 +15,7 @@ const MaskGroup:FC = () => {
                 <img src={mask1} alt={"speaklish1"}/>
             </div>
             <div className={styles.simg}>
-                <img src={photo_url} alt={"speaklish2"}/>
+                <img src={photo_url ? photo_url : "#"} alt={"speaklish2"}/>
             </div>
         </div>
     </div>
