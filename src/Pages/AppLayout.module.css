@@ -11,4 +11,5 @@
     overflow: visible;
     min-height: 100vh;
     position: relative;
+    padding-top: var(--tg-content-safe-area-inset-top, 10px);
 }

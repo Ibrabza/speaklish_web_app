@@ -6,10 +6,15 @@ import Header from "../components/Header/Header.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "@/Store/store.ts";
 import ErrorPage from "@/Pages/Error/ErrorPage.tsx";
+import {useEffect} from "react";
 
 const AppLayout = () => {
 
     const isAuthenticated = useSelector( (state: RootState) => state.user.isAuthorized);
+
+    useEffect(() => {
+        window.Telegram.WebApp.expand();
+    }, []);
 
 
     function handler() {

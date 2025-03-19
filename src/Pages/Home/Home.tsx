@@ -18,7 +18,7 @@ const Home = () => {
     return (
         <div className="home">
             <UserGreating/>
-            {newsCount && <NewsBlock/>}
+            {newsCount !== 0 && <NewsBlock/>}
             <CalendarDisplay/>
         </div>
     )

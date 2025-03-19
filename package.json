@@ -19,6 +19,7 @@
     "@telegram-apps/signals": "^1.1.1",
     "@telegram-web-app/react": "^0.0.1-beta.1",
     "@types/axios": "^0.14.4",
+    "@types/telegram-web-app": "^7.10.1",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
