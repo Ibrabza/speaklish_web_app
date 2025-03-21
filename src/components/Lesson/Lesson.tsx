@@ -79,17 +79,16 @@ const Lesson: FC = () => {
                 </div>
 
 
-                {/* in progress need to develop*/}
-                {/*<div className={styles.lesson_action__block}>*/}
-                {/*    <h3>Pronunciation Task</h3>*/}
-                {/*    <div className={styles.lesson_action}>*/}
-                {/*        <div className={styles.lesson_action__button}>*/}
-                {/*            <img src={"/lesson2/ai-mic.svg"} alt={"speaklish-ai-micro"}/>*/}
-                {/*            <span>Pronunciation </span>*/}
-                {/*        </div>*/}
-                {/*        <img src={"/lesson2/arrow.svg"} alt={"speaklish-arrow"}/>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
+                <div className={styles.lesson_action__block}>
+                    <h3>Pronunciation Task</h3>
+                    <Link to={`/test/lessons/pronunciation/${lessonId}`} className={styles.lesson_action}>
+                        <div className={styles.lesson_action__button}>
+                            <img src={"/lesson2/ai-mic.svg"} alt={"speaklish-ai-micro"}/>
+                            <span>Pronunciation Practice</span>
+                        </div>
+                        <img src={"/lesson2/arrow.svg"} alt={"speaklish-arrow"}/>
+                    </Link>
+                </div>
 
                 {/*<div className={styles.lesson_action__block}>*/}
                 {/*    <h3>Speak about topic</h3>*/}
