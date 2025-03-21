@@ -226,9 +226,9 @@ export const getQuizzes = async (lessonID: number) => {
     }
 }
 
-export const handleRegister = async ({password,phone, telegram_id} : {password: string, phone: string, telegram_id: number}) => {
+export const handleRegister = async ({password, phone, telegram_id, name} : {password: string, phone: string, telegram_id: number, name?: string}) => {
     try {
-        const response = await fetch(apiURL.register,{
+        const response = await fetch(apiURL.register, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -237,20 +237,39 @@ export const handleRegister = async ({password,phone, telegram_id} : {password: 
                 phone: phone,
                 password: password,
                 telegram_id: telegram_id,
+                first_name: name ? name.split(' ')[0] : '',
+                last_name: name && name.split(' ').length > 1 ? name.split(' ').slice(1).join(' ') : '',
             })
         });
+
+        // First, get the response text
+        const responseText = await response.text();
+        
+        // Try to parse it as JSON
+        let responseData;
+        try {
+            responseData = JSON.parse(responseText);
+        } catch {
+            // If it's not valid JSON, use the text as is
+            responseData = { message: responseText };
+        }
+        
+        // Check if the response was successful
         if (!response.ok) {
-            const errorText = await response.text();
-            try {
-                const errorJson = JSON.parse(errorText);
-                throw new Error(errorJson.message || 'Login failed');
-            } catch {
-                throw new Error(`Server Error: ${errorText}`);
+            // If we have a structured error message, use it
+            if (responseData && responseData.message) {
+                throw new Error(responseData.message);
+            } else {
+                throw new Error(`Registration failed: ${response.status} ${response.statusText}`);
             }
         }
-    }catch (error) {
-        console.log(error);
-        return Promise.reject(error);
+        
+        // Return the parsed response data
+        return responseData;
+    } catch (error) {
+        console.error('Registration error:', error);
+        // Re-throw the error so it can be handled by the caller
+        throw error;
     }
 }
 

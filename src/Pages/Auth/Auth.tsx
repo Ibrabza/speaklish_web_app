@@ -29,17 +29,15 @@ const Auth :FC = () => {
 
     const textToButton = !isAuthorized ? "Not authorized yet" : "Continue"
 
-    if(!isAuthorized && error) return <ErrorPage button={"Register"} onClick={() => navigate("/test/register")} message={error}/>
-    if(error && isAuthorized) {
-        navigate("/test/register")
-        // return (
-        //     <div className={"h-dvh text-green-800"}>
-        //         <div className={" h-dvh bg-gray-50 w-dvw flex flex-col items-center gap-4 justify-center "}>
-        //
-        //         </div>
-        //     </div>
-        // )
+    // If user is not authorized and there's an error (likely user not found), show register button
+    if(!isAuthorized && error) {
+        return <ErrorPage 
+            button={"Register"} 
+            onClick={() => navigate("/test/register")} 
+            message={"User not found. Please register to continue."}
+        />
     }
+    
     if(!error && isAuthorized){
         navigate("/test")
     }

@@ -89,9 +89,9 @@ const initialState: IUser = {
 
 export const handleReg = createAsyncThunk(
     'user/register',
-    async ({password,phone, telegram_id} : {password: string, phone: string, telegram_id: number}, { rejectWithValue }) => {
+    async ({password, phone, telegram_id, name} : {password: string, phone: string, telegram_id: number, name?: string}, { rejectWithValue }) => {
         try {
-            return await handleRegister({password, phone, telegram_id})
+            return await handleRegister({password, phone, telegram_id, name})
         }
         catch (error) {
             console.error(error);
@@ -178,7 +178,14 @@ const userSlice = createSlice({
             })
             .addCase(handleReg.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload as string || 'Error occurred';
+                // Handle error properly by converting to string if it's an object
+                if (action.payload instanceof Error) {
+                    state.error = action.payload.message || 'Registration failed';
+                } else if (typeof action.payload === 'object' && action.payload !== null) {
+                    state.error = JSON.stringify(action.payload) || 'Registration failed';
+                } else {
+                    state.error = action.payload as string || 'Registration failed';
+                }
             })
             .addCase(handleReg.fulfilled, (state, action) => {
                 state.loading = false;
@@ -201,9 +208,11 @@ const userSlice = createSlice({
                     state.access = action.payload.access;
                     state.refresh = action.payload.refresh;
                     state.isAuthorized = true;
-                    const {first_name, photo_url} = window.Telegram.WebApp.initDataUnsafe.user;
-                    state.first_name = first_name;
-                    state.photo_url = photo_url;
+                    if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
+                        const {first_name, photo_url} = window.Telegram.WebApp.initDataUnsafe.user;
+                        state.first_name = first_name || '';
+                        state.photo_url = photo_url || '';
+                    }
                 }
                 // console.log(action.payload);
                 // localStorage.setItem()
