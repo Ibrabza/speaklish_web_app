@@ -13,7 +13,17 @@ const AppLayout = () => {
     const isAuthenticated = useSelector( (state: RootState) => state.user.isAuthorized);
 
     useEffect(() => {
-        window.Telegram.WebApp.expand();
+        // Check if Telegram WebApp is available before expanding
+        if (window.Telegram?.WebApp?.expand) {
+            try {
+                window.Telegram.WebApp.expand();
+                console.log('Telegram WebApp expanded');
+            } catch (error) {
+                console.error('Error expanding Telegram WebApp:', error);
+            }
+        } else {
+            console.log('Telegram WebApp expand function not available');
+        }
     }, []);
 
 

@@ -1,0 +1,114 @@
+.audioButton {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #07DA83;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(7, 218, 131, 0.3);
+    position: relative;
+}
+
+.audioButton:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(7, 218, 131, 0.4);
+}
+
+.audioButton:active {
+    transform: scale(0.95);
+}
+
+.recording {
+    background-color: #FF4D4F;
+    box-shadow: 0 4px 12px rgba(255, 77, 79, 0.3);
+}
+
+.recording:hover {
+    box-shadow: 0 6px 16px rgba(255, 77, 79, 0.4);
+}
+
+.innerCircle {
+    width: 70%;
+    height: 70%;
+    border-radius: 50%;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.micIcon {
+    color: #07DA83;
+}
+
+.recording .micIcon {
+    color: #FF4D4F;
+}
+
+.timerDisplay {
+    font-size: 18px;
+    font-weight: 700;
+    color: #FF4D4F;
+    animation: pulse 1s infinite alternate;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.clickableTimer {
+    cursor: pointer;
+    position: relative;
+}
+
+.clickableTimer:after {
+    content: "Click to save";
+    position: absolute;
+    bottom: -24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    font-weight: 500;
+    color: #FF4D4F;
+    white-space: nowrap;
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+.clickableTimer:hover {
+    transform: scale(1.1);
+    text-shadow: 0 0 5px rgba(255, 77, 79, 0.5);
+}
+
+@keyframes pulse {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.7;
+    }
+}
+
+.stopIcon {
+    width: 16px;
+    height: 16px;
+    background-color: #FF4D4F;
+    border-radius: 2px;
+}
+
+.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.disabled:hover {
+    transform: none;
+    box-shadow: 0 4px 12px rgba(7, 218, 131, 0.3);
+}
