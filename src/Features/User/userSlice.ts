@@ -89,12 +89,13 @@ const initialState: IUser = {
 
 export const handleReg = createAsyncThunk(
     'user/register',
-    async ({password, phone, telegram_id, name} : {password: string, phone: string, telegram_id: number, name?: string}, { rejectWithValue }) => {
+    async ({password, phone, telegram_id, tma} : {password: string, phone: string, telegram_id: number, tma?: string}, { rejectWithValue }) => {
         try {
-            return await handleRegister({password, phone, telegram_id, name})
+            console.log('Registration thunk called with tma:', tma ? 'present' : 'not provided');
+            return await handleRegister({password, phone, telegram_id, tma})
         }
         catch (error) {
-            console.error(error);
+            console.error('Registration error in thunk:', error);
             return rejectWithValue(error);
         }
     }
@@ -190,12 +191,65 @@ const userSlice = createSlice({
             .addCase(handleReg.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = "";
-                console.log(action.payload);
+                console.log('Registration successful:', action.payload);
+                
+                // If the registration response includes tokens, store them
+                if (action.payload) {
+                    if (action.payload.access) {
+                        state.access = action.payload.access;
+                        console.log('Storing access token from registration');
+                    }
+                    if (action.payload.refresh) {
+                        state.refresh = action.payload.refresh;
+                        console.log('Storing refresh token from registration');
+                    }
+                }
             })
             .addCase(handleAuth.rejected, (state, action) => {
-                state.error = action.payload as string || "something went wrong";
                 state.loading = false;
                 state.isAuthorized = false;
+                
+                // Extract the error message properly
+                if (action.payload instanceof Error) {
+                    state.error = action.payload.message;
+                    console.log('Error instance:', action.payload.message);
+                } else if (typeof action.payload === 'object' && action.payload !== null) {
+                    // Try to extract message from JSON object
+                    try {
+                        const errorObj = action.payload as { message?: string };
+                        if (errorObj.message) {
+                            state.error = errorObj.message;
+                        } else {
+                            state.error = JSON.stringify(action.payload);
+                        }
+                    } catch {
+                        state.error = JSON.stringify(action.payload);
+                    }
+                    console.log('Error object:', state.error);
+                } else if (typeof action.payload === 'string') {
+                    // Check if the string contains a JSON object
+                    if (action.payload.includes('{') && action.payload.includes('}')) {
+                        try {
+                            const errorObj = JSON.parse(action.payload.substring(
+                                action.payload.indexOf('{'),
+                                action.payload.lastIndexOf('}') + 1
+                            ));
+                            if (errorObj.message) {
+                                state.error = errorObj.message;
+                            } else {
+                                state.error = action.payload;
+                            }
+                        } catch {
+                            state.error = action.payload;
+                        }
+                    } else {
+                        state.error = action.payload;
+                    }
+                    console.log('Error string:', state.error);
+                } else {
+                    state.error = "Authentication failed";
+                    console.log('Unknown error type');
+                }
             })
             .addCase(handleAuth.fulfilled, (state, action) => {
                 if(!action.payload.access){

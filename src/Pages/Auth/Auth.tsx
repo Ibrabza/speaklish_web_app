@@ -1,4 +1,4 @@
-import {FC, useEffect} from "react";
+import React, {FC, useEffect} from "react";
 // import styles from "./Auth.module.css"
 // import Loading from "@/components/ui/Loading.tsx";
 import {useNavigate} from "react-router-dom";
@@ -7,19 +7,38 @@ import Button1 from "@/components/ui/Button1.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/Store/store.ts";
 import {getGroupData, handleAuth} from "@/Features/User/userSlice.ts";
-import ErrorPage from "@/Pages/Error/ErrorPage.tsx";
 
 
 const Auth :FC = () => {
     const dispatch = useDispatch<AppDispatch>()
     const {isAuthorized, error, refresh, loading, access,} = useSelector((state: RootState) => state.user);
 
-    useEffect(()=>{
-        if(!access && !refresh){
-            dispatch(handleAuth({initData: window.location.hash, password: "123456", username: "ibrabza"}))
-            dispatch(getGroupData())
+    useEffect(() => {
+        if (!access && !refresh) {
+            // Get the URL search params
+            const searchParams = new URLSearchParams(window.location.search);
+            // Check for tgWebAppData parameter
+            const tgWebAppData = searchParams.get('tgWebAppData');
+            
+            // Use either the tgWebAppData from URL or the hash
+            const initData = tgWebAppData ? `#tgWebAppData=${tgWebAppData}` : window.location.hash;
+            
+            // Store the initData in the ref for potential use in registration
+            initDataRef.current = initData;
+            
+            console.log('Auth initData:', initData);
+            
+            // Dispatch auth action with the initData
+            dispatch(handleAuth({
+                initData: initData,
+                password: "123456",
+                username: "ibrabza"
+            }));
+            
+            // Get group data after authentication
+            dispatch(getGroupData());
         }
-    },[access, dispatch, refresh])
+    }, [access, dispatch, refresh])
 
     const navigate = useNavigate();
 
@@ -29,18 +48,32 @@ const Auth :FC = () => {
 
     const textToButton = !isAuthorized ? "Not authorized yet" : "Continue"
 
-    // If user is not authorized and there's an error (likely user not found), show register button
-    if(!isAuthorized && error) {
-        return <ErrorPage 
-            button={"Register"} 
-            onClick={() => navigate("/test/register")} 
-            message={"User not found. Please register to continue."}
-        />
-    }
+    // Store the initData in a ref so we can use it for registration if needed
+    const initDataRef = React.useRef('');
     
-    if(!error && isAuthorized){
-        navigate("/test")
-    }
+    useEffect(() => {
+        // Check for any error when not authorized
+        if (!isAuthorized && error) {
+            console.log('Auth error detected:', error);
+            // Log the error type and content for debugging
+            console.log('Error type:', typeof error);
+            console.log('Error content:', JSON.stringify(error));
+            
+            // Always redirect to register when there's an error and user is not authorized
+            // This ensures we handle all error cases including 'User not found'
+            console.log('Redirecting to register page with initData:', initDataRef.current);
+            
+            // Navigate to register page with initData as a query parameter
+            navigate(`/test/register${initDataRef.current ? `?tgWebAppData=${encodeURIComponent(initDataRef.current.replace('#tgWebAppData=', ''))}` : ''}`);
+        }
+    }, [error, isAuthorized, navigate]);
+    
+    // Use useEffect for navigation instead of doing it during render
+    useEffect(() => {
+        if(!error && isAuthorized) {
+            navigate("/test");
+        }
+    }, [error, isAuthorized, navigate]);
     console.log("loading:", loading);
     console.log("isAuth:", isAuthorized);
     console.log("error:", error);

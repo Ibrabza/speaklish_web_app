@@ -226,20 +226,30 @@ export const getQuizzes = async (lessonID: number) => {
     }
 }
 
-export const handleRegister = async ({password, phone, telegram_id, name} : {password: string, phone: string, telegram_id: number, name?: string}) => {
+export const handleRegister = async ({password, phone, telegram_id, tma} : {password: string, phone: string, telegram_id: number, tma?: string}) => {
     try {
+        // Log the request payload for debugging
+        const payload: Record<string, any> = {
+            phone: phone,
+            password: password,
+            telegram_id: telegram_id
+            // Note: name is not included in the API request as per the curl example
+        };
+        
+        // Include tma (Telegram Mini App data) if provided
+        if (tma) {
+            payload.tma = tma;
+            console.log('Including tma in registration payload');
+        }
+        
+        console.log('Registration payload:', payload);
+        
         const response = await fetch(apiURL.register, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                phone: phone,
-                password: password,
-                telegram_id: telegram_id,
-                first_name: name ? name.split(' ')[0] : '',
-                last_name: name && name.split(' ').length > 1 ? name.split(' ').slice(1).join(' ') : '',
-            })
+            body: JSON.stringify(payload)
         });
 
         // First, get the response text
@@ -290,11 +300,32 @@ export const handleLogin = async (initData: string, password: string, username?:
 
         if (!response.ok) {
             const errorText = await response.text();
+            console.log('Login API error response:', errorText);
+            
             try {
+                // Try to parse as JSON
                 const errorJson = JSON.parse(errorText);
-                throw new Error(errorJson.message || 'Login failed');
-            } catch {
-                throw new Error(`Server Error: ${errorText}`);
+                
+                // Check for specific error messages
+                if (errorJson.detail && errorJson.detail.toLowerCase().includes('user not found')) {
+                    throw new Error('User not found');
+                } else if (errorJson.message) {
+                    throw new Error(errorJson.message);
+                } else if (errorJson.detail) {
+                    throw new Error(errorJson.detail);
+                } else {
+                    throw new Error(JSON.stringify(errorJson));
+                }
+            } catch (parseError) {
+                // If parsing fails, use the raw text
+                console.log('Error parsing JSON response:', parseError);
+                
+                // Check for common error messages in the raw text
+                if (errorText.toLowerCase().includes('user not found')) {
+                    throw new Error('User not found');
+                } else {
+                    throw new Error(`Server Error: ${errorText}`);
+                }
             }
         }
         const data = await response.json();

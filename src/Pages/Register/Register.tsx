@@ -3,7 +3,7 @@ import { FC, FormEvent, useState, useEffect } from "react";
 import toast, {Toaster} from "react-hot-toast";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/Store/store.ts";
-import {handleReg} from "@/Features/User/userSlice.ts";
+import {handleAuth, handleReg} from "@/Features/User/userSlice.ts";
 import {useNavigate} from "react-router-dom";
 import { requestContact } from '@telegram-apps/sdk';
 
@@ -130,10 +130,42 @@ const Register: FC = () => {
 
 
 
+    // Store the initData from URL for later use
+    const [storedInitData, setStoredInitData] = useState<string>('');
+    
     useEffect(() => {
         // Log Telegram WebApp initialization
         console.log('Initializing Telegram WebApp integration');
         console.log('Telegram SDK available:', requestContact.isAvailable());
+        
+        // Check for tgWebAppData in the URL
+        const searchParams = new URLSearchParams(window.location.search);
+        const tgWebAppData = searchParams.get('tgWebAppData');
+        
+        if (tgWebAppData) {
+            console.log('Found tgWebAppData in URL:', tgWebAppData);
+            // Store the raw tgWebAppData for later use in login
+            setStoredInitData(tgWebAppData);
+            
+            // Try to parse the user data from the tgWebAppData
+            try {
+                // The data is URL encoded and needs to be decoded
+                const decodedData = decodeURIComponent(tgWebAppData);
+                console.log('Decoded tgWebAppData:', decodedData);
+                
+                // Extract the user ID from the decoded data
+                // This is a simple approach - in a real app you might want to use a more robust parser
+                const userMatch = decodedData.match(/"id":(\d+)/);
+                if (userMatch && userMatch[1]) {
+                    const id = parseInt(userMatch[1], 10);
+                    console.log('Extracted Telegram ID from URL data:', id);
+                    setTelegramId(id);
+                    return;
+                }
+            } catch (error) {
+                console.error('Error parsing tgWebAppData:', error);
+            }
+        }
         
         // Try to get Telegram ID from the SDK
         const getTelegramId = async () => {
@@ -248,18 +280,64 @@ const Register: FC = () => {
             // Generate a random password since we don't need user input
             const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).toUpperCase().slice(-4);
             
+            // Format the initData properly for the registration API
+            const formattedInitData = storedInitData ? 
+                (storedInitData.startsWith('#') ? storedInitData : `#tgWebAppData=${storedInitData}`) : 
+                (window.Telegram?.WebApp?.initData || '');
+            
+            console.log('Registering with initData:', formattedInitData ? 'present' : 'not available');
+            
             await dispatch(handleReg({ 
                 password: generatedPassword, 
                 phone: formattedPhone, 
                 telegram_id: telegramId,
-                name: userName
+                tma: formattedInitData || undefined
             }));
             toast.success("Registration successful!");
             
-            // Redirect back to the bot or app
-            setTimeout(() => {
-                window.open("https://t.me/mySpeaky_bot", "_self");
-            }, 1500);
+            // After successful registration, log in the user automatically
+            try {
+                console.log('Registration successful, attempting automatic login');
+                
+                // Determine which initData to use
+                let initData = '';
+                
+                // First try to use the stored initData from URL
+                if (storedInitData) {
+                    initData = storedInitData;
+                    console.log('Using stored initData from URL for login');
+                }
+                // Then try to get it from Telegram WebApp
+                else if (window.Telegram?.WebApp?.initData) {
+                    initData = window.Telegram.WebApp.initData;
+                    console.log('Using initData from WebApp for login');
+                }
+                
+                if (initData) {
+                    // Format the initData properly for the login API
+                    const formattedInitData = initData.startsWith('#') ? initData : `#tgWebAppData=${initData}`;
+                    
+                    // Call the login API directly
+                    console.log('Calling login API with initData and generated password');
+                    await dispatch(handleAuth({
+                        initData: formattedInitData,
+                        password: generatedPassword,
+                        username: userName
+                    }));
+                    
+                    // Navigate to the main page after successful login
+                    console.log('Login successful, redirecting to main page');
+                    navigate('/test');
+                } else {
+                    console.warn('No initData available for login, redirecting to auth page');
+                    navigate('/auth');
+                }
+            } catch (error) {
+                console.error('Error during automatic login:', error);
+                // If automatic login fails, redirect to auth page
+                toast.error('Registration successful but automatic login failed. Please log in manually.');
+                navigate('/auth');
+            }
         } catch (err) {
             toast.error("Registration failed. Please try again.");
         }
