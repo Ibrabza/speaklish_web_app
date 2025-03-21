@@ -419,7 +419,17 @@ const Register: FC = () => {
                     
                     {error && typeof error === 'string' && (
                         <div className={styles.error_message}>
-                            {error}
+                            {(() => {
+                                try {
+                                    // Try to parse the error as JSON
+                                    const errorObj = JSON.parse(error);
+                                    // Just return the message property if it exists
+                                    return errorObj.message || error;
+                                } catch (e) {
+                                    // If it's not valid JSON, just return the original error
+                                    return error;
+                                }
+                            })()}
                         </div>
                     )}
                     

@@ -321,10 +321,10 @@ export const handleLogin = async (initData: string, password: string, username?:
                 console.log('Error parsing JSON response:', parseError);
                 
                 // Check for common error messages in the raw text
-                if (errorText.toLowerCase().includes('user not found')) {
-                    throw new Error('User not found');
+                if (errorText.toLowerCase().includes('not found')) {
+                    throw new Error('User not found, please register');
                 } else {
-                    throw new Error(`Server Error: ${errorText}`);
+                    throw new Error(`Something went wrong, please try later: ${errorText}`);
                 }
             }
         }
