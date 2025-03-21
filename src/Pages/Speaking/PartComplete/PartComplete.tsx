@@ -3,21 +3,19 @@ import VoiceAnimation from "@/components/VoiceAnimation/VoiceAnimation.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {
     setCurrentPart,
-    setCurrentQuestionIndex,
     setShowPartComplete
-} from "@/Features/Speaking/Session/sessionSlice.ts";
+} from "@/Features/Speaking/speakingSlice.ts";
 import {AppDispatch, RootState} from "@/Store/store.ts";
 
 
 const PartComplete : FC = () => {
     const dispatch = useDispatch<AppDispatch>();
 
-    const currentPart = useSelector((state : RootState) => state.session.currentPart);
+    const currentPart = useSelector((state : RootState) => state.speaking.currentPart);
 
     function handleOnNext (){
         const newPart = currentPart + 1;
         dispatch(setCurrentPart(newPart));
-        dispatch(setCurrentQuestionIndex(0));
         dispatch(setShowPartComplete(false));
     }
 

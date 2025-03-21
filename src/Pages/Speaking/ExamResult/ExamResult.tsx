@@ -1,14 +1,15 @@
-import {FC, useEffect, useState} from "react";
+import {FC, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/Store/store.ts";
 import {
     setCurrentPart,
     setCurrentQuestionIndex,
     setShowPartComplete
-} from "@/Features/Speaking/Session/sessionSlice.ts";
-import toast from "react-hot-toast";
-import apiClient from "@/services/apiClient.ts";
-import {API_ENDPOINTS} from "@/services/config.ts";
+} from "@/Features/Speaking/speakingSlice.ts"
+// import toast from "react-hot-toast";
+// import apiClient from "@/services/apiClient.ts";
+// import {API_ENDPOINTS} from "@/services/config.ts";
+import {handleGetResult} from "@/Features/Speaking/speakingSlice.ts";
 
 interface IExamResult {
     setShowWelcome : (x:boolean) => void;
@@ -18,11 +19,11 @@ const ExamResult : FC<IExamResult> = (props) => {
     const dispatch = useDispatch<AppDispatch>();
     const {setShowWelcome} = props;
 
-    const [examResult, setExamResult] = useState<any>(null);
-    const session = useSelector((state : RootState) => state.session.session);
-    const [isLoading, setIsLoading] = useState(true);
-    const sessionId = session?.session_id;
-    const school_id = session?.user_id;
+    const { feedbackResponse , loading, error} = useSelector( (state: RootState) => state.speaking)
+    const results = useSelector( (state:RootState) => state.speaking.feedbackResponse?.results)
+    const result = results?.[results?.length - 1]
+
+    // const [isLoading, setIsLoading] = useState(true);
 
     const handleGoToHomepage = () => {
         setShowWelcome(true);
@@ -31,51 +32,54 @@ const ExamResult : FC<IExamResult> = (props) => {
         dispatch(setShowPartComplete(false));
     };
 
-    console.log(isLoading, school_id, sessionId)
-
+    console.log(loading, feedbackResponse)
 
     useEffect(() => {
-        if(!isLoading || !sessionId || !school_id) return;
-        // setIsLoading(true)
+        dispatch(handleGetResult())
 
-        const fetchExamResult = async () => {
-            try {
-                // setIsLoading(true);
-                // Fetch session feedback using the provided sessionId
-                const response = await apiClient.get(`${API_ENDPOINTS.SESSION_FEEDBACK(sessionId,school_id.toString())}`);
-                console.log(response?.data?.json_result);
-                return response.data;
-            } catch (err) {
-                console.error('Failed to fetch exam result:', err);
-                toast.error('Failed to fetch exam results');
-            } finally {
-                setIsLoading(false);
-            }
-        };
+    }, [dispatch]);
 
 
-        if (school_id && sessionId) {
-            fetchExamResult().then(response => setExamResult(response.json_result));
-        }
-    }, [isLoading,school_id,sessionId]);
+    // useEffect(() => {
+    //     if(!isLoading) return;
+    //     // setIsLoading(true)
+    //
+    //     const fetchExamResult = async () => {
+    //         try {
+    //             // setIsLoading(true);
+    //             // Fetch session feedback using the provided sessionId
+    //             const response = await apiClient.get(`${API_ENDPOINTS.SESSION_FEEDBACK(sessionId,school_id.toString())}`);
+    //             console.log(response?.data?.json_result);
+    //             return response.data;
+    //         } catch (err) {
+    //             console.error('Failed to fetch exam result:', err);
+    //             toast.error('Failed to fetch exam results');
+    //         } finally {
+    //             setIsLoading(false);
+    //         }
+    //     };
+    //
+    //     fetchExamResult().then(response => setExamResult(response.json_result));
+    //
+    // }, [isLoading,school_id,sessionId]);
 
-    if (isLoading || Boolean(examResult?.msg)) {
+    if (loading || !feedbackResponse) {
         return (
             <div className="flex items-center justify-center min-h-screen">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-400"></div>
             </div>
         );
     }
 
-    if (!isLoading && !examResult) {
+    if (!loading && !results || error) {
         return (
             <div className="flex items-center justify-center min-h-screen">
-                <p className="text-lg text-gray-600">No exam results available.</p>
+                <p className="text-lg text-gray-600">{error || "No exam results available."}</p>
             </div>
         );
     }
 
-    console.log(examResult);
+    console.log(results);
 
 
 
@@ -87,7 +91,7 @@ const ExamResult : FC<IExamResult> = (props) => {
             <div className="bg-purple-100 w-full max-w-xs rounded-lg p-6 mb-6 text-center">
                 <p className="text-lg font-medium text-green-400">Band score</p>
                 <p className="text-4xl font-bold text-green-500 mt-2">
-                    {examResult?.band_score || 'N/A'}
+                    {result?.band_score || 'N/A'}
                 </p>
             </div>
 
@@ -96,25 +100,25 @@ const ExamResult : FC<IExamResult> = (props) => {
                 <div className="bg-purple-50 rounded-lg py-4 border border-[#E7E7FF]">
                     <p className="text-sm text-gray-600">Fluency</p>
                     <p className="text-lg font-bold text-green-500">
-                        {examResult?.fluency || 'N/A'}
+                        {result?.fluency || 'N/A'}
                     </p>
                 </div>
                 <div className="bg-purple-50 rounded-lg py-4 border border-[#E7E7FF]">
                     <p className="text-sm text-gray-600">Vocabulary</p>
                     <p className="text-lg font-bold text-green-500">
-                        {examResult?.vocabulary || 'N/A'}
+                        {result?.vocabulary || 'N/A'}
                     </p>
                 </div>
                 <div className="bg-purple-50 rounded-lg py-4 border border-[#E7E7FF]">
                     <p className="text-sm text-gray-600">Grammar</p>
                     <p className="text-lg font-bold text-green-500">
-                        {examResult?.grammar || 'N/A'}
+                        {result?.grammar || 'N/A'}
                     </p>
                 </div>
                 <div className="bg-purple-50 rounded-lg py-4 border border-[#E7E7FF]">
                     <p className="text-sm text-gray-600">Pronunciation</p>
                     <p className="text-lg font-bold text-green-500">
-                        {examResult?.pronunciation || 'N/A'}
+                        {result?.pronunciation || 'N/A'}
                     </p>
                 </div>
             </div>
@@ -123,7 +127,7 @@ const ExamResult : FC<IExamResult> = (props) => {
             <div className="text-left w-full max-w-xs mb-6">
                 <h2 className="text-lg font-semibold text-gray-800">Feedback</h2>
                 <p className="text-sm text-gray-600 mt-2">
-                    {examResult?.feedback || 'No feedback available.'}
+                    {result?.feedback || 'No feedback available.'}
                 </p>
             </div>
 

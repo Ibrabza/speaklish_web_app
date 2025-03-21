@@ -1,5 +1,4 @@
 import {FC, useState} from "react";
-// import {useSelector} from "react-redux";
 import WelcomePage from "@/Pages/Speaking/WelcomePage/WelcomePage.tsx";
 import PartComplete from "@/Pages/Speaking/PartComplete/PartComplete.tsx";
 import ExamResult from "@/Pages/Speaking/ExamResult/ExamResult.tsx";
@@ -19,8 +18,8 @@ interface ISTest {
 const SpeakingTest : FC<ISTest> = ({handleGetSessionData, handleGetMicro, stream }) => {
     const [showWelcome, setShowWelcome] = useState(true);
     const [showConfirmation, setShowConfirmation] = useState(false);
-    const showPartComplete = useSelector((state : RootState) => state.session.showPartComplete);
-    const currentPart = useSelector((state : RootState) => state.session.currentPart);
+    const showPartComplete = useSelector((state : RootState) => state.speaking.showPartComplete);
+    const currentPart = useSelector((state : RootState) => state.speaking.currentPart);
     // const loading = useSelector((state) => state.session.loading);
 
     // if(loading) return <Loading/>

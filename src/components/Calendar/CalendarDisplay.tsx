@@ -20,14 +20,14 @@ const CalendarDisplay: FC = () => {
         }
     }, [dispatch,results]);
 
-    console.log(results)
-    console.log(selectedDates)
+    // console.log(results)
+    // console.log(selectedDates)
 
-    const handleSelect = (dates: Date[] | undefined) => {
-        if (dates) {
-            setSelectedDates(dates);
-        }
-    };
+    // const handleSelect = (dates: Date[] | undefined) => {
+    //     if (dates) {
+    //         setSelectedDates(dates);
+    //     }
+    // };
 
     if (!results) return <Loading />;
 
@@ -35,7 +35,7 @@ const CalendarDisplay: FC = () => {
         <Calendar
             selected={selectedDates}
             mode="multiple"
-            onSelect={handleSelect}
+            onSelect={() => {"hello"}}
             className="rounded-[24px] bg-[#F5F6FA] w-full"
         />
     );

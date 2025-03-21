@@ -37,7 +37,7 @@ a:focus{
   display: flex;
   flex-direction: column;
   position: relative;
-  gap: 1rem;
+  gap: 2rem;
   height: 100%;
 }
 

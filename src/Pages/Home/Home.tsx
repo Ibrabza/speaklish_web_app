@@ -21,6 +21,6 @@ const Home = () => {
             {newsCount !== 0 && <NewsBlock/>}
             <CalendarDisplay/>
         </div>
-    )
+    );
 }
 export default Home;

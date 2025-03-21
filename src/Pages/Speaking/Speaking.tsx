@@ -1,11 +1,11 @@
 import {FC, useState} from "react";
-import {getSessionData} from "@/Features/Speaking/Session/sessionSlice.ts";
 import {useDispatch} from "react-redux";
 import PartTitle from "@/Features/Speaking/PartTitle.tsx";
 import SpeakingTest from "@/Pages/Speaking/SpeakingTest/SpeakingTest.tsx";
 import {Toaster} from "react-hot-toast";
 import BackButton from "@/components/ui/BackButton.tsx";
 import {AppDispatch} from "@/Store/store.ts";
+import {handleCreateSession} from "@/Features/Speaking/speakingSlice.ts";
 
 const Speaking: FC = () => {
     const [stream, setStream] = useState<MediaStream | null>(null);
@@ -13,7 +13,8 @@ const Speaking: FC = () => {
 
 
     function handleGetSessionData(){
-        dispatch(getSessionData({user_id: 6616, is_test: true}))
+        // dispatch(getSessionData({user_id: 6616, is_test: true}))
+        dispatch(handleCreateSession())
     }
 
     async function handleGetMicro(){
@@ -25,7 +26,6 @@ const Speaking: FC = () => {
             try {
                 const mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
                 setStream(mediaStream);
-                // stream.current = mediaStream;
                 console.log(mediaStream);
             } catch (error) {
                 console.error("Error accessing the microphone:", error);
