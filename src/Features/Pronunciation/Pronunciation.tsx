@@ -404,35 +404,45 @@ const Pronunciation: FC<IPronunciation> = () => {
                 <DownloadIcon color={"#07DA83"} />
             </div>
 
-            <div className={`${styles.pronunciation_main} ${(isSubmitting || isChecking) ? styles.blurred_background : ''}`}>
+            <div className={styles.pronunciation_main}>
                 {isLoading ? (
                     <div className={styles.loading}>Loading pronunciation exercise...</div>
                 ) : (
                     <>
-                        {/* Only show topic when not viewing results */}
-                        {!pronunciationResult && (
-                            <div className={styles.pronunciation_text}>
-                                <h4>Topic</h4>
-                                <p>{pronunciationData?.topic || "No topic available"}</p>
-                            </div>
-                        )}
+                        {/* Container for elements that should be blurred */}
+                        <div className={`${(isSubmitting || isChecking) ? styles.blurred_background : ''}`}>
+                            {/* Only show topic when not viewing results */}
+                            {!pronunciationResult && (
+                                <div className={styles.pronunciation_text}>
+                                    <h4>Topic</h4>
+                                    <p>{pronunciationData?.topic || "No topic available"}</p>
+                                </div>
+                            )}
+                        </div>
                         
                         {/* Timer is now inside the AudioButton */}
-
+                        
                         {/* Show waiting overlay during submission or checking */}
                         {(isSubmitting || isChecking) && (
                             <div className={styles.waiting_overlay}>
-                                <div className={styles.loading_spinner}></div>
-                                <p>
-                                    {isSubmitting ? "Submitting recording..." : 
-                                     `Analyzing pronunciation...`}
-                                </p>
+                                <div className={styles.waiting_modal}>
+                                    <div className={styles.stars_animation}>
+                                        <img src="/stars_animation.svg" alt="Stars animation" />
+                                    </div>
+                                    <div className={styles.wave_animation}>
+                                        <img src="/pronuncitation_wait_wave.svg" alt="Audio wave" />
+                                    </div>
+                                    <h3 className={styles.waiting_modal_title}>Processing Audio...</h3>
+                                    <p className={styles.waiting_modal_message}>
+                                        Please wait while your audio is being processed. This may take a few moments.
+                                    </p>
+                                </div>
                             </div>
                         )}
 
                         {/* Only show recording controls when not submitting or checking and not viewing results */}
                         {!isSubmitting && !isChecking && !pronunciationResult && (
-                            <div className={styles.pronunciation__button}>
+                            <div className={`${styles.pronunciation__button} ${(isSubmitting || isChecking) ? styles.blurred_background : ''}`}>
                                 {!isRecording && (
                                     <WaveAnimation isActive={true} scale={1} />
                                 )}
@@ -454,7 +464,7 @@ const Pronunciation: FC<IPronunciation> = () => {
                         )}
                         
                         {audioUrl && !pronunciationResult && !isSubmitting && !isChecking && (
-                            <div className={styles.audio_playback}>
+                            <div className={`${styles.audio_playback} ${(isSubmitting || isChecking) ? styles.blurred_background : ''}`}>
                                 <h4>Your Recording</h4>
                                 <audio src={audioUrl} controls />
                                 
@@ -470,7 +480,7 @@ const Pronunciation: FC<IPronunciation> = () => {
                         
                         {/* Pronunciation Results Section */}
                         {pronunciationResult && (
-                            <div className={styles.pronunciation_results}>
+                            <div className={`${styles.pronunciation_results} ${(isSubmitting || isChecking) ? styles.blurred_background : ''}`}>
                                 
                                 {/* Centralized Score Display */}
                                 <div className={styles.central_score}>
