@@ -13,6 +13,9 @@ export const apiURL = {
     quiz_result:(lesson_id:number) => `https://dashboard.speaklish.uz/api/v1/courses/lesson/${lesson_id}/quizzes/results/`,
     get_calendar: "https://dashboard.speaklish.uz/api/v1/courses/calendar/",
     news: `https://dashboard.speaklish.uz/api/v1/news/`,
+    pronunciation_start: (lesson_id:number) => `https://dashboard.speaklish.uz/api/v1/courses/lesson/${lesson_id}/pronunciation/start/`,
+    pronunciation_process: "https://dashboard.speaklish.uz/api/v1/pronunciation/process/",
+    pronunciation_result: (uuid:string) => `https://dashboard.speaklish.uz/api/v1/pronunciation/results/${uuid}/`,
 }
 
 export const getQuizResult = async (lesson_id:number) => {
@@ -52,6 +55,132 @@ export const getUserProfile = async () => {
     }
 }
 
+// Pronunciation API functions
+export const startPronunciation = async (lesson_id: number) => {
+    try {
+        const response = await fetch(apiURL.pronunciation_start(lesson_id), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization" : `Bearer ${localStorage.getItem('token')}`,
+            }
+        })
+        if (!response.ok) {
+            console.log(response)
+            throw new Error('Failed to start pronunciation test')
+        }
+        return await response.json()
+    } catch (error) {
+        console.log(error)
+        throw error
+    }
+}
+
+// Process pronunciation with the new API endpoint
+export const processPronunciation = async (audioBlob: Blob, topic: string) => {
+    try {
+        // Log the input parameters
+        console.log('processPronunciation called with:', {
+            blobSize: audioBlob.size,
+            blobType: audioBlob.type,
+            topic
+        });
+
+        // Create form data with the required fields
+        const formData = new FormData();
+        
+        // Determine file extension based on blob type
+        let fileExtension = 'webm'; // Default extension
+        if (audioBlob.type) {
+            if (audioBlob.type.includes('mp4')) fileExtension = 'mp4';
+            else if (audioBlob.type.includes('webm')) fileExtension = 'webm';
+            else if (audioBlob.type.includes('ogg')) fileExtension = 'ogg';
+            else if (audioBlob.type.includes('mp3')) fileExtension = 'mp3';
+            else if (audioBlob.type.includes('wav')) fileExtension = 'wav';
+        }
+        
+        console.log(`Using file extension: ${fileExtension} for blob type: ${audioBlob.type}`);
+        
+        // Append the audio file with appropriate filename
+        const filename = `recording.${fileExtension}`;
+        formData.append('voice_file', audioBlob, filename);
+        formData.append('topic', topic);
+        
+        // Log FormData contents (for debugging)
+        console.log('FormData created with:');
+        for (const pair of formData.entries()) {
+            if (pair[0] === 'voice_file') {
+                console.log('voice_file:', {
+                    filename: (pair[1] as File).name,
+                    size: (pair[1] as File).size,
+                    type: (pair[1] as File).type
+                });
+            } else {
+                console.log(pair[0], pair[1]);
+            }
+        }
+        
+        console.log(`Sending request to: ${apiURL.pronunciation_process}`);
+        
+        const response = await fetch(apiURL.pronunciation_process, {
+            method: 'POST',
+            headers: {
+                "Authorization" : `Bearer ${localStorage.getItem('token')}`,
+            },
+            body: formData
+        });
+        
+        console.log('Response status:', response.status, response.statusText);
+        
+        if (!response.ok) {
+            let errorMessage = `Failed to process pronunciation recording: ${response.status} ${response.statusText}`;
+            try {
+                const errorText = await response.text();
+                console.error('Pronunciation process error:', errorText);
+                errorMessage += ` - ${errorText}`;
+            } catch (e) {
+                console.error('Could not read error response text', e);
+            }
+            throw new Error(errorMessage);
+        }
+        
+        const result = await response.json();
+        console.log('Pronunciation process result:', result);
+        return result;
+    } catch (error) {
+        console.error('Error in processPronunciation:', error);
+        throw error;
+    }
+}
+
+// Get pronunciation result by UUID
+export const getPronunciationResult = async (uuid: string) => {
+    try {
+        console.log(`Checking pronunciation result for session ID: ${uuid}`)
+        
+        const response = await fetch(apiURL.pronunciation_result(uuid), {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                "Authorization" : `Bearer ${localStorage.getItem('token')}`,
+            }
+        })
+        
+        if (!response.ok) {
+            const errorText = await response.text()
+            console.error('Pronunciation result error:', errorText)
+            throw new Error(`Failed to get pronunciation result: ${response.status} ${response.statusText}`)
+        }
+        
+        const result = await response.json()
+        console.log('Pronunciation result status:', result.status)
+        return result
+    } catch (error) {
+        console.error('Error in getPronunciationResult:', error)
+        // Don't throw the error here to allow polling to continue
+        return { status: 'Error', error_message: error instanceof Error ? error.message : String(error) }
+    }
+}
 
 
 export const submitQuiz = async (answers: IAnswer[], lesson_id:number) => {
