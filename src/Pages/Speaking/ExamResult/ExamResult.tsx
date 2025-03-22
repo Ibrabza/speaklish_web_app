@@ -1,4 +1,4 @@
-import {FC, useEffect} from "react";
+import {FC, useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/Store/store.ts";
 import {
@@ -21,7 +21,7 @@ const ExamResult : FC<IExamResult> = (props) => {
     const results = useSelector( (state:RootState) => state.speaking.feedbackResponse?.results)
     const result = results?.[results?.length - 1]
 
-    // const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
     const handleGoToHomepage = () => {
         setShowWelcome(true);
@@ -37,9 +37,15 @@ const ExamResult : FC<IExamResult> = (props) => {
     useEffect(() => {
         dispatch(handleGetResult({id}))
 
+        const timer = setTimeout(() => {
+            setIsLoading(false);
+        }, 10000);
+
+        return () => clearTimeout(timer);
+
     }, [id,dispatch]);
 
-    if (loading || !feedbackResponse) {
+    if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
                 <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-green-400"></div>

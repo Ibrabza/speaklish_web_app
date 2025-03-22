@@ -8,6 +8,8 @@ import {
 import {AppDispatch, RootState} from "@/Store/store.ts";
 
 
+
+
 const PartComplete : FC = () => {
     const dispatch = useDispatch<AppDispatch>();
 
@@ -26,7 +28,7 @@ const PartComplete : FC = () => {
             </div>
             <p className="text-gray-600">
                 Now let’s move to the Part {currentPart + 1}.
-                You have 1 minute to prepare and 2 minutes for your speech.
+                {currentPart === 1 && "You have 1 minute to prepare and 2 minutes for your speech."}
             </p>
             <button
                 onClick={handleOnNext}
