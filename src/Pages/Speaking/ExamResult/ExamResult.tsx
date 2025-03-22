@@ -6,9 +6,6 @@ import {
     setCurrentQuestionIndex,
     setShowPartComplete
 } from "@/Features/Speaking/speakingSlice.ts"
-// import toast from "react-hot-toast";
-// import apiClient from "@/services/apiClient.ts";
-// import {API_ENDPOINTS} from "@/services/config.ts";
 import {handleGetResult} from "@/Features/Speaking/speakingSlice.ts";
 
 interface IExamResult {
@@ -38,30 +35,6 @@ const ExamResult : FC<IExamResult> = (props) => {
         dispatch(handleGetResult())
 
     }, [dispatch]);
-
-
-    // useEffect(() => {
-    //     if(!isLoading) return;
-    //     // setIsLoading(true)
-    //
-    //     const fetchExamResult = async () => {
-    //         try {
-    //             // setIsLoading(true);
-    //             // Fetch session feedback using the provided sessionId
-    //             const response = await apiClient.get(`${API_ENDPOINTS.SESSION_FEEDBACK(sessionId,school_id.toString())}`);
-    //             console.log(response?.data?.json_result);
-    //             return response.data;
-    //         } catch (err) {
-    //             console.error('Failed to fetch exam result:', err);
-    //             toast.error('Failed to fetch exam results');
-    //         } finally {
-    //             setIsLoading(false);
-    //         }
-    //     };
-    //
-    //     fetchExamResult().then(response => setExamResult(response.json_result));
-    //
-    // }, [isLoading,school_id,sessionId]);
 
     if (loading || !feedbackResponse) {
         return (

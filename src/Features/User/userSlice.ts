@@ -159,6 +159,8 @@ const userSlice = createSlice({
     reducers: {
         setAccess: (state, action: PayloadAction<string>) => {
             state.access = action.payload
+            // When setting access token, also set isAuthorized to true
+            state.isAuthorized = true
         },
         setRefresh: (state, action: PayloadAction<string>) => {
             state.refresh = action.payload
@@ -168,6 +170,9 @@ const userSlice = createSlice({
         },
         setBalance: (state, action: PayloadAction<number>) => {
             state.balance = action.payload
+        },
+        setIsAuthorized: (state, action: PayloadAction<boolean>) => {
+            state.isAuthorized = action.payload
         }
     },
     extraReducers: (builder) => {
@@ -315,6 +320,6 @@ const userSlice = createSlice({
     }
 })
 
-export const { setAccess, setRefresh, setBalance, setRole } = userSlice.actions;
+export const { setAccess, setRefresh, setBalance, setRole, setIsAuthorized } = userSlice.actions;
 
 export default userSlice.reducer;

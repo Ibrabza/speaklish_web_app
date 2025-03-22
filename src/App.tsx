@@ -1,6 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { Provider } from "react-redux";
+import { Provider, useDispatch } from "react-redux";
 import Store from "@/Store/store.ts";
+import { useEffect } from "react";
 
 import AppLayout from "@/Pages/AppLayout.tsx";
 import LessonsLayout from "@/Pages/Lessons/LessonsLayout.tsx";
@@ -15,10 +16,26 @@ import QuizReview from "@/Pages/Quiz/QuizReview/QuizReview.tsx";
 import Pronunciation from "@/Features/Pronunciation/Pronunciation.tsx";
 import Auth from "@/Pages/Auth/Auth.tsx";
 import Register from "@/Pages/Register/Register.tsx";
+import { restoreAuthState } from "@/services/authService.ts";
+import { AppDispatch } from "@/Store/store.ts";
 
-const App = () => (
-    <Provider store={Store}>
+// Component to handle auth state restoration
+const AuthStateRestorer = () => {
+    const dispatch = useDispatch<AppDispatch>();
+    
+    useEffect(() => {
+        // Restore authentication state from localStorage on app initialization
+        const isRestored = restoreAuthState(dispatch);
+        console.log("Auth state restoration attempted:", isRestored ? "successful" : "no stored tokens found");
+    }, [dispatch]);
+    
+    return null; // This component doesn't render anything
+};
+
+const AppRoutes = () => {
+    return (
         <BrowserRouter>
+            <AuthStateRestorer />
             <Routes>
                 <Route path="/" element={<Navigate replace to="auth" />} />
 
@@ -53,6 +70,12 @@ const App = () => (
                 />
             </Routes>
         </BrowserRouter>
+    );
+};
+
+const App = () => (
+    <Provider store={Store}>
+        <AppRoutes />
     </Provider>
 );
 
