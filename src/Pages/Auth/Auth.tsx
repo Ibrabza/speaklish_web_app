@@ -74,9 +74,9 @@ const Auth :FC = () => {
             navigate("/test");
         }
     }, [error, isAuthorized, navigate]);
-    console.log("loading:", loading);
-    console.log("isAuth:", isAuthorized);
-    console.log("error:", error);
+    // console.log("loading:", loading);
+    // console.log("isAuth:", isAuthorized);
+    // console.log("error:", error);
     return (
                 <div className={" h-dvh text-green-800"}>
                     <div className={" h-dvh bg-gray-50 w-dvw flex flex-col items-center gap-4 justify-center "}>
