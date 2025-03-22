@@ -2,6 +2,7 @@ import {FC, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/Store/store.ts";
 import {
+    resetSpeaking,
     setCurrentPart,
     setCurrentQuestionIndex,
     setShowPartComplete
@@ -19,7 +20,7 @@ const ExamResult : FC<IExamResult> = (props) => {
     const dispatch = useDispatch<AppDispatch>();
     const {setShowWelcome} = props;
 
-    const { feedbackResponse , loading, error} = useSelector( (state: RootState) => state.speaking)
+    const {id, feedbackResponse , loading, error} = useSelector( (state: RootState) => state.speaking)
     const results = useSelector( (state:RootState) => state.speaking.feedbackResponse?.results)
     const result = results?.[results?.length - 1]
 
@@ -27,17 +28,19 @@ const ExamResult : FC<IExamResult> = (props) => {
 
     const handleGoToHomepage = () => {
         setShowWelcome(true);
-        dispatch(setCurrentPart(1));
+
+        dispatch(setCurrentPart(0));
         dispatch(setCurrentQuestionIndex(0));
         dispatch(setShowPartComplete(false));
+        dispatch(resetSpeaking())
     };
 
     console.log(loading, feedbackResponse)
 
     useEffect(() => {
-        dispatch(handleGetResult())
+        dispatch(handleGetResult({id}))
 
-    }, [dispatch]);
+    }, [id,dispatch]);
 
 
     // useEffect(() => {

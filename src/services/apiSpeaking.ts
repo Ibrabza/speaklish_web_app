@@ -52,9 +52,9 @@ export const speakingService = {
         }
     },
 
-    async getResult(){
+    async getResult(id:number){
         try {
-            const response = await fetch(`${apiSpeaking.result}`,{
+            const response = await fetch(`${apiSpeaking.result}?id=${id}`,{
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

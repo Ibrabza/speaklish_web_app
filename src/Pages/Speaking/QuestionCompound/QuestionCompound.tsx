@@ -133,7 +133,9 @@ const QuestionCompound : FC<IQCompound> = (props) => {
                 setRecordingDuration(0);
                 setRecordingStartTime(0);
 
-                if(currentPart <= 3 && currentQuestionIndex < partLength){
+                if(currentPart === 3 && currentQuestionIndex === partLength - 1){
+                    dispatch(setCurrentPart(4))
+                }else{
                     if(currentPart !== 2){
                         if( partLength - 1 >  currentQuestionIndex ){
                             dispatch(setCurrentQuestionIndex(currentQuestionIndex + 1));
@@ -143,8 +145,6 @@ const QuestionCompound : FC<IQCompound> = (props) => {
                     }else{
                         dispatch(setShowPartComplete(true))
                     }
-                }else{
-                    dispatch(setCurrentPart(4))
                 }
             }
 

@@ -116,9 +116,9 @@ export const submitPart = createAsyncThunk(
 
 export const handleGetResult = createAsyncThunk(
     `speaking/result`,
-    async () => {
+    async ({id}:{id:number}) => {
         try{
-            return await speakingService.getResult();
+            return await speakingService.getResult(id);
         }
         catch (error){
             console.log(error)
@@ -167,6 +167,20 @@ const speakingSlice = createSlice({
         },
         setShowPartComplete: (state, action: PayloadAction<boolean>) => {
             state.showPartComplete = action.payload;
+        },
+        resetSpeaking: (state) => {
+            state.partLength = 0;
+            state.loading = false;
+            state.error = "";
+            state.part1 = null;
+            state.part2 = null;
+            state.part3 = null;
+            state.feedbackResponse = null;
+            state.id = 0;
+            state.showPartComplete = false;
+            state.currentPart = 1;
+            state.currentQuestionIndex = 0;
+            state.currentQuestion = null;
         }
     },
     extraReducers: (builder) => {
@@ -218,6 +232,6 @@ const speakingSlice = createSlice({
     }
 })
 
-export const { setCurrentPart, setCurrentQuestionIndex, setShowPartComplete } = speakingSlice.actions;
+export const { setCurrentPart, setCurrentQuestionIndex, setShowPartComplete, resetSpeaking } = speakingSlice.actions;
 
 export default speakingSlice.reducer
