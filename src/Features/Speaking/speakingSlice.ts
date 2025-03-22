@@ -196,6 +196,7 @@ const speakingSlice = createSlice({
             .addCase(handleCreateSession.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = "";
+                console.log(action.payload)
                 state.id = action.payload.id;
                 state.part1 = action.payload.part1;
                 state.part2 = action.payload.part2;
