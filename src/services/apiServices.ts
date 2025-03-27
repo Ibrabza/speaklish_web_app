@@ -55,7 +55,7 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   async (error: AxiosError) => {
-    const originalRequest = error.config;
+    // const originalRequest = error.config;
 
     // Handle specific error cases here if needed
     // For example, token refresh logic could go here
