@@ -3,10 +3,10 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 // Import Telegram SDK initialization
-// import { init } from '@telegram-apps/sdk'
+import { init } from '@telegram-apps/sdk'
 
 // Initialize Telegram SDK
-// init();
+init();
 if (window.Telegram?.WebApp) {
     console.log("✅ Telegram WebApp initialized:", window.Telegram.WebApp);
 } else {

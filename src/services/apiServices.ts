@@ -260,7 +260,8 @@ export const handleLogin = async (initData: string, password: string, username?:
       console.error("Login response did not contain access token");
     }
 
-    return data;
+
+    return {...data, initData};
   } catch (error) {
     console.error('handleLogin error:', error);
 

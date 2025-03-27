@@ -56,7 +56,6 @@ const newsSlice = createSlice({
             state.error  = action.payload;
         })
             .addCase(handleGetNews.fulfilled, (state, action) => {
-                console.log(action.payload);
                 state.loading = false;
                 state.error = "";
                 state.count = action.payload.count;

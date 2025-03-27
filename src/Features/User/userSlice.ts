@@ -1,5 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {getLesson, getLessons, getUserProfile, handleLogin, handleRegister} from "@/services/apiServices.ts";
+import {getTelegramUserData} from "@/Helpers/helper.ts";
 
 interface IUser  {
     id: number | null,
@@ -261,16 +262,24 @@ const userSlice = createSlice({
                     state.error = "Not authorized to access";
                     state.isAuthorized = false;
                 }else {
+                    console.log(action.payload)
                     state.role = action.payload.role;
                     state.error = null;
                     state.loading = false;
                     state.access = action.payload.access;
                     state.refresh = action.payload.refresh;
                     state.isAuthorized = true;
-                    if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
-                        const {first_name, photo_url} = window.Telegram.WebApp.initDataUnsafe.user;
-                        state.first_name = first_name || '';
-                        state.photo_url = photo_url || '';
+                    if (action.payload.initData) {
+                        const data = getTelegramUserData(action.payload.initData);
+
+                        if (data) {
+                            const { firstName: first_name, photoUrl: photo_url } = data;
+                            state.first_name = first_name;
+                            state.photo_url = photo_url;
+                        } else {
+                            state.first_name = '';
+                            state.photo_url = '';
+                        }
                     }
                 }
                 // console.log(action.payload);
