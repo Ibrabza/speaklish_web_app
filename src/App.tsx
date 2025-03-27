@@ -18,6 +18,7 @@ import Auth from "@/Pages/Auth/Auth.tsx";
 import Register from "@/Pages/Register/Register.tsx";
 import { restoreAuthState } from "@/services/authService.ts";
 import { AppDispatch } from "@/Store/store.ts";
+import { getGroupData } from "@/Features/User/userSlice.ts";
 
 // Component to handle auth state restoration
 const AuthStateRestorer = () => {
@@ -27,6 +28,19 @@ const AuthStateRestorer = () => {
         // Restore authentication state from localStorage on app initialization
         const isRestored = restoreAuthState(dispatch);
         console.log("Auth state restoration attempted:", isRestored ? "successful" : "no stored tokens found");
+        
+        // If authentication was restored successfully, fetch user data
+        if (isRestored) {
+            // Fetch user profile data using the Redux thunk
+            dispatch(getGroupData())
+                .unwrap()
+                .then(() => {
+                    console.log("User profile data fetched successfully");
+                })
+                .catch((error) => {
+                    console.error("Failed to fetch user profile data:", error);
+                });
+        }
     }, [dispatch]);
     
     return null; // This component doesn't render anything
