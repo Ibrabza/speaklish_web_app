@@ -7,7 +7,14 @@ interface INews {
     previous: string | null,
     loading: boolean,
     error: string | null | unknown,
-    results: []
+    results: INResults[]
+}
+
+interface INResults {
+    id: number,
+    image: string,
+    title: string,
+    content: string,
 }
 
 const initialState: INews = {
@@ -49,6 +56,7 @@ const newsSlice = createSlice({
             state.error  = action.payload;
         })
             .addCase(handleGetNews.fulfilled, (state, action) => {
+                console.log(action.payload);
                 state.loading = false;
                 state.error = "";
                 state.count = action.payload.count;

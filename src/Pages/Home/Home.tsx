@@ -5,6 +5,7 @@ import {useEffect} from "react";
 import {getDataCal} from "@/Features/Calendar/CalendarSlice.ts";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/Store/store.ts";
+import {handleGetNews} from "@/Features/News/newsSlice.ts";
 
 
 const Home = () => {
@@ -13,6 +14,7 @@ const Home = () => {
 
     useEffect(() => {
         dispatch(getDataCal())
+        dispatch(handleGetNews())
     }, [dispatch]);
 
     return (

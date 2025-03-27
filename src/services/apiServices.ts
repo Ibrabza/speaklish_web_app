@@ -87,7 +87,7 @@ export const processPronunciation = async (audioBlob: Blob, topic: string) => {
 
         // Create form data with the required fields
         const formData = new FormData();
-        
+
         // Determine file extension based on blob type
         let fileExtension = 'webm'; // Default extension
         if (audioBlob.type) {
@@ -97,14 +97,14 @@ export const processPronunciation = async (audioBlob: Blob, topic: string) => {
             else if (audioBlob.type.includes('mp3')) fileExtension = 'mp3';
             else if (audioBlob.type.includes('wav')) fileExtension = 'wav';
         }
-        
+
         console.log(`Using file extension: ${fileExtension} for blob type: ${audioBlob.type}`);
-        
+
         // Append the audio file with appropriate filename
         const filename = `recording.${fileExtension}`;
         formData.append('voice_file', audioBlob, filename);
         formData.append('topic', topic);
-        
+
         // Log FormData contents (for debugging)
         console.log('FormData created with:');
         for (const pair of formData.entries()) {
@@ -118,9 +118,9 @@ export const processPronunciation = async (audioBlob: Blob, topic: string) => {
                 console.log(pair[0], pair[1]);
             }
         }
-        
+
         console.log(`Sending request to: ${apiURL.pronunciation_process}`);
-        
+
         const response = await fetch(apiURL.pronunciation_process, {
             method: 'POST',
             headers: {
@@ -128,9 +128,9 @@ export const processPronunciation = async (audioBlob: Blob, topic: string) => {
             },
             body: formData
         });
-        
+
         console.log('Response status:', response.status, response.statusText);
-        
+
         if (!response.ok) {
             let errorMessage = `Failed to process pronunciation recording: ${response.status} ${response.statusText}`;
             try {
@@ -142,7 +142,7 @@ export const processPronunciation = async (audioBlob: Blob, topic: string) => {
             }
             throw new Error(errorMessage);
         }
-        
+
         const result = await response.json();
         console.log('Pronunciation process result:', result);
         return result;
@@ -156,7 +156,7 @@ export const processPronunciation = async (audioBlob: Blob, topic: string) => {
 export const getPronunciationResult = async (uuid: string) => {
     try {
         console.log(`Checking pronunciation result for session ID: ${uuid}`)
-        
+
         const response = await fetch(apiURL.pronunciation_result(uuid), {
             method: 'GET',
             headers: {
@@ -164,13 +164,13 @@ export const getPronunciationResult = async (uuid: string) => {
                 "Authorization" : `Bearer ${localStorage.getItem('token')}`,
             }
         })
-        
+
         if (!response.ok) {
             const errorText = await response.text()
             console.error('Pronunciation result error:', errorText)
             throw new Error(`Failed to get pronunciation result: ${response.status} ${response.statusText}`)
         }
-        
+
         const result = await response.json()
         console.log('Pronunciation result status:', result.status)
         return result
@@ -234,15 +234,15 @@ export const handleRegister = async ({password, phone, telegram_id, tma} : {pass
             telegram_id: telegram_id
             // Note: name is not included in the API request as per the curl example
         };
-        
+
         // Include tma (Telegram Mini App data) if provided
         if (tma) {
             payload.tma = tma;
             console.log('Including tma in registration payload');
         }
-        
+
         console.log('Registration payload:', payload);
-        
+
         const response = await fetch(apiURL.register, {
             method: 'POST',
             headers: {
@@ -253,7 +253,7 @@ export const handleRegister = async ({password, phone, telegram_id, tma} : {pass
 
         // First, get the response text
         const responseText = await response.text();
-        
+
         // Try to parse it as JSON
         let responseData;
         try {
@@ -262,7 +262,7 @@ export const handleRegister = async ({password, phone, telegram_id, tma} : {pass
             // If it's not valid JSON, use the text as is
             responseData = { message: responseText };
         }
-        
+
         // Check if the response was successful
         if (!response.ok) {
             // If we have a structured error message, use it
@@ -272,7 +272,7 @@ export const handleRegister = async ({password, phone, telegram_id, tma} : {pass
                 throw new Error(`Registration failed: ${response.status} ${response.statusText}`);
             }
         }
-        
+
         // Return the parsed response data
         return responseData;
     } catch (error) {
@@ -300,11 +300,11 @@ export const handleLogin = async (initData: string, password: string, username?:
         if (!response.ok) {
             const errorText = await response.text();
             console.log('Login API error response:', errorText);
-            
+
             try {
                 // Try to parse as JSON
                 const errorJson = JSON.parse(errorText);
-                
+
                 // Check for specific error messages
                 if (errorJson.detail && errorJson.detail.toLowerCase().includes('user not found')) {
                     throw new Error('User not found');
@@ -318,7 +318,7 @@ export const handleLogin = async (initData: string, password: string, username?:
             } catch (parseError) {
                 // If parsing fails, use the raw text
                 console.log('Error parsing JSON response:', parseError);
-                
+
                 // Check for common error messages in the raw text
                 if (errorText.toLowerCase().includes('not found')) {
                     throw new Error('User not found, please register');
@@ -328,7 +328,7 @@ export const handleLogin = async (initData: string, password: string, username?:
             }
         }
         const data = await response.json();
-        
+
         // Store tokens using the auth service
         if (data.access) {
             saveAuthTokens(data.access, data.refresh || null);
@@ -336,7 +336,7 @@ export const handleLogin = async (initData: string, password: string, username?:
         } else {
             console.error("Login response did not contain access token");
         }
-        
+
         return data;
     } catch (error) {
         console.error('handleLogin error:', error);
