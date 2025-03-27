@@ -37,14 +37,20 @@ const ExamResult : FC<IExamResult> = (props) => {
     useEffect(() => {
         dispatch(handleGetResult({id}))
 
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-            dispatch(handleGetResult({id}))
-        }, 10000);
+        const interval = setInterval(() => {
+            if (result && result.finish_state !== "part3"){
+                setIsLoading(true)
+                dispatch(handleGetResult({id}))
+            }else{
+                setIsLoading(false)
+                clearInterval(interval)
+            }
+        }, 5000)
 
-        return () => clearTimeout(timer);
 
-    }, [id,dispatch]);
+        return () => clearInterval(interval);
+
+    }, [result, id, dispatch]);
 
     if (isLoading || loading) {
         return (
