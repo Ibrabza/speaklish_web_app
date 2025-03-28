@@ -7,6 +7,7 @@ import {useSelector} from "react-redux";
 import {RootState} from "@/Store/store.ts";
 import ErrorPage from "@/Pages/Error/ErrorPage.tsx";
 import {useEffect} from "react";
+import {Toaster} from "react-hot-toast";
 
 const AppLayout = () => {
 
@@ -42,6 +43,7 @@ const AppLayout = () => {
                 <Outlet />
             </div>
             <NavigationButtons/>
+            <Toaster position={"top-center"}/>
         </div>
     )
 }

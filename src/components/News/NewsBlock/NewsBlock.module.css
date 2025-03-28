@@ -15,4 +15,6 @@
     display: flex;
     align-items: center;
     padding: 16px;
+    /*gap: 0.5rem;*/
+    column-gap: 1rem;
 }

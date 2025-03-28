@@ -19,12 +19,12 @@
     width: 120px;
     height: 110px;
     border-radius: 12px;
-    background-color: #E1E5EA;
+    /*background-color: #E1E5EA;*/
 }
 
 .info_block{
     width: 195px;
-    height: 110px;
+    max-height: 110px;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -39,16 +39,26 @@
 .info_block h2{
     font-size: 14px;
     color: #181D25;
-    line-height: 20px;
     font-weight: 600;
     letter-spacing: 1px;
+    font-family: Inter, sans-serif;
+    line-height: 140%;
+    vertical-align: middle;
+
 }
 .info_block p{
-    font-size: 14px;
-    line-height: 17px;
     font-weight: 400;
     color: #606E80;
     width: 175px;
+    height: max-content;
+    overflow: hidden;
+    font-family: Inter, sans-serif;
+    font-size: 14px;
+    line-height: 120%;
+    letter-spacing: 1px;
+    vertical-align: middle;
+
+    /*display: none;*/
 }
 .info_block h3{
     margin: 0;
