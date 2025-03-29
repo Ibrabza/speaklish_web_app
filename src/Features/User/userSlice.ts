@@ -107,8 +107,7 @@ export const handleAuth = createAsyncThunk(
     async ({ initData, password, username }:
                { initData: string; password: string; username?: string; }, { rejectWithValue }) => {
         try {
-            console.log(initData)
-            const response =  await handleLogin("#tgWebAppData=user%3D%257B%2522id%2522%253A606299917%252C%2522first_name%2522%253A%2522Abzal%2522%252C%2522last_name%2522%253A%2522%2522%252C%2522username%2522%253A%2522ibrabza%2522%252C%2522language_code%2522%253A%2522en%2522%252C%2522allows_write_to_pm%2522%253Atrue%252C%2522photo_url%2522%253A%2522https%253A%255C%252F%255C%252Ft.me%255C%252Fi%255C%252Fuserpic%255C%252F320%255C%252FPm-eMQY1b4e0lD0r_7hAJDHXhx-2dA5UaY1estneYKk.svg%2522%257D%26chat_instance%3D-2236416619848632369%26chat_type%3Dprivate%26auth_date%3D1742034007%26signature%3DUyVgLb_53R8BKWusvymGsf8LAJ-RrhUAN8sfr5swQvWnL9F-dFU0TbJKCOlfhq3e7nGwUzICEv9Rlia5Z7l3Cw%26hash%3D71502d3934cf122ca30932e8092cee98c128931486fb73575d18cd13bb843285&tgWebAppVersion=8.0&tgWebAppPlatform=macos&tgWebAppThemeParams=%7B%22button_text_color%22%3A%22%23ffffff%22%2C%22section_header_text_color%22%3A%22%236d6d71%22%2C%22text_color%22%3A%22%23000000%22%2C%22section_bg_color%22%3A%22%23ffffff%22%2C%22subtitle_text_color%22%3A%22%23999999%22%2C%22destructive_text_color%22%3A%22%23ff3b30%22%2C%22section_separator_color%22%3A%22%23eaeaea%22%2C%22bg_color%22%3A%22%23ffffff%22%2C%22link_color%22%3A%22%23008d94%22%2C%22accent_text_color%22%3A%22%23008d94%22%2C%22button_color%22%3A%22%23008d94%22%2C%22secondary_bg_color%22%3A%22%23efeff3%22%2C%22header_bg_color%22%3A%22%23efeff3%22%2C%22hint_color%22%3A%22%23999999%22%2C%22bottom_bar_bg_color%22%3A%22%23e4e4e4%22%7D", password, username);
+            const response =  await handleLogin(initData, password, username);
             console.log(response);
             return response;
         } catch (error) {
