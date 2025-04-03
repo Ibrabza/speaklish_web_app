@@ -17,7 +17,7 @@ const NewsBlock: FC = () => {
                         key={i}
                         title={item.title}
                         content={item.content}
-                        image={item.image.startsWith('http:') ? item.image.replace('http:', 'https:') : item.image}
+                        image={item.image ? (item.image.startsWith('http:') ? item.image.replace('http:', 'https:') : item.image) : ""}
                     />
                 ))}
             </div>
