@@ -12,7 +12,14 @@ const NewsBlock: FC = () => {
     return (
         <div className={styles.container}>
             <div className={styles.scrolling}>
-                { results.map( (item, i) => <NewItem key={i} title={item.title} content={item.content} image={item.image} />)}
+                {results.map((item, i) => (
+                    <NewItem
+                        key={i}
+                        title={item.title}
+                        content={item.content}
+                        image={item.image.startsWith('http:') ? item.image.replace('http:', 'https:') : item.image}
+                    />
+                ))}
             </div>
         </div>
     )
