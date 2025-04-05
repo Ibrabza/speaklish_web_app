@@ -38,7 +38,7 @@ a:focus{
   flex-direction: column;
   position: relative;
   gap: 2rem;
-  height: 100%;
+  height: 105dvh;
 }
 
 .lessons{

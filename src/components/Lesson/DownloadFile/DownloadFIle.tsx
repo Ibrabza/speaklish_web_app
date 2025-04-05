@@ -1,5 +1,7 @@
 import styles from "./DownloadFile.module.css";
 import { FC } from "react";
+import { postEvent } from '@telegram-apps/sdk';
+
 
 interface IDownloadFile {
     fileName: string;
@@ -8,27 +10,10 @@ interface IDownloadFile {
 
 const DownloadFile: FC<IDownloadFile> = ({ fileName, link }) => {
     const downloadFromServer = async () => {
-        try {
-            const response = await fetch(link);
-
-            if (!response.ok) {
-                throw new Error("Error loading the file");
-            }
-
-            const blob = await response.blob();
-            const url = URL.createObjectURL(blob);
-
-            const a = document.createElement("a");
-            a.href = url;
-            a.download = `File`; // Имя сохраняемого файла
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        } catch (error) {
-            console.error("Error downloading", error);
-        }
+        postEvent('web_app_request_file_download',{ url: link,file_name: fileName })
+        console.log(link)
     };
+
 
     return (
         <div onClick={downloadFromServer} className={styles.container}>

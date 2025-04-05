@@ -2,6 +2,11 @@ import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {getLesson, getLessons, getUserProfile, handleLogin, handleRegister} from "@/services/apiServices.ts";
 import {getTelegramUserData} from "@/Helpers/helper.ts";
 
+interface IUserInfo{
+    first_name: string,
+    photo_url: string,
+}
+
 interface IUser  {
     id: number | null,
     first_name : string,
@@ -174,6 +179,13 @@ const userSlice = createSlice({
         },
         setIsAuthorized: (state, action: PayloadAction<boolean>) => {
             state.isAuthorized = action.payload
+        },
+        handleReload: (state) => {
+            const data: IUserInfo = JSON.parse(localStorage.getItem("userInfo")!);
+            if(data){
+                state.first_name = data.first_name;
+                state.photo_url = data.photo_url;
+            }
         }
     },
     extraReducers: (builder) => {
@@ -262,7 +274,6 @@ const userSlice = createSlice({
                     state.error = "Not authorized to access";
                     state.isAuthorized = false;
                 }else {
-                    console.log(action.payload)
                     state.role = action.payload.role;
                     state.error = null;
                     state.loading = false;
@@ -276,15 +287,15 @@ const userSlice = createSlice({
                             const { firstName: first_name, photoUrl: photo_url } = data;
                             state.first_name = first_name;
                             state.photo_url = photo_url;
+
+                            localStorage.setItem("userInfo", JSON.stringify({first_name: first_name, photo_url: photo_url}));
+
                         } else {
                             state.first_name = '';
                             state.photo_url = '';
                         }
                     }
                 }
-                // console.log(action.payload);
-                // localStorage.setItem()
-                // localStorage.setItem("access_token", JSON.stringify(action.payload.access));
             })
             .addCase(handleGetLessons.pending, (state) => {
                 state.loading = true;
@@ -305,7 +316,6 @@ const userSlice = createSlice({
                 state.loading = false;
             })
             .addCase(handleGetLesson.fulfilled, (state, action) => {
-                // state.lesson = action.payload;
                 state.lesson = action.payload ?? null;
                 state.loading = false;
             })
@@ -329,6 +339,6 @@ const userSlice = createSlice({
     }
 })
 
-export const { setAccess, setRefresh, setBalance, setRole, setIsAuthorized } = userSlice.actions;
+export const { setAccess, setRefresh, setBalance, setRole, setIsAuthorized, handleReload } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -1584,14 +1584,14 @@
     "@telegram-apps/transformers" "^1.2.2"
     "@telegram-apps/types" "^1.2.1"
 
-"@telegram-apps/bridge@^2.3.2":
-  version "2.3.2"
-  resolved "https://registry.npmjs.org/@telegram-apps/bridge/-/bridge-2.3.2.tgz"
-  integrity sha512-HsDaQXwuVR36R0aBBxBG9jemuICI2aWN5CNjdelgafep9uKIuIkmJajfW51YTarxshzxvtz6lnaijvOioE1Esw==
+"@telegram-apps/bridge@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@telegram-apps/bridge/-/bridge-2.5.0.tgz#fcfdc1a67fe337abd0e511518991bbe5ce3a5e48"
+  integrity sha512-rl8jSYAx28nEhrt8uqoM9TbAZnlRMsDw9BBggObqwYzS2hrpuIgQ+ug7IlhzYRcywIuoMBJRVkiSMDuzsnn4rw==
   dependencies:
     "@telegram-apps/signals" "^1.1.1"
     "@telegram-apps/toolkit" "^2.0.0"
-    "@telegram-apps/transformers" "^2.1.0"
+    "@telegram-apps/transformers" "^2.2.0"
     "@telegram-apps/types" "^2.0.0"
     better-promises "^0.4.0"
     error-kid "^0.0.4"
@@ -1607,16 +1607,16 @@
     "@telegram-apps/signals" "^1.1.1"
     "@telegram-apps/toolkit" "^1.1.1"
 
-"@telegram-apps/sdk@^3.4.0":
-  version "3.4.0"
-  resolved "https://registry.npmjs.org/@telegram-apps/sdk/-/sdk-3.4.0.tgz"
-  integrity sha512-S6eikueP+NcJvmXWjUIf7jUa2CvMkqmXq9JtvGEhd5iZ8d9puB5Sit/LV6wVzDgIR75Tso5bvrfZLKsftmboFA==
+"@telegram-apps/sdk@^3.6.0":
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/@telegram-apps/sdk/-/sdk-3.6.0.tgz#bb84cf264c2d494f215452be04542681195112fc"
+  integrity sha512-D6yq1Ql09kkfGAnW+Q0vf58WszXMrWjKgtfQOJaCHDXd3t8M8StfufYngaHrSvUfSYupPkVp1EvRvrXmPI8gsQ==
   dependencies:
-    "@telegram-apps/bridge" "^2.3.2"
+    "@telegram-apps/bridge" "^2.5.0"
     "@telegram-apps/navigation" "^1.0.13"
     "@telegram-apps/signals" "^1.1.1"
     "@telegram-apps/toolkit" "^2.0.0"
-    "@telegram-apps/transformers" "^2.1.0"
+    "@telegram-apps/transformers" "^2.2.0"
     "@telegram-apps/types" "^2.0.0"
     better-promises "^0.4.0"
     error-kid "^0.0.4"
@@ -1645,10 +1645,10 @@
     "@telegram-apps/toolkit" "^1.1.1"
     "@telegram-apps/types" "^1.2.1"
 
-"@telegram-apps/transformers@^2.1.0":
-  version "2.1.0"
-  resolved "https://registry.npmjs.org/@telegram-apps/transformers/-/transformers-2.1.0.tgz"
-  integrity sha512-O66Ek/Imt+T22KAgDuZqKxbuJzqEbKr6ojWmpYFwCeX1JauS/+76tC5IGOPEaFAMukwGKgcht+QbMcjYUOisow==
+"@telegram-apps/transformers@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@telegram-apps/transformers/-/transformers-2.2.0.tgz#8b38094e83e7323eab8b51aeed0ce9d69a601e54"
+  integrity sha512-wqXXOukhEjZKhzdq5vG1LkxWL11DApbmUKzk+3nA/ki3TLyD3awVTOXbpoNdOwFl2xliIooYcsUOEl4WCyyLGw==
   dependencies:
     "@telegram-apps/toolkit" "^2.0.0"
     "@telegram-apps/types" "^2.0.0"
@@ -1668,6 +1668,18 @@
   version "0.2.0"
   resolved "https://registry.npmjs.org/@trysound/sax/-/sax-0.2.0.tgz"
   integrity sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==
+
+"@twa-dev/sdk@^8.0.2":
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/@twa-dev/sdk/-/sdk-8.0.2.tgz#72efd41b5b5878b5e9cd8896673b8708a045d2f5"
+  integrity sha512-Pp5GxnxP2blboVZFiM9aWjs4cb8IpW3x2jP3kLOMvIqy0jzNUTuFHkwHtx+zEvh/UcF2F+wmS8G6ebIA0XPXcg==
+  dependencies:
+    "@twa-dev/types" "^8.0.1"
+
+"@twa-dev/types@^8.0.1":
+  version "8.0.2"
+  resolved "https://registry.yarnpkg.com/@twa-dev/types/-/types-8.0.2.tgz#118620c1ff8724de82063b1318a8749bd40b0d8b"
+  integrity sha512-ICQ6n4NaUPPzV3/GzflVQS6Nnu5QX2vr9OlOG8ZkFf3rSJXzRKazrLAbZlVhCPPWkIW3MMuELPsE6tByrA49qA==
 
 "@types/axios@^0.14.4":
   version "0.14.4"

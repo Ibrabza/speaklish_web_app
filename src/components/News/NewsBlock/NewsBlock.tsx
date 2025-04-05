@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, useEffect, useRef} from "react";
 
 import styles from "./NewsBlock.module.css"
 import NewItem from "../NewItem/NewItem.tsx";
@@ -8,10 +8,24 @@ import Loading from "@/components/Loading.tsx";
 
 const NewsBlock: FC = () => {
     const results = useSelector( (state: RootState) => state.news.results)
+    const scrollNews = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        const element = scrollNews.current;
+        if(element){
+            element.scrollTo(
+                {
+                    left: 15,
+                    behavior: "smooth",
+                }
+            )
+        }
+    }, []);
+
     if(!results) return <Loading/>
     return (
-        <div className={styles.container}>
-            <div className={styles.scrolling}>
+        <div className={styles.container} ref={scrollNews}>
+            <div className={styles.scrolling} >
                 {results.map((item, i) => (
                     <NewItem
                         key={i}

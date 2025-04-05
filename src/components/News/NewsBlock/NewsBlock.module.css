@@ -1,12 +1,12 @@
 .container {
     /*min-width: max-content;*/
-    max-width: 100%;
+    max-width: 100dvw;
     height: 180px;
     overflow-x: scroll;
     overflow-y: clip;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .scrolling{

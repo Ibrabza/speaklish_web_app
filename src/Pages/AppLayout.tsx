@@ -3,15 +3,25 @@ import NavigationButtons from "../components/NavigationButtons/NavigationButtons
 
 import styles from "./AppLayout.module.css"
 import Header from "../components/Header/Header.tsx";
-import {useSelector} from "react-redux";
-import {RootState} from "@/Store/store.ts";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "@/Store/store.ts";
 import ErrorPage from "@/Pages/Error/ErrorPage.tsx";
 import {useEffect} from "react";
 import {Toaster} from "react-hot-toast";
+import {handleReload} from "@/Features/User/userSlice.ts";
 
 const AppLayout = () => {
 
     const isAuthenticated = useSelector( (state: RootState) => state.user.isAuthorized);
+    const first_name = useSelector((state : RootState )=> state.user.first_name);
+    const dispatch = useDispatch<AppDispatch>()
+
+
+    useEffect(() => {
+        if(isAuthenticated && !first_name){
+            dispatch(handleReload())
+        }
+    }, [isAuthenticated, first_name, dispatch]);
 
     useEffect(() => {
         // Check if Telegram WebApp is available before expanding

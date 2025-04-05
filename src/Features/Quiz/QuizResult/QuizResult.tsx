@@ -58,7 +58,7 @@ const QuizResult : FC = () => {
                 <NavLink to={"/test/lessons/quiz/result/review"}>View answers</NavLink>
             </div>
 
-            <button className={styles.result_button} onClick={() => navigate("/test/lessons")}>
+            <button className={styles.result_button} onClick={() => navigate("/test/lessons/lesson/1")}>
                 Explore more
             </button>
 
