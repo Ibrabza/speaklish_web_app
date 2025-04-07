@@ -10,7 +10,7 @@ import {AppDispatch, RootState} from "@/Store/store.ts";
 import Loading from "@/components/Loading.tsx";
 import {handleGetQuiz, setCurrentIndex, submitAnswer} from "@/Features/Quiz/quizSlice.ts";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 
 
@@ -23,6 +23,7 @@ const Quiz : FC = () => {
     const { error, loading, quizzes, currentIndex } = useSelector( (state : RootState ) => state.quiz)
     const answers = useSelector( (state : RootState) => state.quiz.answers)
     const navigate = useNavigate()
+    const {id : lesson_id} = useParams();
 
     const dispatch = useDispatch<AppDispatch>();
 
@@ -37,13 +38,13 @@ const Quiz : FC = () => {
         }))
         if( currentIndex+1 === quizzes?.length) {
             // dispatch(setLoading(true))
-            navigate(`/test/lessons/quiz/result/1`)
+            navigate(`/test/lessons/quiz/result/${lesson_id}`)
         }
     }
 
     useEffect(() => {
-        dispatch(handleGetQuiz({lesson_id:1}))
-    }, [dispatch]);
+        dispatch(handleGetQuiz({lesson_id:Number(lesson_id)}))
+    }, [lesson_id,dispatch]);
 
     useEffect(() => {
         if(answers.length && quizzes){

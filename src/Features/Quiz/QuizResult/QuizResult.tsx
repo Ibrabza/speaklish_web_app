@@ -1,27 +1,37 @@
-import {FC, useEffect} from "react";
+import {FC, useEffect, useState} from "react";
 import styles from "./QuizResult.module.css"
 import BackButton from "@/components/ui/BackButton.tsx";
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink, useNavigate, useParams} from "react-router-dom";
 import { FaUser } from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/Store/store.ts";
 import Loading from "@/components/Loading.tsx";
-import {handleSubmitQuiz} from "@/Features/Quiz/quizSlice.ts";
+import {handleSubmitQuiz, setResetAnswers} from "@/Features/Quiz/quizSlice.ts";
 
 
 
 const QuizResult : FC = () => {
+    const [tempLoading, setTempLoading] = useState(true);
     const loading = useSelector( (state: RootState) => state.quiz.loading )
     const answers = useSelector( (state : RootState) => state.quiz.answers)
     const first_name = useSelector( (state: RootState) => state.user.first_name)
     const result = useSelector( (state: RootState) => state.quiz.result)
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
+    const {id: lesson_id } = useParams();
 
     useEffect(() => {
         console.log(answers);
-        dispatch(handleSubmitQuiz({lesson_id: 1, answers}));
-    }, [dispatch,answers]);
+        dispatch(handleSubmitQuiz({lesson_id: Number(lesson_id), answers}));
+        dispatch(setResetAnswers())
+    }, [dispatch, lesson_id]);
+
+    useEffect(() => {
+        setTempLoading(true)
+
+        setTimeout(()=> setTempLoading(false), 5000)
+    }, []);
+
     // useEffect(() => {
     //     if(!loading) {
     //         dispatch(setLoading(true))
@@ -33,6 +43,7 @@ const QuizResult : FC = () => {
 
     return (
         <div className={styles.container}>
+            {tempLoading && <div className={"absolute bg-gray-50 w-dvw h-dvh z-20"}><Loading/></div>}
             <div className={styles.result_back__button}>
                 <BackButton to={"/test/home"}/>
             </div>
@@ -58,7 +69,7 @@ const QuizResult : FC = () => {
                 <NavLink to={"/test/lessons/quiz/result/review"}>View answers</NavLink>
             </div>
 
-            <button className={styles.result_button} onClick={() => navigate("/test/lessons/lesson/1")}>
+            <button className={styles.result_button} onClick={() => navigate(`/test/lessons/lesson/${lesson_id}`)}>
                 Explore more
             </button>
 

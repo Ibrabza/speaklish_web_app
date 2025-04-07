@@ -110,6 +110,13 @@ const quizSlice = createSlice({
         },
         setLoading: (state, action: PayloadAction<boolean>) => {
             state.loading = action.payload;
+        },
+        setResetAnswers: (state) => {
+            state.answers = [];
+            state.loading = false;
+            state.error = null;
+            state.timer = 180;
+            state.currentIndex = 0;
         }
     },
     extraReducers: (builder) => {
@@ -156,6 +163,6 @@ const quizSlice = createSlice({
 })
 
 
-export const {setTimer, setError, setCurrentIndex, submitAnswer,setLoading} = quizSlice.actions;
+export const {setTimer, setError, setCurrentIndex, submitAnswer,setLoading, setResetAnswers} = quizSlice.actions;
 
 export default quizSlice.reducer;

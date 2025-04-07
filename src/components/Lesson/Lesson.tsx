@@ -28,7 +28,7 @@ const Lesson: FC = () => {
     return (
         <div className={styles.container}>
             <div className={styles.backButton}>
-                <BackButton/>
+                <BackButton to={'/test/lessons'}/>
             </div>
             <h2 className={styles.lesson_title}>{state.title}</h2>
             <div className={styles.lesson_main}>
@@ -69,7 +69,7 @@ const Lesson: FC = () => {
 
                 <div className={styles.lesson_action__block}>
                     <h3>Quizzes</h3>
-                    <Link to={'/test/lessons/quiz/1'} className={styles.lesson_action}>
+                    <Link to={`/test/lessons/quiz/${state.id}`} className={styles.lesson_action}>
                         <div className={styles.lesson_action__button}>
                             <img src={"/lesson2/ai-idea.svg"} alt={"quiz"}/>
                             <span>Check your knowledge</span>
