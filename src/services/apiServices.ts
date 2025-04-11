@@ -14,6 +14,7 @@ const endpoints = {
   },
   user: {
     profile: `${BASE_URL}/user-profile/`,
+    history: `${BASE_URL}/speaking-session/results?last=10`
   },
   courses: {
     lessons: `${BASE_URL}/courses/lessons/`,
@@ -93,6 +94,10 @@ const handleResponse = async <T>(
 export const getUserProfile = () => {
   return handleResponse(api.get(endpoints.user.profile));
 };
+
+export const getHistory = () => {
+  return handleResponse(api.get(endpoints.user.history))
+}
 
 export const getQuizResult = (lessonId: number) => {
   return handleResponse(api.get(endpoints.courses.quizResults(lessonId)));

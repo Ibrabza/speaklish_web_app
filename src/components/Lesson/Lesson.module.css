@@ -94,6 +94,10 @@
     gap: 8px;
     /*height: max-content;*/
 }
+.lesson_action__button span {
+    font-size: 20px;
+    font-weight: 400;
+}
 
 .lesson_action{
     margin-top: 0.5rem;

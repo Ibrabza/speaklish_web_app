@@ -4,13 +4,14 @@ import styles from "./UserGreating.module.css"
 import {StarIcon} from "./StarIcon.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "@/Store/store.ts";
+import {NavLink} from "react-router-dom";
 
 const UserGreating: FC = () => {
 
     const first_name = useSelector( (state: RootState) => state.user.first_name)
 
     return (
-        <div className={styles.container}>
+        <NavLink to={"/test/home/history"} className={styles.container}>
             <div className={styles.user_info}>
                 <h3>Hello, user</h3>
                 <h2>{first_name}</h2>
@@ -22,7 +23,7 @@ const UserGreating: FC = () => {
                     <span className={styles.lastband}>8.5</span>
                 </h2>
             </div>
-        </div>
+        </NavLink>
     )
 }
 

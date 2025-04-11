@@ -1,10 +1,41 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {getLesson, getLessons, getUserProfile, handleLogin, handleRegister} from "@/services/apiServices.ts";
+import {
+    getHistory,
+    getLesson,
+    getLessons,
+    getUserProfile,
+    handleLogin,
+    handleRegister
+} from "@/services/apiServices.ts";
 import {getTelegramUserData} from "@/Helpers/helper.ts";
 
 interface IUserInfo{
     first_name: string,
     photo_url: string,
+}
+
+export interface IHistoryResult {
+    id: number,
+    student_id: number,
+    feedback: string,
+    band_score: string,
+    fluency: string,
+    vocabulary: string,
+    grammar: string,
+    pronunciation: string,
+    used_topic_words: unknown,
+    suggested_vocab: unknown,
+    finish_state: string,
+    is_test: false,
+    finished_at: string,
+    created_at: string,
+}
+
+export interface IHistory {
+    count: number,
+    next: string,
+    previous: string,
+    results: IHistoryResult[] | null,
 }
 
 interface IUser  {
@@ -65,6 +96,7 @@ interface IUser  {
             ] | null
         }[] | null,
     } | null,
+    history : IHistory | null;
 }
 
 
@@ -90,6 +122,7 @@ const initialState: IUser = {
     isAuthorized : false,
     question_list: null,
     lesson: null,
+    history : null,
 }
 
 
@@ -121,6 +154,16 @@ export const handleAuth = createAsyncThunk(
         }
     }
 );
+
+export const handleGetHistory = createAsyncThunk('user/getUserHistory',
+    async ()=> {
+    try {
+        return await getHistory();
+    }catch (error) {
+        console.error(error);
+        return Promise.reject(error);
+    }
+})
 
 export const getGroupData = createAsyncThunk('user/getGroupData',
     async () => {
@@ -334,6 +377,19 @@ const userSlice = createSlice({
             .addCase(getGroupData.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string || "something went wrong";
+            })
+            .addCase(handleGetHistory.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(handleGetHistory.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload as string || "something went wrong getting history results";
+            })
+            .addCase(handleGetHistory.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = '';
+                state.history = action.payload;
+                console.log(action.payload);
             })
 
     }

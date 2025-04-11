@@ -23,3 +23,12 @@ export function getTelegramUserData(tma: string) {
         photoUrl: user.photo_url as string,
     };
 }
+
+
+export const formatDateString = (timestamp: string) => {
+    if(timestamp) {
+        const datePart = timestamp.slice(0, 10);
+        const [year, month, day] = datePart.split("-");
+        return `${day}-${month}-${year}`;
+    }
+}

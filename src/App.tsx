@@ -19,6 +19,7 @@ import Register from "@/Pages/Register/Register.tsx";
 import { restoreAuthState } from "@/services/authService.ts";
 import { AppDispatch } from "@/Store/store.ts";
 import { getGroupData } from "@/Features/User/userSlice.ts";
+import History from "@/Pages/History/History.tsx"
 
 // Component to handle auth state restoration
 const AuthStateRestorer = () => {
@@ -61,6 +62,7 @@ const AppRoutes = () => {
                     <Route index element={<Navigate replace to="home" />} />
                     <Route path="home" element={<Home />} />
                     <Route path="lessons" element={<Lessons />} />
+                    <Route path="home/history" element={<History />} />
                 </Route>
 
                 <Route path="test/lessons" element={<LessonsLayout />}>
