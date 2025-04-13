@@ -35,22 +35,22 @@ const ExamResult : FC<IExamResult> = (props) => {
     console.log(loading, feedbackResponse)
 
     useEffect(() => {
-        dispatch(handleGetResult({id}))
+        dispatch(handleGetResult({ id }));
 
         const interval = setInterval(() => {
-            if (result && result.finish_state !== "part3"){
-                setIsLoading(true)
-                dispatch(handleGetResult({id}))
-            }else{
-                setIsLoading(false)
-                clearInterval(interval)
-            }
-        }, 5000)
-
+            dispatch(handleGetResult({ id }));
+        }, 5000);
 
         return () => clearInterval(interval);
+    }, [id, dispatch]);
 
-    }, [result, id, dispatch]);
+    useEffect(() => {
+        if (result?.finish_state === "part3") {
+            setIsLoading(false);
+        } else {
+            setIsLoading(true);
+        }
+    }, [result]);
 
     if (isLoading || loading) {
         return (
