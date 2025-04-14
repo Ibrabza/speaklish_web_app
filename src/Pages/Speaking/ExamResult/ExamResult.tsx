@@ -19,6 +19,7 @@ const ExamResult : FC<IExamResult> = (props) => {
 
     const {id, feedbackResponse , loading, error} = useSelector( (state: RootState) => state.speaking)
     const results = useSelector( (state:RootState) => state.speaking.feedbackResponse?.results)
+    console.log(results)
     const result = results?.[results?.length - 1]
 
     const [isLoading, setIsLoading] = useState(true);
@@ -35,17 +36,19 @@ const ExamResult : FC<IExamResult> = (props) => {
     console.log(loading, feedbackResponse)
 
     useEffect(() => {
-        dispatch(handleGetResult({ id }));
+        if(isLoading) {
+            dispatch(handleGetResult({id}));
 
-        const interval = setInterval(() => {
-            dispatch(handleGetResult({ id }));
-        }, 5000);
+            const interval = setInterval(() => {
+                dispatch(handleGetResult({id}));
+            }, 5000);
 
-        return () => clearInterval(interval);
-    }, [id, dispatch]);
+            return () => clearInterval(interval);
+        }
+    }, [isLoading,id, dispatch]);
 
     useEffect(() => {
-        if (result?.finish_state === "part3") {
+        if (result?.band_score) {
             setIsLoading(false);
         } else {
             setIsLoading(true);
