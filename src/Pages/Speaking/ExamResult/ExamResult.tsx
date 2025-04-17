@@ -36,16 +36,17 @@ const ExamResult : FC<IExamResult> = (props) => {
     console.log(loading, feedbackResponse)
 
     useEffect(() => {
-        if(isLoading) {
+        const shouldPoll = !result?.band_score;
+        if (!shouldPoll) return;
+
+        dispatch(handleGetResult({id}));
+
+        const interval = setInterval(() => {
             dispatch(handleGetResult({id}));
+        }, 5000);
 
-            const interval = setInterval(() => {
-                dispatch(handleGetResult({id}));
-            }, 5000);
-
-            return () => clearInterval(interval);
-        }
-    }, [isLoading,id, dispatch]);
+        return () => clearInterval(interval);
+    }, [id, result?.band_score, dispatch]);
 
     useEffect(() => {
         if (result?.band_score) {
