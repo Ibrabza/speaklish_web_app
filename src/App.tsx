@@ -20,6 +20,18 @@ import { restoreAuthState } from "@/services/authService.ts";
 import { AppDispatch } from "@/Store/store.ts";
 import { getGroupData } from "@/Features/User/userSlice.ts";
 import History from "@/Pages/History/History.tsx"
+import { init } from '@telegram-apps/sdk';
+import { swipeBehavior } from '@telegram-apps/sdk';
+
+
+init();
+
+if (swipeBehavior.mount.isAvailable()) {
+    swipeBehavior.mount();
+}
+if (swipeBehavior.enableVertical.isAvailable()) {
+    swipeBehavior.disableVertical();
+}
 
 // Component to handle auth state restoration
 const AuthStateRestorer = () => {

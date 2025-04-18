@@ -21,7 +21,15 @@
     font-size: 16px;
     line-height: 24px;
     align-items: center;
+    max-width: 60%;
 }
+.container span{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
 .rcontainer p{
     color: #606E80;
     font-size: 12px;

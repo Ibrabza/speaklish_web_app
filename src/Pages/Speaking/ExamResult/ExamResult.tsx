@@ -1,4 +1,4 @@
-import {FC, useEffect, useState} from "react";
+import {FC, useEffect, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/Store/store.ts";
 import {
@@ -8,6 +8,7 @@ import {
     setShowPartComplete
 } from "@/Features/Speaking/speakingSlice.ts"
 import {handleGetResult} from "@/Features/Speaking/speakingSlice.ts";
+import ErrorPage from "@/Pages/Error/ErrorPage.tsx";
 
 interface IExamResult {
     setShowWelcome : (x:boolean) => void;
@@ -15,6 +16,7 @@ interface IExamResult {
 
 const ExamResult : FC<IExamResult> = (props) => {
     const dispatch = useDispatch<AppDispatch>();
+    const numberRequest = useRef(0)
     const {setShowWelcome} = props;
 
     const {id, feedbackResponse , loading, error} = useSelector( (state: RootState) => state.speaking)
@@ -37,12 +39,14 @@ const ExamResult : FC<IExamResult> = (props) => {
 
     useEffect(() => {
         const shouldPoll = !result?.band_score;
-        if (!shouldPoll) return;
+        if (!shouldPoll ) return;
+
 
         dispatch(handleGetResult({id}));
 
         const interval = setInterval(() => {
             dispatch(handleGetResult({id}));
+            numberRequest.current += 1;
         }, 5000);
 
         return () => clearInterval(interval);
@@ -55,6 +59,8 @@ const ExamResult : FC<IExamResult> = (props) => {
             setIsLoading(true);
         }
     }, [result]);
+
+    if(numberRequest.current >= 6) return <ErrorPage message={"Something went wrong"} button={"Go to homepage"}/>
 
     if (isLoading || loading) {
         return (
