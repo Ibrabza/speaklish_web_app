@@ -22,7 +22,7 @@ const LessonsList:FC = () => {
                 {lesson_list.map((item,index) => <li key={item.id}>
                     <LessonsListItem
                         index={index+1}
-                        to={`/test/lessons/${item.id}`}
+                        to={`/test/lessons/lesson/${item.id}`}
                         title={item.title}
                         date={item.start_date}
                         status={index === 0 ? true : question_list.lessons[index-1].is_completed}/>
