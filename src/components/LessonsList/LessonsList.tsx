@@ -21,8 +21,8 @@ const LessonsList:FC = () => {
             <ul>
                 {lesson_list.map((item,index) => <li key={item.id}>
                     <LessonsListItem
-                        index={item.id}
-                        to={(item.title).split(" ").join("/")}
+                        index={index+1}
+                        to={`/test/lessons/${item.id}`}
                         title={item.title}
                         date={item.start_date}
                         status={index === 0 ? true : question_list.lessons[index-1].is_completed}/>
