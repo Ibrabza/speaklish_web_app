@@ -10,6 +10,7 @@ import {AppDispatch, RootState} from "@/Store/store.ts";
 import {handleGetLesson} from "@/Features/User/userSlice.ts";
 import Loading from "@/components/Loading.tsx";
 import DownloadFIle from "@/components/Lesson/DownloadFile/DownloadFIle.tsx";
+import MultilineDropdown from "@/components/Lesson/MultilineDropdown";
 
 const Lesson: FC = () => {
     const dispatch = useDispatch<AppDispatch>()
@@ -59,9 +60,8 @@ const Lesson: FC = () => {
                     <span>&#8599;</span>
                 </a>
                 <div className={styles.lesson_description}>
-                    <h3>Lecture</h3>
-                    <p>{state.description}</p>
-                </div>
+  <MultilineDropdown label="Lecture" text={state.description || ''} className={styles.lesson_dropdown} />
+</div>
                 <div className={styles.lesson_action__block}>
                     <h3>Attached Files</h3>
                     {state!.files!.map((item,i) => <DownloadFIle fileName={`File ${i+1}`} link={`https://dashboard.speaklish.uz${item.url}`}/>)}
