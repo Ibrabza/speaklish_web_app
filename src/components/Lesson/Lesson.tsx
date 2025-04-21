@@ -50,7 +50,19 @@ const Lesson: FC = () => {
                     </div>
                 </div>
                 <div className={styles.lesson_video}>
-                    <VideoPlayer link={`https${state.video.slice(4)}`}/>
+                    {state.video && state.video.trim() ? (
+                        <VideoPlayer link={`https${state.video.slice(4)}`}/>
+                    ) : (
+                        <div
+                            className="flex items-center justify-center min-h-[180px] rounded-2xl bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-300 text-base font-medium border border-dashed border-gray-300 dark:border-gray-700 p-4"
+                            role="status"
+                            aria-live="polite"
+                            tabIndex={0}
+                            aria-label="No video available for this class"
+                        >
+                            This class does not have video
+                        </div>
+                    )}
                 </div>
                 <a href={state.meeting_link} className={styles.lesson_meetingLink}>
                     <div className={styles.meeting}>
