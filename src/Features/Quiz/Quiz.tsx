@@ -32,9 +32,7 @@ const Quiz : FC = () => {
         console.log("confirm")
         if(!answer) return;
 
-        if(answers.length !== quizzes!.length){
-            toast.error("You should answer every question!")
-        }
+
 
         dispatch(submitAnswer({
             quiz_id: quizzes![currentIndex].id,
@@ -42,6 +40,11 @@ const Quiz : FC = () => {
         }))
         if( currentIndex+1 === quizzes?.length) {
             // dispatch(setLoading(true))
+            if(answers.length !== quizzes!.length){
+                toast.error("You should answer every question!")
+                console.log("You should answer every question!")
+                return;
+            }
             navigate(`/app/lessons/quiz/result/${lesson_id}`)
         }
     }

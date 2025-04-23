@@ -5,6 +5,7 @@ import ErrorPage from "@/Pages/Error/ErrorPage.tsx";
 import {useEffect} from "react";
 
 import styles from "./LessonsLayout.module.css"
+import {Toaster} from "react-hot-toast";
 
 const LessonsLayout = () => {
     const isAuthenticated = useSelector((state: RootState) => state.user.isAuthorized);
@@ -32,6 +33,7 @@ const LessonsLayout = () => {
 
     return (
         <div className={styles.lessonsLayout}>
+            <Toaster position={"top-center"}/>
             <Outlet/>
         </div>
     )
