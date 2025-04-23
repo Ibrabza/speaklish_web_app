@@ -29,7 +29,7 @@ const Lesson: FC = () => {
     return (
         <div className={styles.container}>
             <div className={styles.backButton}>
-                <BackButton to={'/test/lessons'}/>
+                <BackButton to={'/app/lessons'}/>
             </div>
             <h2 className={styles.lesson_title}>{state.title}</h2>
             <div className={styles.lesson_main}>
@@ -81,7 +81,7 @@ const Lesson: FC = () => {
 
                 <div className={styles.lesson_action__block}>
                     <h3>Quizzes</h3>
-                    <Link to={`/test/lessons/quiz/${state.id}`} className={styles.lesson_action}>
+                    <Link to={`/app/lessons/quiz/${state.id}`} className={styles.lesson_action}>
                         <div className={styles.lesson_action__button}>
                             <img src={"/lesson2/ai-idea.svg"} alt={"quiz"}/>
                             <span>Check your knowledge</span>
@@ -93,7 +93,7 @@ const Lesson: FC = () => {
 
                 <div className={styles.lesson_action__block}>
                     <h3>Pronunciation Task</h3>
-                    <Link to={`/test/lessons/pronunciation/${lessonId}`} className={styles.lesson_action}>
+                    <Link to={`/app/lessons/pronunciation/${lessonId}`} className={styles.lesson_action}>
                         <div className={styles.lesson_action__button}>
                             <img src={"/lesson2/ai-mic.svg"} alt={"speaklish-ai-micro"}/>
                             <span>Pronunciation Practice</span>

@@ -43,7 +43,7 @@ const Auth :FC = () => {
     const navigate = useNavigate();
 
     function handleClick(){
-        navigate('/test');
+        navigate('/app');
     }
 
     const textToButton = !isAuthorized ? "Not authorized yet" : "Continue"
@@ -64,14 +64,14 @@ const Auth :FC = () => {
             console.log('Redirecting to register page with initData:', initDataRef.current);
             
             // Navigate to register page with initData as a query parameter
-            navigate(`/test/register${initDataRef.current ? `?tgWebAppData=${encodeURIComponent(initDataRef.current.replace('#tgWebAppData=', ''))}` : ''}`);
+            navigate(`/app/register${initDataRef.current ? `?tgWebAppData=${encodeURIComponent(initDataRef.current.replace('#tgWebAppData=', ''))}` : ''}`);
         }
     }, [error, isAuthorized, navigate]);
     
     // Use useEffect for navigation instead of doing it during render
     useEffect(() => {
         if(!error && isAuthorized) {
-            navigate("/test");
+            navigate("/app");
         }
     }, [error, isAuthorized, navigate]);
     // console.log("loading:", loading);

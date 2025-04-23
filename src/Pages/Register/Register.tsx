@@ -327,7 +327,7 @@ const Register: FC = () => {
                     
                     // Navigate to the main page after successful login
                     console.log('Login successful, redirecting to main page');
-                    navigate('/test');
+                    navigate('/app');
                 } else {
                     console.warn('No initData available for login, redirecting to auth page');
                     navigate('/auth');
@@ -426,6 +426,7 @@ const Register: FC = () => {
                                     // Just return the message property if it exists
                                     return errorObj.message || error;
                                 } catch (e) {
+                                    console.log(e)
                                     // If it's not valid JSON, just return the original error
                                     return error;
                                 }
@@ -442,7 +443,7 @@ const Register: FC = () => {
                     </button>
                     
                     <div className={styles.back_link}>
-                        <a href="#" onClick={() => navigate('/test')}>Back to Login</a>
+                        <a href="#" onClick={() => navigate('/app')}>Back to Login</a>
                     </div>
                 </form>
             </div>

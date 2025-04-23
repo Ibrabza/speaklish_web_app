@@ -1,11 +1,11 @@
 import styles from "./History.module.css"
 import HistoryItem from "@/components/HistoryItem/HistoryItem.tsx";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "@/Store/store.ts";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/Store/store.ts";
 import Loading from "@/components/Loading.tsx";
-import {formatDateString} from "@/Helpers/helper.ts";
-import {useEffect} from "react";
-import {handleGetHistory} from "@/Features/User/userSlice.ts";
+import { formatDateString } from "@/Helpers/helper.ts";
+import { useEffect } from "react";
+import { handleGetHistory } from "@/Features/User/userSlice.ts";
 
 const History = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -24,7 +24,8 @@ const History = () => {
                 <ul>
                     {history && history.results && history.results.map((item) => <HistoryItem
                         date={formatDateString(item.created_at) || "failed"}
-                        score={Number(item.band_score)} />
+                        score={Number(item.band_score)}
+                        key={item.id}/>
                     )}
                 </ul>
             </div>

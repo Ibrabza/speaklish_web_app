@@ -65,19 +65,19 @@ const AppRoutes = () => {
             <AuthStateRestorer />
             <Routes>
 
-                <Route path="/" element={<Navigate replace to="auth" />} />
 
                 <Route path="auth" element={<Auth />} />
-                <Route path="test/register" element={<Register />} />
+                <Route path="register" element={<Register />} />
 
-                <Route path="test" element={<AppLayout />}>
+                <Route path="/" element={<Navigate replace to="auth" />} />
+                <Route path="/app" element={<AppLayout />}>
                     <Route index element={<Navigate replace to="home" />} />
                     <Route path="home" element={<Home />} />
                     <Route path="lessons" element={<Lessons />} />
                     <Route path="home/history" element={<History />} />
                 </Route>
 
-                <Route path="test/lessons" element={<LessonsLayout />}>
+                <Route path="app/lessons" element={<LessonsLayout />}>
                     <Route path="lesson/:id" element={<Lesson />} />
                     <Route path="quiz/:id" element={<Quiz />} />
                     <Route path="quiz/result/:id" element={<QuizResult />} />
@@ -85,7 +85,7 @@ const AppRoutes = () => {
                     <Route path="pronunciation/:id" element={<Pronunciation />} />
                 </Route>
 
-                <Route path="test/speaking" element={<Speaking />} />
+                <Route path="app/speaking" element={<Speaking />} />
 
                 <Route
                     path="*"

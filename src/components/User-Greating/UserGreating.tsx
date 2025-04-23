@@ -11,7 +11,7 @@ const UserGreating: FC = () => {
     const first_name = useSelector( (state: RootState) => state.user.first_name)
 
     return (
-        <NavLink to={"/test/home/history"} className={styles.container}>
+        <NavLink to={"/app/home/history"} className={styles.container}>
             <div className={styles.user_info}>
                 <h3>Hello, user</h3>
                 <h2>{first_name}</h2>

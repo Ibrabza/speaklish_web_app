@@ -2,7 +2,6 @@ import {FC, useEffect, useState} from "react";
 import styles from "./QuizResult.module.css"
 import BackButton from "@/components/ui/BackButton.tsx";
 import {NavLink, useNavigate, useParams} from "react-router-dom";
-import { FaUser } from "react-icons/fa";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/Store/store.ts";
 import Loading from "@/components/Loading.tsx";
@@ -16,6 +15,7 @@ const QuizResult : FC = () => {
     const answers = useSelector( (state : RootState) => state.quiz.answers)
     const first_name = useSelector( (state: RootState) => state.user.first_name)
     const result = useSelector( (state: RootState) => state.quiz.result)
+    const image_profile = useSelector( (state:RootState) => state.user.photo_url)
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const {id: lesson_id } = useParams();
@@ -45,12 +45,13 @@ const QuizResult : FC = () => {
         <div className={styles.container}>
             {tempLoading && <div className={"absolute bg-gray-50 w-dvw h-dvh z-20"}><Loading/></div>}
             <div className={styles.result_back__button}>
-                <BackButton to={"/test/home"}/>
+                <BackButton to={"/app/home"}/>
             </div>
 
             <div className={styles.result_score}>
                 <div className={styles.result_profile}>
-                    <FaUser size={40}/>
+                    {/*<FaUser size={40}/>*/}
+                    <img src={image_profile} alt={"speaklish profile"}/>
                 </div>
                 <div className={styles.result_user_info}>
                     <h3>{first_name}</h3>
@@ -66,10 +67,10 @@ const QuizResult : FC = () => {
                 <p>
                     Let’s keep testing your knowledge by playing more quizzes.
                 </p>
-                <NavLink to={"/test/lessons/quiz/result/review"}>View answers</NavLink>
+                <NavLink to={"/app/lessons/quiz/result/review"}>View answers</NavLink>
             </div>
 
-            <button className={styles.result_button} onClick={() => navigate(`/test/lessons/lesson/${lesson_id}`)}>
+            <button className={styles.result_button} onClick={() => navigate(`/app/lessons/lesson/${lesson_id}`)}>
                 Explore more
             </button>
 
