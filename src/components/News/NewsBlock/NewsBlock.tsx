@@ -4,7 +4,7 @@ import styles from "./NewsBlock.module.css"
 import NewItem from "../NewItem/NewItem.tsx";
 import {useSelector} from "react-redux";
 import {RootState} from "@/Store/store.ts";
-import Loading from "@/components/Loading.tsx";
+import SmallLoading from "@/components/SmallLoading/SmallLoading.tsx";
 
 const NewsBlock: FC = () => {
     const results = useSelector( (state: RootState) => state.news.results)
@@ -22,7 +22,7 @@ const NewsBlock: FC = () => {
         }
     }, []);
 
-    if(!results) return <Loading/>
+    if(!results) return <SmallLoading/>
     return (
         <div className={styles.container} ref={scrollNews}>
             <div className={styles.scrolling} >
