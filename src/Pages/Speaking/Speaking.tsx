@@ -8,23 +8,27 @@ import {AppDispatch} from "@/Store/store.ts";
 import {handleCreateSession} from "@/Features/Speaking/speakingSlice.ts";
 import { backButton } from '@telegram-apps/sdk';
 import {useNavigate} from "react-router-dom";
+import ClosingConfirmWindow from "@/components/ClosingConfirmWIndow/ClosingConfirmWindow.tsx";
 
 
 
 const Speaking: FC = () => {
+    const [isLeaving, setIsLeaving] = useState(false)
     const [stream, setStream] = useState<MediaStream | null>(null);
     const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
+        backButton.mount()
         backButton.show()
         backButton.onClick(() => {
-            navigate(-1);
+            setIsLeaving(true)
         })
 
         return () => {
             backButton.hide()
+            backButton.unmount()
         }
-    }, []);
+    }, [navigate]);
 
 
     function handleGetSessionData(){
@@ -52,7 +56,14 @@ const Speaking: FC = () => {
     }
 
     return (
-        <div className={"max-w-[400px] mx-auto overflow-y-scroll h-dvh bg-gray-50  px-2"}>
+        <div className={"w-dvw relative mx-auto overflow-y-scroll h-dvh bg-gray-50"}>
+            {isLeaving && <div className={"fixed inset-0 flex items-center justify-center bg-black/50 z-20"}>
+                <ClosingConfirmWindow
+                    func={() => navigate(-1)}
+                    onCancel={() => setIsLeaving(false)}
+                    isInProgress={true}/>
+            </div>
+            }
             <PartTitle/>
             <SpeakingTest handleGetMicro={handleGetMicro} handleGetSessionData={handleGetSessionData} stream={stream}/>
             <Toaster position="top-center"/>
