@@ -1,12 +1,10 @@
 import {FC, useEffect, useState} from "react";
 import styles from "./QuizResult.module.css"
-import BackButton from "@/components/ui/BackButton.tsx";
 import {NavLink, useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/Store/store.ts";
 import Loading from "@/components/Loading.tsx";
 import {handleSubmitQuiz, setResetAnswers} from "@/Features/Quiz/quizSlice.ts";
-
 
 
 const QuizResult : FC = () => {
@@ -44,9 +42,6 @@ const QuizResult : FC = () => {
     return (
         <div className={styles.container}>
             {tempLoading && <div className={"absolute bg-gray-50 w-dvw h-dvh z-20"}><Loading/></div>}
-            <div className={styles.result_back__button}>
-                <BackButton to={"/app/home"}/>
-            </div>
 
             <div className={styles.result_score}>
                 <div className={styles.result_profile}>

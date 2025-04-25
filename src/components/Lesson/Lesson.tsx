@@ -1,7 +1,6 @@
 import {FC, useEffect} from "react";
 import styles from "./Lesson.module.css"
 import MeetingIcon from "../../assets/icons/shared/MeetingIcon.png"
-import BackButton from "@/components/ui/BackButton.tsx";
 import CallIcon from "@/assets/icons/shared/CalIcon.tsx";
 import VideoPlayer from "@/components/VideoPlayer/VideoPlayer.tsx";
 import {Link, useParams} from "react-router-dom";
@@ -28,9 +27,6 @@ const Lesson: FC = () => {
 
     return (
         <div className={styles.container}>
-            <div className={styles.backButton}>
-                <BackButton to={'/app/lessons'}/>
-            </div>
             <h2 className={styles.lesson_title}>{state.title}</h2>
             <div className={styles.lesson_main}>
                 <div className={styles.lesson_date}>

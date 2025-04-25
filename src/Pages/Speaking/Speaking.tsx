@@ -28,7 +28,7 @@ const Speaking: FC = () => {
             backButton.hide()
             backButton.unmount()
         }
-    }, [navigate]);
+    }, []);
 
 
     function handleGetSessionData(){
