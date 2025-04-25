@@ -12,9 +12,6 @@ import {handleGetQuiz, setCurrentIndex, submitAnswer} from "@/Features/Quiz/quiz
 import toast from "react-hot-toast";
 import {useNavigate, useParams} from "react-router-dom";
 
-
-
-
 const versions = ['A', 'B', 'C', 'D'];
 
 
@@ -26,7 +23,6 @@ const Quiz : FC = () => {
     const {id : lesson_id} = useParams();
 
     const dispatch = useDispatch<AppDispatch>();
-
 
     const handleConfirm = () => {
         console.log("confirm")

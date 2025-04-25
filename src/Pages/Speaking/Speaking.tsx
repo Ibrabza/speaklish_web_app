@@ -1,15 +1,30 @@
-import {FC, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import {useDispatch} from "react-redux";
 import PartTitle from "@/Features/Speaking/PartTitle.tsx";
 import SpeakingTest from "@/Pages/Speaking/SpeakingTest/SpeakingTest.tsx";
 import {Toaster} from "react-hot-toast";
-import BackButton from "@/components/ui/BackButton.tsx";
+// import BackButton from "@/components/ui/BackButton.tsx";
 import {AppDispatch} from "@/Store/store.ts";
 import {handleCreateSession} from "@/Features/Speaking/speakingSlice.ts";
+import { backButton } from '@telegram-apps/sdk';
+import {useNavigate} from "react-router-dom";
+
+
 
 const Speaking: FC = () => {
     const [stream, setStream] = useState<MediaStream | null>(null);
+    const navigate = useNavigate();
     const dispatch = useDispatch<AppDispatch>();
+    useEffect(() => {
+        backButton.show()
+        backButton.onClick(() => {
+            navigate(-1);
+        })
+
+        return () => {
+            backButton.hide()
+        }
+    }, []);
 
 
     function handleGetSessionData(){
@@ -38,9 +53,6 @@ const Speaking: FC = () => {
 
     return (
         <div className={"max-w-[400px] mx-auto overflow-y-scroll h-dvh bg-gray-50  px-2"}>
-            <div className={""}>
-                <BackButton/>
-            </div>
             <PartTitle/>
             <SpeakingTest handleGetMicro={handleGetMicro} handleGetSessionData={handleGetSessionData} stream={stream}/>
             <Toaster position="top-center"/>
