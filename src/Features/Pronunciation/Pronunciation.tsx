@@ -1,6 +1,5 @@
 import {FC, useEffect, useState, useRef} from "react";
 import styles from "./Pronunciation.module.css"
-import DownloadIcon from "@/assets/icons/lesson/DownloadIcon.tsx";
 import VoiceAnimation from "@/components/VoiceAnimation/VoiceAnimation.tsx";
 import {useParams} from "react-router-dom";
 import {useUniversalAudio} from "@/hooks/useUniversalAudio.ts";
@@ -399,9 +398,6 @@ const Pronunciation: FC<IPronunciation> = () => {
         <div className={styles.container}>
             <div className={styles.pronunciation_header}>
                 <h3>Pronunciation Practice</h3>
-                <div className={" "}>
-                    <DownloadIcon color={"#07DA83"} />
-                </div>
             </div>
 
             <div className={styles.pronunciation_main}>

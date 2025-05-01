@@ -11,5 +11,6 @@
 .content {
     overflow: visible;
     position: relative;
+    padding-bottom: 2rem;
     padding-top: var(--tg-content-safe-area-inset-top, 10px);
 }
