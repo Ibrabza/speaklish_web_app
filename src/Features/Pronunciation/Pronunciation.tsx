@@ -1,6 +1,5 @@
 import {FC, useEffect, useState, useRef} from "react";
 import styles from "./Pronunciation.module.css"
-import BackButton from "@/components/ui/BackButton.tsx";
 import DownloadIcon from "@/assets/icons/lesson/DownloadIcon.tsx";
 import VoiceAnimation from "@/components/VoiceAnimation/VoiceAnimation.tsx";
 import {useParams} from "react-router-dom";
@@ -399,9 +398,10 @@ const Pronunciation: FC<IPronunciation> = () => {
     return (
         <div className={styles.container}>
             <div className={styles.pronunciation_header}>
-                <BackButton/>
                 <h3>Pronunciation Practice</h3>
-                <DownloadIcon color={"#07DA83"} />
+                <div className={" "}>
+                    <DownloadIcon color={"#07DA83"} />
+                </div>
             </div>
 
             <div className={styles.pronunciation_main}>
@@ -414,8 +414,10 @@ const Pronunciation: FC<IPronunciation> = () => {
                             {/* Only show topic when not viewing results */}
                             {!pronunciationResult && (
                                 <div className={styles.pronunciation_text}>
-                                    <h4>Topic</h4>
-                                    <p>{pronunciationData?.topic || "No topic available"}</p>
+                                    <p>
+                                        <span>Topic</span>
+                                        {pronunciationData?.topic || "No topic available"}
+                                    </p>
                                 </div>
                             )}
                         </div>

@@ -68,8 +68,8 @@ const Lesson: FC = () => {
                     <span>&#8599;</span>
                 </a>
                 <div className={styles.lesson_description}>
-  <MultilineDropdown label="Lecture" text={state.description || ''} className={styles.lesson_dropdown} />
-</div>
+                    <MultilineDropdown label="Lecture" text={state.description || ''} className={styles.lesson_dropdown} />
+                </div>
                 <div className={styles.lesson_action__block}>
                     <h3>Attached Files</h3>
                     {state!.files!.map((item,i) => <DownloadFIle fileName={`File ${i+1}`} link={`https://dashboard.speaklish.uz${item.url}`}/>)}
@@ -97,17 +97,6 @@ const Lesson: FC = () => {
                         <img src={"/lesson2/arrow.svg"} alt={"speaklish-arrow"}/>
                     </Link>
                 </div>
-
-                {/*<div className={styles.lesson_action__block}>*/}
-                {/*    <h3>Speak about topic</h3>*/}
-                {/*    <div className={styles.lesson_action}>*/}
-                {/*        <div className={styles.lesson_action__button}>*/}
-                {/*            <img src={"/lesson2/audio-book.svg"} alt={"speaklish-audio-book"}/>*/}
-                {/*            <span>Speak </span>*/}
-                {/*        </div>*/}
-                {/*        <img src={"/lesson2/arrow.svg"} alt={"speaklish-arrow"}/>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
             </div>
         </div>
     )

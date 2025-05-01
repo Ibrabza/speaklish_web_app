@@ -16,7 +16,7 @@ if (closingBehavior.enableConfirmation.isAvailable()) {
 
 
 postEvent("web_app_set_background_color",{color: "#FFFFFF"})
-postEvent("web_app_set_header_color",{ color_key: "bg_color" })
+postEvent("web_app_set_header_color",{ color: "#FFFFFF" })
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
