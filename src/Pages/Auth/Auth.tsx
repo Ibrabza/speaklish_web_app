@@ -31,8 +31,8 @@ const Auth :FC = () => {
             // Dispatch auth action with the initData
             dispatch(handleAuth({
                 initData: initData,
-                password: "123456",
-                username: "ibrabza"
+                password: "2025",
+                username: "speaklish_user"
             }));
             
             // Get group data after authentication
@@ -74,9 +74,6 @@ const Auth :FC = () => {
             navigate("/app");
         }
     }, [error, isAuthorized, navigate]);
-    // console.log("loading:", loading);
-    // console.log("isAuth:", isAuthorized);
-    // console.log("error:", error);
     return (
                 <div className={" h-dvh text-green-800"}>
                     <div className={" h-dvh bg-gray-50 w-dvw flex flex-col items-center gap-4 justify-center "}>

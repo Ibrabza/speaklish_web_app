@@ -2,7 +2,7 @@ import {FC, useEffect} from "react";
 import styles from "./Lesson.module.css"
 import MeetingIcon from "../../assets/icons/shared/MeetingIcon.png"
 import CallIcon from "@/assets/icons/shared/CalIcon.tsx";
-import VideoPlayer from "@/components/VideoPlayer/VideoPlayer.tsx";
+// import VideoPlayer from "@/components/VideoPlayer/VideoPlayer.tsx";
 import {Link, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/Store/store.ts";
@@ -10,12 +10,41 @@ import {handleGetLesson} from "@/Features/User/userSlice.ts";
 import Loading from "@/components/Loading.tsx";
 import DownloadFIle from "@/components/Lesson/DownloadFile/DownloadFIle.tsx";
 import MultilineDropdown from "@/components/Lesson/MultilineDropdown";
+import VideoPlayer from "@/components/VideoPlayer/VideoPlayer.tsx";
+// const CustomVideoPlayer = lazy(() => import('@/components/VideoPlayer/CustomVideoPlayer'));
 
 const Lesson: FC = () => {
     const dispatch = useDispatch<AppDispatch>()
     const { id: lessonId} = useParams()
 
     const state = useSelector( (state: RootState) => state.user.lesson)
+    // const playerRef = useRef(null);
+
+    // const videoJsOptions = {
+    //     autoplay: true,
+    //     controls: true,
+    //     responsive: true,
+    //     fluid: true,
+    //     sources: [
+    //         {
+    //             src: 'video.mp4',
+    //             type: 'video/mp4',
+    //         },
+    //     ],
+    // };
+
+    // const handlePlayerReady = (player) => {
+    //     playerRef.current = player;
+    //
+    //     player.on('waiting', () => {
+    //         console.log('Player is waiting');
+    //     });
+    //
+    //     player.on('dispose', () => {
+    //         console.log('Player will dispose');
+    //     });
+    // };
+
 
     useEffect( () => {
         dispatch(handleGetLesson({lesson_id: Number(lessonId)}))
@@ -24,6 +53,7 @@ const Lesson: FC = () => {
     console.log(state)
 
     if(!state) return <Loading/>
+
 
     return (
         <div className={styles.container}>
@@ -48,6 +78,7 @@ const Lesson: FC = () => {
                 <div className={styles.lesson_video}>
                     {state.video && state.video.trim() ? (
                         <VideoPlayer link={`https${state.video.slice(4)}`}/>
+                        //     <CustomVideoPlayer options={videoJsOptions} onReady={handlePlayerReady}/>
                     ) : (
                         <div
                             className="flex items-center justify-center min-h-[180px] rounded-2xl bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-300 text-base font-medium border border-dashed border-gray-300 dark:border-gray-700 p-4"
