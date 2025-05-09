@@ -22,6 +22,10 @@
 }
 .image img{
     width: 50%;
+    margin: 0 auto;
+}
+.image{
+    width: 100%;
 }
 
 
@@ -31,12 +35,18 @@
     gap: 0.5rem;
 }
 
-.info_block span{
-    rotate: 90deg;
-}
 
 .info_block button{
+    margin-top: 2rem;
     border: none;
-    color: #06c476;
+    align-self: center;
+    background-color: #06c476;
+    color: whitesmoke;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
     display: flex;
+}
+
+.info_title{
+    font-weight: bold;
 }

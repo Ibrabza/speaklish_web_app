@@ -21,7 +21,7 @@ const NewsWindow : FC<INewsWindow> = (props) => {
             <div className={styles.info_block}>
                 <h2 className={styles.info_title}>{title}</h2>
                 <p>{content}</p>
-                <button onClick={() => props.func("")}>Close <span>&#8599;</span></button>
+                <button onClick={() => props.func("")}>Close</button>
             </div>
         </div>
     </div>

@@ -25,7 +25,7 @@ const NewItem: FC<INews> = (props) => {
             <div className={styles.info_block}>
                 <h2 className={styles.info_title}>{title}</h2>
                 <p>{content}</p>
-                <h3 onClick={() => props.func(id)}>Start <span>&#8599;</span></h3>
+                <h3 onClick={() => props.func(id)}>More <span>&#8599;</span></h3>
             </div>
         </div>
     )
