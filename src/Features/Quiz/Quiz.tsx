@@ -1,7 +1,6 @@
 import {FC, useEffect, useState} from "react";
 import styles from "./Quiz.module.css";
 import ConfirmButton from "@/components/ConfirmButton/ConfirmButton.tsx";
-import BackButton from "@/components/ui/BackButton.tsx";
 import QuizButton from "@/Features/Quiz/QuizButton/QuizButton.tsx";
 import QuizOption from "@/Features/Quiz/QuizOption/QuizOption.tsx";
 import Timer from "@/components/Timer/Timer.tsx";
@@ -11,9 +10,6 @@ import Loading from "@/components/Loading.tsx";
 import {handleGetQuiz, setCurrentIndex, submitAnswer} from "@/Features/Quiz/quizSlice.ts";
 import toast from "react-hot-toast";
 import {useNavigate, useParams} from "react-router-dom";
-
-
-
 
 const versions = ['A', 'B', 'C', 'D'];
 
@@ -27,7 +23,6 @@ const Quiz : FC = () => {
 
     const dispatch = useDispatch<AppDispatch>();
 
-
     const handleConfirm = () => {
         console.log("confirm")
         if(!answer) return;
@@ -40,7 +35,7 @@ const Quiz : FC = () => {
         }))
         if( currentIndex+1 === quizzes?.length) {
             // dispatch(setLoading(true))
-            if(answers.length !== quizzes!.length){
+            if(answers.length+1 !== quizzes!.length){
                 toast.error("You should answer every question!")
                 console.log("You should answer every question!")
                 return;
@@ -82,7 +77,6 @@ const Quiz : FC = () => {
     return (
         <div className={styles.container}>
             <div className={styles.quiz_header}>
-                <BackButton/>
                 <p className={styles.quiz_question_index}>
                     {currentIndex+1}/{quizzes && quizzes.length}
                 </p>
