@@ -2,9 +2,10 @@ import {FC, useState} from "react";
 import WelcomePage from "@/Pages/Speaking/WelcomePage/WelcomePage.tsx";
 import PartComplete from "@/Pages/Speaking/PartComplete/PartComplete.tsx";
 import ExamResult from "@/Pages/Speaking/ExamResult/ExamResult.tsx";
-import {RootState} from "@/Store/store.ts";
-import {useSelector} from "react-redux";
+import {AppDispatch, RootState} from "@/Store/store.ts";
+import {useDispatch, useSelector} from "react-redux";
 import QuestionCompound from "@/Pages/Speaking/QuestionCompound/QuestionCompound.tsx";
+import {setProgress} from "@/Features/Speaking/speakingSlice.ts";
 // import Loading from "@/components/Loading.tsx";
 
 
@@ -21,11 +22,17 @@ const SpeakingTest : FC<ISTest> = ({handleGetSessionData, handleGetMicro, stream
     const showPartComplete = useSelector((state : RootState) => state.speaking.showPartComplete);
     const currentPart = useSelector((state : RootState) => state.speaking.currentPart);
     // const loading = useSelector((state) => state.session.loading);
+    const dispatch = useDispatch<AppDispatch>()
 
     // if(loading) return <Loading/>
 
+    const handleStartTest = async () => {
+        dispatch(setProgress(true))
+        setShowWelcome(false)
+    }
+
     if(showWelcome) return <WelcomePage
-        onStartTest={() => setShowWelcome(false)}
+        onStartTest={handleStartTest}
         showConfirmation={showConfirmation}
         setShowConfirmation={setShowConfirmation}
         handleGetSessionData={handleGetSessionData}

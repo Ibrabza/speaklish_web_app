@@ -4,7 +4,7 @@ import {AppDispatch, RootState} from "@/Store/store.ts";
 import {
     resetSpeaking,
     setCurrentPart,
-    setCurrentQuestionIndex,
+    setCurrentQuestionIndex, setProgress,
     setShowPartComplete
 } from "@/Features/Speaking/speakingSlice.ts"
 import {handleGetResult} from "@/Features/Speaking/speakingSlice.ts";
@@ -33,6 +33,7 @@ const ExamResult : FC<IExamResult> = (props) => {
         dispatch(setCurrentQuestionIndex(0));
         dispatch(setShowPartComplete(false));
         dispatch(resetSpeaking())
+        dispatch(setProgress(false))
     };
 
     console.log(loading, feedbackResponse)

@@ -72,6 +72,7 @@ export interface ISessionState {
     showPartComplete: boolean,
     partLength:number,
     feedbackResponse : IFeedbackResponse | null,
+    inProgress: boolean,
 }
 
 const initialState: ISessionState = {
@@ -87,6 +88,7 @@ const initialState: ISessionState = {
     showPartComplete: false,
     partLength: 0,
     feedbackResponse: null,
+    inProgress: false,
 }
 
 export const handleCreateSession = createAsyncThunk(
@@ -181,6 +183,10 @@ const speakingSlice = createSlice({
             state.currentPart = 1;
             state.currentQuestionIndex = 0;
             state.currentQuestion = null;
+        },
+        setProgress: (state, action: PayloadAction<boolean>) => {
+            console.log("Inprogress: ",state.inProgress, action.payload)
+            state.inProgress = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -233,6 +239,6 @@ const speakingSlice = createSlice({
     }
 })
 
-export const { setCurrentPart, setCurrentQuestionIndex, setShowPartComplete, resetSpeaking } = speakingSlice.actions;
+export const { setCurrentPart, setCurrentQuestionIndex, setShowPartComplete, resetSpeaking, setProgress } = speakingSlice.actions;
 
 export default speakingSlice.reducer
