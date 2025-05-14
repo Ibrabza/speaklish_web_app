@@ -29,7 +29,10 @@ const endpoints = {
     process: `${BASE_URL}/pronunciation/process/`,
     results: (uuid: string) => `${BASE_URL}/pronunciation/results/${uuid}/`,
   },
-  news: `${BASE_URL}/news/`
+  news: {
+    short:`${BASE_URL}/news/`,
+    extend:(slug:string) => `${BASE_URL}/news/${slug}`,
+  }
 };
 
 // Create axios instances
@@ -307,8 +310,13 @@ export const handleGetDataCalendar = () => {
 };
 
 export const getNews = () => {
-  return handleResponse(api.get(endpoints.news));
+  return handleResponse(api.get(endpoints.news.short));
 };
+
+export const getExtendNews = (slug: string) => {
+  console.log(slug)
+  return handleResponse(api.get(endpoints.news.extend(slug)))
+}
 
 // Re-export the apiURL for backward compatibility
 export const apiURL = endpoints;

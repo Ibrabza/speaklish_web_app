@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {getNews} from "@/services/apiServices.ts";
+import {getExtendNews, getNews} from "@/services/apiServices.ts";
 
 interface INews {
     count: number,
@@ -7,7 +7,18 @@ interface INews {
     previous: string | null,
     loading: boolean,
     error: string | null | unknown,
-    results: INResults[]
+    results: INResults[],
+    extendedNews: IExtendedNews | null,
+}
+
+interface IExtendedNews {
+    id: number,
+    slug: string,
+    image: string,
+    title: string,
+    content: string,
+    urls: string,
+    url_type: string,
 }
 
 interface INResults {
@@ -15,6 +26,9 @@ interface INResults {
     image: string,
     title: string,
     content: string,
+    slug: string,
+    urls: string,
+    url_type: string,
 }
 
 const initialState: INews = {
@@ -24,6 +38,7 @@ const initialState: INews = {
     error: "",
     previous: null,
     results: [],
+    extendedNews: null
 }
 
 export const handleGetNews = createAsyncThunk(
@@ -31,6 +46,18 @@ export const handleGetNews = createAsyncThunk(
     async () => {
         try {
             return await getNews();
+        }catch (error) {
+            console.error(error);
+            return error;
+        }
+    }
+)
+
+export const handleGetExtendedNews = createAsyncThunk(
+    `news/getExtendedNews`,
+    async (slug:string) => {
+        try {
+            return await getExtendNews(slug)
         }catch (error) {
             console.error(error);
             return error;
@@ -62,6 +89,19 @@ const newsSlice = createSlice({
                 state.previous = action.payload.previous;
                 state.next = action.payload.next;
                 state.results = action.payload.results;
+            })
+            .addCase(handleGetExtendedNews.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(handleGetExtendedNews.pending, state => {
+                state.loading = true;
+                state.error = "";
+            })
+            .addCase(handleGetExtendedNews.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = "";
+                state.extendedNews = action.payload;
             })
     }
 })

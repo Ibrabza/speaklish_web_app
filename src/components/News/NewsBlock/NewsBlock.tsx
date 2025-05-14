@@ -33,12 +33,15 @@ const NewsBlock: FC = () => {
             <div className={styles.scrolling} >
                 {results.map((item, i) => (
                     <NewItem
+                        urls={item.urls}
                         showWindow={showNews}
                         func={setShowNews}
                         id={i}
                         key={i}
                         title={item.title}
                         content={item.content}
+                        url_type={item.url_type}
+                        slug={item.slug}
                         image={item.image ? (item.image.startsWith('http:') ? item.image.replace('http:', 'https:') : item.image) : ""}
                     />
                 ))}
