@@ -17,7 +17,7 @@ const endpoints = {
     history: `${BASE_URL}/speaking-session/results?last=10`
   },
   courses: {
-    lessons: `${BASE_URL}/courses/lessons/`,
+    lessons: `${BASE_URL}/courses/user-lessons/`,
     lesson: (id: number) => `${BASE_URL}/courses/lesson/${id}`,
     quizzes: (lessonId: number) => `${BASE_URL}/courses/lesson/${lessonId}/quizzes`,
     quizSubmit: (lessonId: number) => `${BASE_URL}/courses/lesson/${lessonId}/quizzes/submit`,
