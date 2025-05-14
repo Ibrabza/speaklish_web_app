@@ -9,9 +9,11 @@ interface IDownloadFile {
 }
 
 const DownloadFile: FC<IDownloadFile> = ({ fileName, link }) => {
+    const newFName = link.split('/')[fileName.length - 1]
     const downloadFromServer = async () => {
-        postEvent('web_app_request_file_download',{ url: link,file_name: fileName })
+        postEvent('web_app_request_file_download',{ url: link,file_name: newFName })
         console.log(link)
+        console.log(newFName)
     };
 
 

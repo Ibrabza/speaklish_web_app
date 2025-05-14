@@ -2,8 +2,7 @@ import { FC, useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/Store/store.ts";
-import Loading from "@/components/Loading.tsx";
-// import {getDataCal} from "@/Features/Calendar/CalendarSlice.ts";
+import SmallLoading from "@/components/SmallLoading/SmallLoading.tsx";
 
 const CalendarDisplay: FC = () => {
     // const [date, setDate] = useState<Date | undefined>(new Date());
@@ -20,16 +19,7 @@ const CalendarDisplay: FC = () => {
         }
     }, [dispatch,results]);
 
-    // console.log(results)
-    // console.log(selectedDates)
-
-    // const handleSelect = (dates: Date[] | undefined) => {
-    //     if (dates) {
-    //         setSelectedDates(dates);
-    //     }
-    // };
-
-    if (!results) return <Loading />;
+    if (!results) return <SmallLoading />;
 
     return (
         <Calendar

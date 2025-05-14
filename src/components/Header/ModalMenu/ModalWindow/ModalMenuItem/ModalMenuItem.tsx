@@ -19,7 +19,7 @@ const ModalMenuItem : FC<IModalMenuItemProps> = (props) => {
                     <div className="flex items-start w-full gap-3">
                         <FaSpinner className="animate-spin text-blue-500 mr-3" />
                         <div>
-                            <p className="font-semibold">In Process Of Development</p>
+                            <p className="font-semibold">In process of development</p>
                         </div>
                     </div>
                 ), {

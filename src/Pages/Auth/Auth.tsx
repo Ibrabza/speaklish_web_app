@@ -19,22 +19,22 @@ const Auth :FC = () => {
             const searchParams = new URLSearchParams(window.location.search);
             // Check for tgWebAppData parameter
             const tgWebAppData = searchParams.get('tgWebAppData');
-            
+
             // Use either the tgWebAppData from URL or the hash
             const initData = tgWebAppData ? `#tgWebAppData=${tgWebAppData}` : window.location.hash;
-            
+
             // Store the initData in the ref for potential use in registration
             initDataRef.current = initData;
-            
+
             console.log('Auth initData:', initData);
-            
+
             // Dispatch auth action with the initData
             dispatch(handleAuth({
                 initData: initData,
-                password: "123456",
-                username: "ibrabza"
+                password: "2025",
+                username: "speaklish_user"
             }));
-            
+
             // Get group data after authentication
             dispatch(getGroupData());
         }
@@ -50,7 +50,7 @@ const Auth :FC = () => {
 
     // Store the initData in a ref so we can use it for registration if needed
     const initDataRef = React.useRef('');
-    
+
     useEffect(() => {
         // Check for any error when not authorized
         if (!isAuthorized && error) {
@@ -58,25 +58,22 @@ const Auth :FC = () => {
             // Log the error type and content for debugging
             console.log('Error type:', typeof error);
             console.log('Error content:', JSON.stringify(error));
-            
+
             // Always redirect to register when there's an error and user is not authorized
             // This ensures we handle all error cases including 'User not found'
             console.log('Redirecting to register page with initData:', initDataRef.current);
-            
+
             // Navigate to register page with initData as a query parameter
             navigate(`/app/register${initDataRef.current ? `?tgWebAppData=${encodeURIComponent(initDataRef.current.replace('#tgWebAppData=', ''))}` : ''}`);
         }
     }, [error, isAuthorized, navigate]);
-    
+
     // Use useEffect for navigation instead of doing it during render
     useEffect(() => {
         if(!error && isAuthorized) {
             navigate("/app");
         }
     }, [error, isAuthorized, navigate]);
-    // console.log("loading:", loading);
-    // console.log("isAuth:", isAuthorized);
-    // console.log("error:", error);
     return (
                 <div className={" h-dvh text-green-800"}>
                     <div className={" h-dvh bg-gray-50 w-dvw flex flex-col items-center gap-4 justify-center "}>
