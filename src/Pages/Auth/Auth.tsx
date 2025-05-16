@@ -64,7 +64,7 @@ const Auth :FC = () => {
             console.log('Redirecting to register page with initData:', initDataRef.current);
 
             // Navigate to register page with initData as a query parameter
-            navigate(`/app/register${initDataRef.current ? `?tgWebAppData=${encodeURIComponent(initDataRef.current.replace('#tgWebAppData=', ''))}` : ''}`);
+            navigate(`/register${initDataRef.current ? `?tgWebAppData=${encodeURIComponent(initDataRef.current.replace('#tgWebAppData=', ''))}` : ''}`);
         }
     }, [error, isAuthorized, navigate]);
 
