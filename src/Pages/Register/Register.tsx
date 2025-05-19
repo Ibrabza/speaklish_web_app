@@ -6,7 +6,6 @@ import {AppDispatch, RootState} from "@/Store/store.ts";
 import {handleAuth, handleReg} from "@/Features/User/userSlice.ts";
 import {useNavigate} from "react-router-dom";
 import { requestContact } from '@telegram-apps/sdk';
-import { useRawLaunchParams } from '@telegram-apps/sdk-react';
 import {formatPhoneNumber, isValidPhoneNumber} from "@/Helpers/helper.ts";
 
 
