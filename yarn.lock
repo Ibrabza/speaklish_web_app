@@ -1801,7 +1801,14 @@
     "@telegram-apps/signals" "^1.1.1"
     "@telegram-apps/toolkit" "^1.1.1"
 
-"@telegram-apps/sdk@^3.6.0":
+"@telegram-apps/sdk-react@^3.2.4":
+  version "3.2.4"
+  resolved "https://registry.yarnpkg.com/@telegram-apps/sdk-react/-/sdk-react-3.2.4.tgz#6de8b73e53b69b14a3933395e13693c7711c8f6f"
+  integrity sha512-hDV1Vp9AacVO5nyuMeRAatdEnbZskzKfSi+GEKruwhv1U3jCv11reSYkm4sSWNNRBKVP/fr/ywrvdjk4kmGp7g==
+  dependencies:
+    "@telegram-apps/sdk" "^3.9.2"
+
+"@telegram-apps/sdk@^3.6.0", "@telegram-apps/sdk@^3.9.2":
   version "3.9.2"
   resolved "https://registry.npmjs.org/@telegram-apps/sdk/-/sdk-3.9.2.tgz"
   integrity sha512-FbSWaTdFFTGNhXyDGG8QxlV97wS6oMK97Qlhy2GylMHj0Fph1ttjoYo3z3j7/eap1ShHNdxnwu1upHJc0/PJQQ==

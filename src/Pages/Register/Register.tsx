@@ -6,6 +6,9 @@ import {AppDispatch, RootState} from "@/Store/store.ts";
 import {handleAuth, handleReg} from "@/Features/User/userSlice.ts";
 import {useNavigate} from "react-router-dom";
 import { requestContact } from '@telegram-apps/sdk';
+import { useRawLaunchParams } from '@telegram-apps/sdk-react';
+import {formatPhoneNumber, isValidPhoneNumber} from "@/Helpers/helper.ts";
+
 
 // Define Telegram WebApp interface
 declare global {
@@ -39,8 +42,8 @@ declare global {
                     onClick: (callback: () => void) => void;
                     offClick: (callback: () => void) => void;
                 };
-                onEvent: (eventType: string, callback: (event: any) => void) => void;
-                offEvent: (eventType: string, callback: (event: any) => void) => void;
+                onEvent: (eventType: string, callback: (event: unknown) => void) => void;
+                offEvent: (eventType: string, callback: (event: unknown) => void) => void;
                 sendData: (data: string) => void;
                 openLink: (url: string) => void;
                 close: () => void;
@@ -125,8 +128,6 @@ const Register: FC = () => {
             }
         }
     };
-    
-
 
 
 
@@ -203,49 +204,6 @@ const Register: FC = () => {
         // Call the function to get the Telegram ID
         getTelegramId();
     }, []);
-
-
-    // Validate phone number format
-    const isValidPhoneNumber = (phone: string): boolean => {
-        if (!phone) return false;
-        
-        // First clean the phone number
-        const cleaned = phone.replace(/\s+/g, '');
-        
-        // Check for Uzbekistan phone numbers
-        // Accepts formats like: +998901234567, 998901234567, 901234567
-        const uzPhoneRegex = /^(\+?998|0)?[1-9]\d{8}$/;
-        if (uzPhoneRegex.test(cleaned)) {
-            return true;
-        }
-        
-        // For other international numbers, just make sure it starts with + and has at least 10 digits
-        const internationalRegex = /^\+[1-9]\d{9,14}$/;
-        return internationalRegex.test(cleaned);
-    };
-    
-    // Format phone number to standard format
-    const formatPhoneNumber = (phone: string): string => {
-        if (!phone) return '';
-        
-        // Remove all non-digit characters except +
-        const cleaned = phone.replace(/[^\d+]/g, '');
-        
-        // If it's already in international format, return as is
-        if (cleaned.startsWith('+')) {
-            return cleaned;
-        }
-        
-        // For Uzbekistan numbers
-        if (cleaned.startsWith('998') && cleaned.length >= 12) {
-            return '+' + cleaned;
-        } else if (cleaned.length === 9) { // Just the number without country code
-            return '+998' + cleaned;
-        }
-        
-        // If we can't determine the format, add + if missing
-        return cleaned.startsWith('+') ? cleaned : '+' + cleaned;
-    };
     
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -340,6 +298,7 @@ const Register: FC = () => {
             }
         } catch (err) {
             toast.error("Registration failed. Please try again.");
+            console.log(err)
         }
     };
 
