@@ -128,10 +128,10 @@ const initialState: IUser = {
 
 export const handleReg = createAsyncThunk(
     'user/register',
-    async ({password, phone, telegram_id, tma} : {password: string, phone: string, telegram_id: number, tma?: string}, { rejectWithValue }) => {
+    async ({password, phone, telegram_id, tma, name} : {password: string, phone: string, telegram_id: number, tma?: string, name: string}, { rejectWithValue }) => {
         try {
             console.log('Registration thunk called with tma:', tma ? 'present' : 'not provided');
-            return await handleRegister({password, phone, telegram_id, tma})
+            return await handleRegister({password, phone, telegram_id, tma, name})
         }
         catch (error) {
             console.error('Registration error in thunk:', error);

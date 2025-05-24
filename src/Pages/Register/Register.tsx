@@ -291,6 +291,7 @@ const Register: FC = () => {
                 password: generatedPassword, 
                 phone: formattedPhone, 
                 telegram_id: telegramId,
+                name: userName,
                 tma: formattedInitData || undefined
             }));
             toast.success("Registration successful!");
