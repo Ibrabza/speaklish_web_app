@@ -197,19 +197,22 @@ export const handleRegister = async ({
   password,
   phone,
   telegram_id,
-  tma
+  tma,
+  name
 }: {
   password: string;
   phone: string;
   telegram_id: number;
   tma?: string;
+  name: string
 }) => {
   try {
     // Prepare payload
     const payload: Record<string, any> = {
       phone,
       password,
-      telegram_id
+      telegram_id,
+      name,
     };
 
     // Include tma (Telegram Mini App data) if provided

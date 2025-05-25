@@ -64,8 +64,6 @@ const AppRoutes = () => {
         <BrowserRouter>
             <AuthStateRestorer />
             <Routes>
-
-
                 <Route path="auth" element={<Auth />} />
                 <Route path="register" element={<Register />} />
 
