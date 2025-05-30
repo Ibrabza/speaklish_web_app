@@ -209,7 +209,7 @@ export const handleRegister = async ({
       phone,
       password,
       telegram_id,
-      name,
+      'first_name': name,
     };
 
     // Include tma (Telegram Mini App data) if provided
