@@ -55,17 +55,49 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor for error handling
 api.interceptors.response.use(
-  (response) => response,
-  async (error: AxiosError) => {
-    // const originalRequest = error.config;
+    (response: AxiosResponse) => response,
+    async (error: AxiosError) => {
+      const originalRequest = error.config as any;
 
-    // Handle specific error cases here if needed
-    // For example, token refresh logic could go here
+      if (
+          error.response?.status === 401 &&
+          !originalRequest._retry
+      ) {
+        originalRequest._retry = true;
 
-    return Promise.reject(error);
-  }
+        try {
+          const refreshToken = localStorage.getItem('refresh_token');
+
+          if (!refreshToken) {
+            return Promise.reject(error);
+          }
+
+          const response = await axios.post(`${BASE_URL}/auth/refresh/`, {
+            refresh: refreshToken
+          });
+
+          const newAccessToken = response.data.access;
+          const newRefreshToken = response.data.refresh;
+
+          localStorage.setItem('token', newAccessToken);
+          if (newRefreshToken) {
+            localStorage.setItem('refresh_token', newRefreshToken);
+          }
+
+          originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
+          return api(originalRequest);
+        } catch (refreshError) {
+
+          localStorage.removeItem('token');
+          localStorage.removeItem('refresh_token');
+
+          return Promise.reject(refreshError);
+        }
+      }
+
+      return Promise.reject(error);
+    }
 );
 
 // Helper function to handle API responses

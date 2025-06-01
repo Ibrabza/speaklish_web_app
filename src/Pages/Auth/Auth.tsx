@@ -13,6 +13,8 @@ const Auth :FC = () => {
     const dispatch = useDispatch<AppDispatch>()
     const {isAuthorized, error, refresh, loading, access,} = useSelector((state: RootState) => state.user);
     const initDataRaw = useRawLaunchParams();
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         if (!access && !refresh) {
@@ -31,7 +33,6 @@ const Auth :FC = () => {
         }
     }, [access, dispatch, initDataRaw, refresh])
 
-    const navigate = useNavigate();
 
     function handleClick(){
         navigate('/app');
