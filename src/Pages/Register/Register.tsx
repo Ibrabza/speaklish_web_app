@@ -7,6 +7,8 @@ import {handleAuth, handleReg} from "@/Features/User/userSlice.ts";
 import {useNavigate} from "react-router-dom";
 import { requestContact } from '@telegram-apps/sdk';
 import {formatPhoneNumber, isValidPhoneNumber} from "@/Helpers/helper.ts";
+import { useRawLaunchParams } from '@telegram-apps/sdk-react';
+
 
 
 // Define Telegram WebApp interface
@@ -58,7 +60,8 @@ const Register: FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const { loading, error } = useSelector((state: RootState) => state.user);
-    
+
+    const tma = useRawLaunchParams();
     const [phoneNumber, setPhoneNumber] = useState<string>("");
     const [telegramId, setTelegramId] = useState<number | null>(null);
     const [phoneRequested, setPhoneRequested] = useState<boolean>(false);
@@ -137,35 +140,37 @@ const Register: FC = () => {
         // Log Telegram WebApp initialization
         console.log('Initializing Telegram WebApp integration');
         console.log('Telegram SDK available:', requestContact.isAvailable());
-        
+
+
+        setStoredInitData(`#${tma}`)
         // Check for tgWebAppData in the URL
-        const searchParams = new URLSearchParams(window.location.search);
-        const tgWebAppData = searchParams.get('tgWebAppData');
-        
-        if (tgWebAppData) {
-            console.log('Found tgWebAppData in URL:', tgWebAppData);
-            // Store the raw tgWebAppData for later use in login
-            setStoredInitData(tgWebAppData);
-            
-            // Try to parse the user data from the tgWebAppData
-            try {
-                // The data is URL encoded and needs to be decoded
-                const decodedData = decodeURIComponent(tgWebAppData);
-                console.log('Decoded tgWebAppData:', decodedData);
-                
-                // Extract the user ID from the decoded data
-                // This is a simple approach - in a real app you might want to use a more robust parser
-                const userMatch = decodedData.match(/"id":(\d+)/);
-                if (userMatch && userMatch[1]) {
-                    const id = parseInt(userMatch[1], 10);
-                    console.log('Extracted Telegram ID from URL data:', id);
-                    setTelegramId(id);
-                    return;
-                }
-            } catch (error) {
-                console.error('Error parsing tgWebAppData:', error);
-            }
-        }
+        // const searchParams = new URLSearchParams(window.location.search);
+        // const tgWebAppData = searchParams.get('tgWebAppData');
+        //
+        // if (tgWebAppData) {
+        //     console.log('Found tgWebAppData in URL:', tgWebAppData);
+        //     // Store the raw tgWebAppData for later use in login
+        //     setStoredInitData(tgWebAppData);
+        //
+        //     // Try to parse the user data from the tgWebAppData
+        //     try {
+        //         // The data is URL encoded and needs to be decoded
+        //         const decodedData = decodeURIComponent(tgWebAppData);
+        //         console.log('Decoded tgWebAppData:', decodedData);
+        //
+        //         // Extract the user ID from the decoded data
+        //         // This is a simple approach - in a real app you might want to use a more robust parser
+        //         const userMatch = decodedData.match(/"id":(\d+)/);
+        //         if (userMatch && userMatch[1]) {
+        //             const id = parseInt(userMatch[1], 10);
+        //             console.log('Extracted Telegram ID from URL data:', id);
+        //             setTelegramId(id);
+        //             return;
+        //         }
+        //     } catch (error) {
+        //         console.error('Error parsing tgWebAppData:', error);
+        //     }
+        // }
         
         // Try to get Telegram ID from the SDK
         const getTelegramId = async () => {
@@ -202,7 +207,7 @@ const Register: FC = () => {
         
         // Call the function to get the Telegram ID
         getTelegramId();
-    }, []);
+    }, [tma]);
     
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -241,7 +246,7 @@ const Register: FC = () => {
             const formattedInitData = storedInitData ? 
                 (storedInitData.startsWith('#') ? storedInitData : `#tgWebAppData=${storedInitData}`) : 
                 (window.Telegram?.WebApp?.initData || '');
-            
+
             console.log('Registering with initData:', formattedInitData ? 'present' : 'not available');
             
             await dispatch(handleReg({ 
@@ -249,7 +254,7 @@ const Register: FC = () => {
                 phone: formattedPhone, 
                 telegram_id: telegramId,
                 name: userName,
-                tma: formattedInitData || undefined
+                tma: `#${tma}`
             }));
             toast.success("Registration successful!");
             
@@ -273,12 +278,12 @@ const Register: FC = () => {
                 
                 if (initData) {
                     // Format the initData properly for the login API
-                    const formattedInitData = initData.startsWith('#') ? initData : `#tgWebAppData=${initData}`;
+                    // const formattedInitData = initData.startsWith('#') ? initData : `#tgWebAppData=${initData}`;
                     
                     // Call the login API directly
                     console.log('Calling login API with initData and generated password');
                     await dispatch(handleAuth({
-                        initData: formattedInitData,
+                        initData: `#${tma}`,
                         password: generatedPassword,
                         username: userName
                     }));

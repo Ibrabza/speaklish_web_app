@@ -240,6 +240,7 @@ const userSlice = createSlice({
             })
             .addCase(handleReg.rejected, (state, action) => {
                 state.loading = false;
+                console.log(action.payload)
                 // Handle error properly by converting to string if it's an object
                 if (action.payload instanceof Error) {
                     state.error = action.payload.message || 'Registration failed';
