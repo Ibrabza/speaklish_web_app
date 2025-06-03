@@ -10,63 +10,49 @@ import {getGroupData, handleAuth} from "@/Features/User/userSlice.ts";
 import { useRawLaunchParams } from '@telegram-apps/sdk-react';
 
 const Auth :FC = () => {
-    const dispatch = useDispatch<AppDispatch>()
-    const {isAuthorized, error, refresh, loading, access,} = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch<AppDispatch>();
+    const { isAuthorized, error, loading } = useSelector((state: RootState) => state.user);
+    const initDataRef = React.useRef('');
     const initDataRaw = useRawLaunchParams();
     const navigate = useNavigate();
 
+    const localAccess = localStorage.getItem("token");
+    const localRefresh = localStorage.getItem("refresh_token");
 
     useEffect(() => {
-        if (!access && !refresh) {
+        if (!localAccess && !localRefresh) {
             const initData = `#${initDataRaw}`;
             initDataRef.current = initData;
 
             console.log('Auth initData:', initData);
 
             dispatch(handleAuth({
-                initData: initData,
+                initData,
                 password: "2025",
                 username: "speaklish_user",
             }));
 
             dispatch(getGroupData());
         }
-    }, [access, dispatch, initDataRaw, refresh])
-
-
-    function handleClick(){
-        navigate('/app');
-    }
-
-    const textToButton = !isAuthorized ? "Not authorized yet" : "Continue"
-
-    // Store the initData in a ref so we can use it for registration if needed
-    const initDataRef = React.useRef('');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); // Run once on mount
 
     useEffect(() => {
-        // Check for any error when not authorized
-        if (!isAuthorized && error) {
-            console.log('Auth error detected:', error);
-            // Log the error type and content for debugging
-            console.log('Error type:', typeof error);
-            console.log('Error content:', JSON.stringify(error));
-
-            // Always redirect to register when there's an error and user is not authorized
-            // This ensures we handle all error cases including 'User not found'
-            console.log('Redirecting to register page with initData:', initDataRef.current);
-
-            // Navigate to register page with initData as a query parameter
-            navigate(`/register${initDataRef.current}`);
-            // navigate(`/register${initDataRef.current ? `?tgWebAppData=${encodeURIComponent(initDataRef.current.replace('#tgWebAppData=', ''))}` : ''}`);
-        }
-    }, [error, isAuthorized, navigate]);
-
-    // Use useEffect for navigation instead of doing it during render
-    useEffect(() => {
-        if(!error && isAuthorized) {
+        if (isAuthorized) {
             navigate("/app");
+        } else if (error) {
+            console.log('Auth error detected:', error);
+            console.log('Redirecting to register with initData:', initDataRef.current);
+            navigate(`/register${initDataRef.current}`);
         }
-    }, [error, isAuthorized, navigate]);
+    }, [isAuthorized, error, navigate]);
+
+    const handleClick = () => {
+        navigate('/app');
+    };
+
+    const textToButton = !isAuthorized ? "Not authorized yet" : "Continue";
+
     return (
         <div className={" h-dvh text-green-800"}>
             <div className={" h-dvh bg-gray-50 w-dvw flex flex-col items-center gap-4 justify-center "}>
