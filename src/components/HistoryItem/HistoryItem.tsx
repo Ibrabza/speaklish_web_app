@@ -1,4 +1,4 @@
-import {FC} from "react";
+import { FC } from "react";
 
 import styles from "./HistoryItem.module.css"
 import CallIcon from "@/assets/icons/shared/CalIcon.tsx";
@@ -6,14 +6,17 @@ import CallIcon from "@/assets/icons/shared/CalIcon.tsx";
 
 interface IHistoryItem {
     name?: string;
+    id: string | number;
     date: string;
     score: number;
+    func: (id:string | number) => void;
 }
 
 
 const HistoryItem : FC<IHistoryItem> = (props) => {
+
     return (
-        <div className={styles.container}>
+        <div className={styles.container} onClick={() => props.func(props.id)}>
             <h3>{props.name ? props.name : "Speaking"}</h3>
             <div className={styles.dataBlock}>
                 <div className={styles.date}>
