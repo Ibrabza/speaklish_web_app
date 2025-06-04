@@ -234,39 +234,8 @@ const userSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(handleAuth.pending, (state) => {
             state.loading = true;
+            state.isAuthorized = false;
         })
-            .addCase(handleReg.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(handleReg.rejected, (state, action) => {
-                state.loading = false;
-                console.log(action.payload)
-                // Handle error properly by converting to string if it's an object
-                if (action.payload instanceof Error) {
-                    state.error = action.payload.message || 'Registration failed';
-                } else if (typeof action.payload === 'object' && action.payload !== null) {
-                    state.error = JSON.stringify(action.payload) || 'Registration failed';
-                } else {
-                    state.error = action.payload as string || 'Registration failed';
-                }
-            })
-            .addCase(handleReg.fulfilled, (state, action) => {
-                state.loading = false;
-                state.error = "";
-                console.log('Registration successful:', action.payload);
-                
-                // If the registration response includes tokens, store them
-                if (action.payload) {
-                    if (action.payload.access) {
-                        state.access = action.payload.access;
-                        console.log('Storing access token from registration');
-                    }
-                    if (action.payload.refresh) {
-                        state.refresh = action.payload.refresh;
-                        console.log('Storing refresh token from registration');
-                    }
-                }
-            })
             .addCase(handleAuth.rejected, (state, action) => {
                 state.loading = false;
                 state.isAuthorized = false;
@@ -317,6 +286,7 @@ const userSlice = createSlice({
                 if(!action.payload.access){
                     state.error = "Not authorized to access";
                     state.isAuthorized = false;
+                    state.loading = false;
                 }else {
                     state.role = action.payload.role;
                     state.error = null;
@@ -338,6 +308,41 @@ const userSlice = createSlice({
                             state.first_name = '';
                             state.photo_url = '';
                         }
+                    }
+                }
+            })
+            .addCase(handleReg.pending, (state) => {
+                state.loading = true;
+                state.isAuthorized = false;
+                state.error = '';
+            })
+            .addCase(handleReg.rejected, (state, action) => {
+                state.loading = false;
+                console.log(action.payload)
+                // Handle error properly by converting to string if it's an object
+                if (action.payload instanceof Error) {
+                    state.error = action.payload.message || 'Registration failed';
+                } else if (typeof action.payload === 'object' && action.payload !== null) {
+                    state.error = JSON.stringify(action.payload) || 'Registration failed';
+                } else {
+                    state.error = action.payload as string || 'Registration failed';
+                }
+            })
+            .addCase(handleReg.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = "";
+                state.isAuthorized = true;
+                console.log('Registration successful:', action.payload);
+
+                // If the registration response includes tokens, store them
+                if (action.payload) {
+                    if (action.payload.access) {
+                        state.access = action.payload.access;
+                        console.log('Storing access token from registration');
+                    }
+                    if (action.payload.refresh) {
+                        state.refresh = action.payload.refresh;
+                        console.log('Storing refresh token from registration');
                     }
                 }
             })
@@ -367,6 +372,7 @@ const userSlice = createSlice({
                 state.loading = true;
             })
             .addCase(getGroupData.fulfilled, (state, action) => {
+                state.loading = false;
                 state.id = action.payload.id;
                 state.request_balance = action.payload.request_balance
                 state.email = action.payload.email;

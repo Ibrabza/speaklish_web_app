@@ -1,10 +1,10 @@
 import { AppDispatch } from "@/Store/store";
-import { setAccess, setRefresh, setIsAuthorized } from "@/Features/User/userSlice";
+import { setAccess, setRefresh } from "@/Features/User/userSlice";
 
 // Token key constants
 const ACCESS_TOKEN_KEY = "token";
 const REFRESH_TOKEN_KEY = "refresh_token";
-const AUTH_STATE_KEY = "isAuthorized";
+// const AUTH_STATE_KEY = "isAuthorized";
 
 /**
  * Saves authentication tokens to localStorage
@@ -17,7 +17,7 @@ export const saveAuthTokens = (accessToken: string, refreshToken?: string): void
   }
   
   // Save authentication state
-  localStorage.setItem(AUTH_STATE_KEY, "true");
+  // localStorage.setItem(AUTH_STATE_KEY, "true");
   
   console.log("Auth tokens saved to localStorage");
 };
@@ -28,7 +28,7 @@ export const saveAuthTokens = (accessToken: string, refreshToken?: string): void
 export const clearAuthTokens = (): void => {
   localStorage.removeItem(ACCESS_TOKEN_KEY);
   localStorage.removeItem(REFRESH_TOKEN_KEY);
-  localStorage.removeItem(AUTH_STATE_KEY);
+  // localStorage.removeItem(AUTH_STATE_KEY);
   
   console.log("Auth tokens cleared from localStorage");
 };
@@ -65,20 +65,20 @@ export const isTokenExpired = (token: string): boolean => {
 /**
  * Checks if the user is authenticated based on token presence and validity
  */
-export const isAuthenticated = (): boolean => {
-  const token = localStorage.getItem(ACCESS_TOKEN_KEY);
-  
-  if (!token) return false;
-  
-  // Check if the token is expired
-  if (isTokenExpired(token)) {
-    console.log('Token is expired, clearing auth state');
-    clearAuthTokens();
-    return false;
-  }
-  
-  return true;
-};
+// export const isAuthenticated = (): boolean => {
+//   const token = localStorage.getItem(ACCESS_TOKEN_KEY);
+//
+//   if (!token) return false;
+//
+//   // Check if the token is expired
+//   if (isTokenExpired(token)) {
+//     console.log('Token is expired, clearing auth state');
+//     clearAuthTokens();
+//     return false;
+//   }
+//
+//   return true;
+// };
 
 /**
  * Gets the access token from localStorage
@@ -119,13 +119,13 @@ export const restoreAuthState = (dispatch: AppDispatch): boolean => {
     }
     
     // Explicitly set the isAuthorized state to true
-    dispatch(setIsAuthorized(true));
+    // dispatch(setIsAuthorized(true));
     
     console.log("Auth state restored from localStorage");
     return true;
   } else {
     // If no valid token was found, ensure isAuthorized is set to false
-    dispatch(setIsAuthorized(false));
+    // dispatch(setIsAuthorized(false));
     console.log("No valid auth token found, setting isAuthorized to false");
     return false;
   }

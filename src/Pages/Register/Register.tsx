@@ -254,7 +254,7 @@ const Register: FC = () => {
                 phone: formattedPhone, 
                 telegram_id: telegramId,
                 name: userName,
-                tma: `#${tma}`
+                tma: `${formattedInitData}`
             }));
             toast.success("Registration successful!");
             
@@ -266,8 +266,8 @@ const Register: FC = () => {
                 let initData = '';
                 
                 // First try to use the stored initData from URL
-                if (storedInitData) {
-                    initData = storedInitData;
+                if (formattedInitData) {
+                    initData = formattedInitData;
                     console.log('Using stored initData from URL for login');
                 }
                 // Then try to get it from Telegram WebApp
@@ -275,7 +275,7 @@ const Register: FC = () => {
                     initData = window.Telegram.WebApp.initData;
                     console.log('Using initData from WebApp for login');
                 }
-                
+                // #tgWebAppData=query_id%3DAAENZyMkAAAAAA1nIySZPa_m%26user%3D%257B%2522id%2522%253A606299917%252C%2522first_name%2522%253A%2522Abzal%2522%252C%2522last_name%2522%253A%2522%2522%252C%2522username%2522%253A%2522ibrabza%2522%252C%2522language_code%2522%253A%2522en%2522%252C%2522allows_write_to_pm%2522%253Atrue%252C%2522photo_url%2522%253A%2522https%253A%255C%252F%255C%252Ft.me%255C%252Fi%255C%252Fuserpic%255C%252F320%255C%252FPm-eMQY1b4e0lD0r_7hAJDHXhx-2dA5UaY1estneYKk.svg%2522%257D%26auth_date%3D1748970133%26signature%3DxIurJEdIcMlZpfP1im_m1822rGjyElE8P71TcscT2tGI81J0VVg5GLmgnmN-ooDHzBwA8NDakCpodwcEgkwMCQ%26hash%3D2ca79db8eea0dd9383eca18a8a627eb6b7357ce424359b5d4efe83eaccf8dbe8&tgWebAppVersion=9.0&tgWebAppPlatform=macos&tgWebAppThemeParams=%7B%22section_header_text_color%22%3A%22%23b1c3d5%22%2C%22destructive_text_color%22%3A%22%23ef5b5b%22%2C%22button_color%22%3A%22%232ea6ff%22%2C%22accent_text_color%22%3A%22%232ea6ff%22%2C%22link_color%22%3A%22%2362bcf9%22%2C%22secondary_bg_color%22%3A%22%23131415%22%2C%22bottom_bar_bg_color%22%3A%22%23213040%22%2C%22bg_color%22%3A%22%2318222d%22%2C%22subtitle_text_color%22%3A%22%23b1c3d5%22%2C%22section_separator_color%22%3A%22%23213040%22%2C%22button_text_color%22%3A%22%23ffffff%22%2C%22section_bg_color%22%3A%22%2318222d%22%2C%22hint_color%22%3A%22%23b1c3d5%22%2C%22text_color%22%3A%22%23ffffff%22%2C%22header_bg_color%22%3A%22%23131415%22%7D"}'
                 if (initData) {
                     // Format the initData properly for the login API
                     // const formattedInitData = initData.startsWith('#') ? initData : `#tgWebAppData=${initData}`;
@@ -283,7 +283,7 @@ const Register: FC = () => {
                     // Call the login API directly
                     console.log('Calling login API with initData and generated password');
                     await dispatch(handleAuth({
-                        initData: `#${tma}`,
+                        initData: `#tgWebAppData=user%${initData.split('user%')[1]}`,
                         password: generatedPassword,
                         username: userName
                     }));

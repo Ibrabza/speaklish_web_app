@@ -12,12 +12,17 @@ import { useRawLaunchParams } from '@telegram-apps/sdk-react';
 const Auth :FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { isAuthorized, error, loading } = useSelector((state: RootState) => state.user);
+    const user = useSelector((state: RootState) => state.user);
     const initDataRef = React.useRef('');
     const initDataRaw = useRawLaunchParams();
     const navigate = useNavigate();
 
     const localAccess = localStorage.getItem("token");
     const localRefresh = localStorage.getItem("refresh_token");
+
+    console.log('user info', user)
+
+    console.log(initDataRaw)
 
     useEffect(() => {
         if (!localAccess && !localRefresh) {
@@ -31,21 +36,28 @@ const Auth :FC = () => {
                 password: "2025",
                 username: "speaklish_user",
             }));
-
-            dispatch(getGroupData());
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []); // Run once on mount
+    }, [initDataRaw, localAccess, localRefresh, dispatch]);
 
     useEffect(() => {
         if (isAuthorized) {
-            navigate("/app");
-        } else if (error) {
+            dispatch(getGroupData());
+        }
+    }, [isAuthorized, dispatch]);
+
+    useEffect(() => {
+        if (!isAuthorized && error && !loading) {
             console.log('Auth error detected:', error);
-            console.log('Redirecting to register with initData:', initDataRef.current);
+            console.log('Redirecting to register page with initData:', initDataRef.current);
             navigate(`/register${initDataRef.current}`);
         }
-    }, [isAuthorized, error, navigate]);
+    }, [error, isAuthorized, loading, navigate]);
+
+    useEffect(() => {
+        if (isAuthorized && !error && !loading) {
+            navigate("/app");
+        }
+    }, [isAuthorized, error, loading, navigate]);
 
     const handleClick = () => {
         navigate('/app');
