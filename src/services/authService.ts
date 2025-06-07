@@ -1,5 +1,5 @@
 import { AppDispatch } from "@/Store/store";
-import { setAccess, setRefresh } from "@/Features/User/userSlice";
+import {setAccess, setIsAuthorized, setRefresh} from "@/Features/User/userSlice";
 
 // Token key constants
 const ACCESS_TOKEN_KEY = "token";
@@ -119,13 +119,13 @@ export const restoreAuthState = (dispatch: AppDispatch): boolean => {
     }
     
     // Explicitly set the isAuthorized state to true
-    // dispatch(setIsAuthorized(true));
+    dispatch(setIsAuthorized(true));
     
     console.log("Auth state restored from localStorage");
     return true;
   } else {
     // If no valid token was found, ensure isAuthorized is set to false
-    // dispatch(setIsAuthorized(false));
+    dispatch(setIsAuthorized(false));
     console.log("No valid auth token found, setting isAuthorized to false");
     return false;
   }

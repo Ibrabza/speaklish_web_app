@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/Store/store.ts";
 import {getGroupData, handleAuth} from "@/Features/User/userSlice.ts";
 import { useRawLaunchParams } from '@telegram-apps/sdk-react';
+import {getAccessToken, getRefreshToken} from "@/services/authService.ts";
 
 const Auth :FC = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -17,15 +18,15 @@ const Auth :FC = () => {
     const initDataRaw = useRawLaunchParams();
     const navigate = useNavigate();
 
-    const localAccess = localStorage.getItem("token");
-    const localRefresh = localStorage.getItem("refresh_token");
+    const localAccess = getAccessToken();
+    const localRefresh = getRefreshToken();
 
     console.log('user info', user)
 
     console.log(initDataRaw)
 
     useEffect(() => {
-        if (!localAccess && !localRefresh) {
+        if (!localAccess || !localRefresh) {
             const initData = `#${initDataRaw}`;
             initDataRef.current = initData;
 
@@ -37,7 +38,7 @@ const Auth :FC = () => {
                 username: "speaklish_user",
             }));
         }
-    }, [initDataRaw, localAccess, localRefresh, dispatch]);
+    }, []);
 
     useEffect(() => {
         if (isAuthorized) {
@@ -49,7 +50,7 @@ const Auth :FC = () => {
         if (!isAuthorized && error && !loading) {
             console.log('Auth error detected:', error);
             console.log('Redirecting to register page with initData:', initDataRef.current);
-            navigate(`/register${initDataRef.current}`);
+            navigate(`/register/${initDataRef.current}`);
         }
     }, [error, isAuthorized, loading, navigate]);
 
@@ -69,24 +70,26 @@ const Auth :FC = () => {
         <div className={" h-dvh text-green-800"}>
             <div className={" h-dvh bg-gray-50 w-dvw flex flex-col items-center gap-4 justify-center "}>
                 <div className=" flex flex-col items-center gap-5">
-                    {(loading && !error) ? <>
-                            <div
-                                className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"/>
-                            <span className={"text-sm font-medium text-gray-700"}>
-                        Authorizing checking...
-                    </span>
+                    {loading ? (
+                        <>
+                            <div className="animate-spin ..."/>
+                            <span className="...">Authorizing...</span>
                         </>
-                        :
+                    ) : error ? (
+                        <>
+                            <span className="text-red-500">Authorization failed.</span>
+                        </>
+                    ) : isAuthorized ? (
                         <>
                             <GrStatusGood color={'green'} size={40}/>
-                            <span>
-                        Authorized
-                    </span>
-
+                            <span>Authorized</span>
                         </>
+                    ) : (
+                        <>
+                            <span>Not authorized</span>
+                        </>
+                        )
                     }
-                    {/*<label className={"text-2xl font-medium"} htmlFor='phoneNumber'>Enter phone number</label>*/}
-                    {/*<input className={"text-center py-3 px-3 block border-1 overflow-hidden border-solid border-black rounded-3xl"} placeholder={"(00)-000-00-00"} value={tel} onChange={(e) => setTel(e.target.value)} name="phoneNumber" type="tel"  />*/}
                 </div>
                 {isAuthorized &&
                     <Button1
