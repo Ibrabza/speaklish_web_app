@@ -234,7 +234,6 @@ const userSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(handleAuth.pending, (state) => {
             state.loading = true;
-            state.isAuthorized = false;
         })
             .addCase(handleAuth.rejected, (state, action) => {
                 state.loading = false;

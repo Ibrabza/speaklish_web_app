@@ -20,13 +20,20 @@ const Auth :FC = () => {
 
     const localAccess = getAccessToken();
     const localRefresh = getRefreshToken();
+    const isAuthenticated = localStorage.getItem("isAuthorized");
 
     console.log('user info', user)
 
     console.log(initDataRaw)
 
     useEffect(() => {
-        if (!localAccess || !localRefresh) {
+        if (isAuthenticated && !error && !loading) {
+            navigate("/app");
+        }
+    }, [isAuthenticated, error, loading, navigate]);
+
+    useEffect(() => {
+        if (!localAccess || !localRefresh || !isAuthenticated) {
             const initData = `#${initDataRaw}`;
             initDataRef.current = initData;
 
@@ -41,30 +48,26 @@ const Auth :FC = () => {
     }, []);
 
     useEffect(() => {
-        if (isAuthorized) {
+        if (isAuthorized || isAuthenticated) {
             dispatch(getGroupData());
         }
-    }, [isAuthorized, dispatch]);
+    }, [isAuthenticated, isAuthorized, dispatch]);
 
     useEffect(() => {
-        if (!isAuthorized && error && !loading) {
+        if (isAuthorized && !isAuthenticated || (error && !loading)) {
             console.log('Auth error detected:', error);
             console.log('Redirecting to register page with initData:', initDataRef.current);
             navigate(`/register/${initDataRef.current}`);
         }
-    }, [error, isAuthorized, loading, navigate]);
+    }, [error, isAuthenticated, loading, navigate]);
 
-    useEffect(() => {
-        if (isAuthorized && !error && !loading) {
-            navigate("/app");
-        }
-    }, [isAuthorized, error, loading, navigate]);
+
 
     const handleClick = () => {
         navigate('/app');
     };
 
-    const textToButton = !isAuthorized ? "Not authorized yet" : "Continue";
+    const textToButton = !isAuthenticated ? "Not authorized yet" : "Continue";
 
     return (
         <div className={" h-dvh text-green-800"}>
@@ -79,7 +82,7 @@ const Auth :FC = () => {
                         <>
                             <span className="text-red-500">Authorization failed.</span>
                         </>
-                    ) : isAuthorized ? (
+                    ) : isAuthenticated ? (
                         <>
                             <GrStatusGood color={'green'} size={40}/>
                             <span>Authorized</span>
@@ -91,7 +94,7 @@ const Auth :FC = () => {
                         )
                     }
                 </div>
-                {isAuthorized &&
+                {isAuthenticated &&
                     <Button1
                         className={"px-4 py-2 flex items-center bg-primary text-black rounded-lg disabled:bg-gray-400"}
                         disabled={!isAuthorized}

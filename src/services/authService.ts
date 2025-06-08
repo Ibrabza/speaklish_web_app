@@ -4,7 +4,7 @@ import {setAccess, setIsAuthorized, setRefresh} from "@/Features/User/userSlice"
 // Token key constants
 const ACCESS_TOKEN_KEY = "token";
 const REFRESH_TOKEN_KEY = "refresh_token";
-// const AUTH_STATE_KEY = "isAuthorized";
+const AUTH_STATE_KEY = "isAuthorized";
 
 /**
  * Saves authentication tokens to localStorage
@@ -17,7 +17,7 @@ export const saveAuthTokens = (accessToken: string, refreshToken?: string): void
   }
   
   // Save authentication state
-  // localStorage.setItem(AUTH_STATE_KEY, "true");
+  localStorage.setItem(AUTH_STATE_KEY, "true");
   
   console.log("Auth tokens saved to localStorage");
 };
@@ -28,7 +28,7 @@ export const saveAuthTokens = (accessToken: string, refreshToken?: string): void
 export const clearAuthTokens = (): void => {
   localStorage.removeItem(ACCESS_TOKEN_KEY);
   localStorage.removeItem(REFRESH_TOKEN_KEY);
-  // localStorage.removeItem(AUTH_STATE_KEY);
+  localStorage.removeItem(AUTH_STATE_KEY);
   
   console.log("Auth tokens cleared from localStorage");
 };
