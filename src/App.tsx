@@ -1,27 +1,27 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { Provider, useDispatch } from "react-redux";
 import Store from "@/Store/store.ts";
-import { useEffect } from "react";
+import { useEffect, Suspense, lazy } from "react";
+import { restoreAuthState } from "@/services/authService";
+import { AppDispatch } from "@/Store/store";
+import { getGroupData } from "@/Features/User/userSlice";
+import { init, swipeBehavior } from '@telegram-apps/sdk';
+import Loading from "@/components/Loading.tsx";
 
-import AppLayout from "@/Pages/AppLayout.tsx";
-import LessonsLayout from "@/Pages/Lessons/LessonsLayout.tsx";
-import ErrorPage from "@/Pages/Error/ErrorPage.tsx";
-import Home from "@/Pages/Home/Home.tsx";
-import Lessons from "@/Pages/Lessons/Lessons.tsx";
-import Speaking from "@/Pages/Speaking/Speaking.tsx";
-import Lesson from "@/components/Lesson/Lesson.tsx";
-import Quiz from "@/Features/Quiz/Quiz.tsx";
-import QuizResult from "@/Features/Quiz/QuizResult/QuizResult.tsx";
-import QuizReview from "@/Pages/Quiz/QuizReview/QuizReview.tsx";
-import Pronunciation from "@/Features/Pronunciation/Pronunciation.tsx";
-import Auth from "@/Pages/Auth/Auth.tsx";
-import Register from "@/Pages/Register/Register.tsx";
-import { restoreAuthState } from "@/services/authService.ts";
-import { AppDispatch } from "@/Store/store.ts";
-import { getGroupData } from "@/Features/User/userSlice.ts";
-import History from "@/Pages/History/History.tsx"
-import { init } from '@telegram-apps/sdk';
-import { swipeBehavior } from '@telegram-apps/sdk';
+const AppLayout = lazy(() => import('@/Pages/AppLayout.tsx'))
+const LessonsLayout = lazy(() => import("@/Pages/Lessons/LessonsLayout.tsx"));
+const ErrorPage = lazy(() => import("@/Pages/Error/ErrorPage.tsx"))
+const Home = lazy(() => import("@/Pages/Home/Home"));
+const Lessons = lazy(() => import("@/Pages/Lessons/Lessons"));
+const Speaking = lazy(() => import("@/Pages/Speaking/Speaking"));
+const Lesson = lazy(() => import("@/components/Lesson/Lesson"));
+const Quiz = lazy(() => import("@/Features/Quiz/Quiz"));
+const QuizResult = lazy(() => import("@/Features/Quiz/QuizResult/QuizResult"));
+const QuizReview = lazy(() => import("@/Pages/Quiz/QuizReview/QuizReview"));
+const Pronunciation = lazy(() => import("@/Features/Pronunciation/Pronunciation"));
+const Auth = lazy(() => import("@/Pages/Auth/Auth"));
+const Register = lazy(() => import("@/Pages/Register/Register"));
+const History = lazy(() => import("@/Pages/History/History"));
 
 
 init();
@@ -63,39 +63,41 @@ const AppRoutes = () => {
     return (
         <BrowserRouter>
             <AuthStateRestorer />
-            <Routes>
-                <Route path="auth" element={<Auth />} />
-                <Route path="register" element={<Register />} />
+            <Suspense fallback={<Loading/>}>
+                <Routes>
+                    <Route path="auth" element={<Auth />} />
+                    <Route path="register" element={<Register />} />
 
-                <Route path="/" element={<Navigate replace to="auth" />} />
-                <Route path="/app" element={<AppLayout />}>
-                    <Route index element={<Navigate replace to="home" />} />
-                    <Route path="home" element={<Home />} />
-                    <Route path="lessons" element={<Lessons />} />
-                    <Route path="home/history" element={<History />} />
-                </Route>
+                    <Route path="/" element={<Navigate replace to="auth" />} />
+                    <Route path="/app" element={<AppLayout />}>
+                        <Route index element={<Navigate replace to="home" />} />
+                        <Route path="home" element={<Home />} />
+                        <Route path="lessons" element={<Lessons />} />
+                        <Route path="home/history" element={<History />} />
+                    </Route>
 
-                <Route path="app/lessons" element={<LessonsLayout />}>
-                    <Route path="lesson/:id" element={<Lesson />} />
-                    <Route path="quiz/:id" element={<Quiz />} />
-                    <Route path="quiz/result/:id" element={<QuizResult />} />
-                    <Route path="quiz/result/review" element={<QuizReview />} />
-                    <Route path="pronunciation/:id" element={<Pronunciation />} />
-                </Route>
+                    <Route path="app/lessons" element={<LessonsLayout />}>
+                        <Route path="lesson/:id" element={<Lesson />} />
+                        <Route path="quiz/:id" element={<Quiz />} />
+                        <Route path="quiz/result/:id" element={<QuizResult />} />
+                        <Route path="quiz/result/review" element={<QuizReview />} />
+                        <Route path="pronunciation/:id" element={<Pronunciation />} />
+                    </Route>
 
-                <Route path="app/speaking" element={<Speaking />} />
+                    <Route path="app/speaking" element={<Speaking />} />
 
-                <Route
-                    path="*"
-                    element={
-                        <ErrorPage
-                            button="Go to homepage"
-                            message="Something went wrong"
-                            onClick={() => <Navigate to="/auth" />}
-                        />
-                    }
-                />
-            </Routes>
+                    <Route
+                        path="*"
+                        element={
+                            <ErrorPage
+                                button="Go to homepage"
+                                message="Something went wrong"
+                                onClick={() => window.location.href = "/auth"}
+                            />
+                        }
+                    />
+                </Routes>
+            </Suspense>
         </BrowserRouter>
     );
 };
