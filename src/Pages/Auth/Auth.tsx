@@ -12,8 +12,9 @@ import {getAccessToken, getRefreshToken} from "@/services/authService.ts";
 
 const Auth :FC = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const { isAuthorized, error, loading } = useSelector((state: RootState) => state.user);
-    const user = useSelector((state: RootState) => state.user);
+    const isAuthorized = useSelector((state: RootState) => state.user.isAuthorized);
+    const loading = useSelector((state: RootState) => state.user.loading);
+    const error = useSelector((state: RootState) => state.user.error);
     const initDataRef = React.useRef('');
     const initDataRaw = useRawLaunchParams();
     const navigate = useNavigate();
@@ -21,8 +22,6 @@ const Auth :FC = () => {
     const localAccess = getAccessToken();
     const localRefresh = getRefreshToken();
     const isAuthenticated = localStorage.getItem("isAuthorized");
-
-    console.log('user info', user)
 
     console.log(initDataRaw)
 

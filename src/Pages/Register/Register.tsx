@@ -59,7 +59,8 @@ declare global {
 const Register: FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
-    const { loading, error } = useSelector((state: RootState) => state.user);
+    const loading = useSelector((state: RootState) => state.user.loading);
+    const error = useSelector((state: RootState) => state.user.error);
 
     const tma = useRawLaunchParams();
     const [phoneNumber, setPhoneNumber] = useState<string>("");
