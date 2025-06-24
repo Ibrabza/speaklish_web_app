@@ -77,7 +77,7 @@ const Lesson: FC = () => {
                 </div>
                 <div className={styles.lesson_video}>
                     {state.video && state.video.trim() ? (
-                        <VideoPlayer link={`https${state.video.slice(4)}`}/>
+                        <VideoPlayer link={`{state.video.slice(4)}`}/>
                         //     <CustomVideoPlayer options={videoJsOptions} onReady={handlePlayerReady}/>
                     ) : (
                         <div
