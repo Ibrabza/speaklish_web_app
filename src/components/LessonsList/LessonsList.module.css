@@ -5,6 +5,8 @@
     gap: 3rem;
     /*justify-content: center;*/
     align-items: center;
+    min-height: 77dvh;
+    margin-bottom: 2rem;
 }
 
 

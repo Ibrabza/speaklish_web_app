@@ -1,16 +1,16 @@
 
 import {useSelector} from "react-redux";
 import {RootState} from "@/Store/store.ts";
+import {ISessionState} from "@/Features/Speaking/speakingSlice.ts";
 
 
 export default function PartTitle() {
 
-    const { loading, currentPart, currentQuestionIndex, questions} = useSelector((state : RootState) => state.session);
-    const partKey = `part${currentPart}` as keyof typeof questions;
-    const questionSet = questions?.[partKey] ?? [];
+    const { loading, currentPart, currentQuestionIndex } = useSelector( (state: RootState) => state.speaking)
+    const partKey = `part${currentPart}` as keyof Pick<ISessionState, "part1" | "part2" | "part3">;
+    const questions = useSelector( (state: RootState) => state.speaking[partKey]);
 
-    if (loading && currentPart === 0 || !questionSet) return null;
-
+    if (loading && currentPart === 0 || !questions) return null;
     if(currentPart === 0) return;
 
     return (
@@ -20,9 +20,9 @@ export default function PartTitle() {
             </h1>
             <div className="mt-2 h-2 bg-purple-200 rounded-full">
                 <div
-                    className="h-2 bg-primary rounded-full transition-all duration-300"
+                    className="h-2 bg-green-400 rounded-full transition-all duration-300"
                     style={{
-                        width: `${((currentQuestionIndex + 1) / questionSet.length) * 100}%`
+                        width: `${((currentQuestionIndex + 1) / (Array.isArray(questions) ? questions.length : 2)) * 100}%`
                     }}
                 />
             </div>

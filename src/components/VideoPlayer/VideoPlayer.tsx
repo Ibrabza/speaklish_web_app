@@ -8,7 +8,14 @@ interface IVPlayer{
 
 const VideoPlayer: FC<IVPlayer> = (props) => {
     return (
-        <ReactPlayer light={true} style={{border: "0 solid black",borderRadius: "24px"}} url={props.link} width={"100%"} height={"190px"}/>
+        <ReactPlayer
+            url={props.link}
+            controls
+            config={{ file: { attributes: { controlsList: "nodownload" } } }}
+            style={{ border: "0 solid black", borderRadius: "24px" }}
+            width="100%"
+            height="auto"
+        />
     )
 }
 

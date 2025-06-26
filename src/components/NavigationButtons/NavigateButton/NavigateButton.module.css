@@ -14,5 +14,5 @@
     align-items: center;
     background-color: #181D25;
     border-radius: 50%;
-
+    transition: background-color 0.3s ease-in-out;
 }

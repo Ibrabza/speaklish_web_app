@@ -8,13 +8,12 @@ import AudioReview from "@/components/AudioReview/AudioReview.tsx";
 import NextQuestionButton from "@/components/Speaking/NextQuestionButton/NextQuestionButton.tsx";
 import {makeBlob} from "@/Helpers/helper.ts";
 import toast from "react-hot-toast";
-import {QuestionService} from "@/services/QusetionServices.ts";
 import useAudio from "@/hooks/useAudio.ts";
 import {
     setCurrentPart,
     setCurrentQuestionIndex,
-    setShowPartComplete
-} from "@/Features/Speaking/Session/sessionSlice.ts";
+    setShowPartComplete, submitPart
+} from "@/Features/Speaking/speakingSlice.ts";
 
 interface IQCompound {
     stream: MediaStream | null,
@@ -32,7 +31,8 @@ const QuestionCompound : FC<IQCompound> = (props) => {
     const [countdown, setCountdown] = useState(120);
     const [recordingDuration, setRecordingDuration] = useState(0);
 
-    const {loading, currentPart, questions, currentQuestion, session, currentQuestionIndex } = useSelector((state : RootState) => state.session);
+    const { loading, id,  currentQuestion, currentQuestionIndex, currentPart, partLength} = useSelector( (state:RootState) => state.speaking)
+
     const [isRecording, setIsRecording] = useState(false);
 
     const [isQuestionPlaying, setIsQuestionPlaying] = useState(true);
@@ -44,11 +44,6 @@ const QuestionCompound : FC<IQCompound> = (props) => {
         currentPart,
         setRecordingStartTime
     });
-
-    // const partKey = `part${currentPart}` as keyof typeof questions
-
-    // const questionSet = questions?.[`part${currentPart}`];
-
 
     function handleMicroTrue () {
         setIsQuestionPlaying(false)
@@ -69,7 +64,7 @@ const QuestionCompound : FC<IQCompound> = (props) => {
 
         const audioUrl = currentQuestion.mobile_voice_url.startsWith("https://api")
             ? currentQuestion.mobile_voice_url
-            : `https://api.speaklish.uz/${currentQuestion.mobile_voice_url}`;
+            : `https://dashboard.speaklish.uz${currentQuestion.mobile_voice_url}`;
 
         const audio = new Audio(audioUrl);
         let silentAudio : HTMLAudioElement;
@@ -104,7 +99,7 @@ const QuestionCompound : FC<IQCompound> = (props) => {
                 silentAudio.src = "";
             }
         };
-    }, [showWelcome, currentQuestion, showConfirmation, loading]);
+    }, [stream, showWelcome, currentQuestion, showConfirmation, loading]);
 
     useEffect(() => {
         if (currentPart === 2) {
@@ -125,61 +120,41 @@ const QuestionCompound : FC<IQCompound> = (props) => {
         }
     }, [dispatch, currentPart]);
 
-
     const handleNext = async () => {
-        if (recordingDuration < 4000) {
+        if (recordingDuration < 4000){
             toast.error("Please record your response for at least 4 seconds. (" + Math.floor(recordingDuration / 1000) + " seconds)");
             return;
         }
-        try {
-            if (currentPart === 1 && session && audioUrl) {
-                await QuestionService.createPartOneResult({
-                    question_id: currentQuestion!.id.toString(),
-                    session_id: session.session_id ,
-                    voice_audio: await makeBlob(audioUrl),
-                });
-            } else if (currentPart === 2 && session && audioUrl) {
-                await QuestionService.createPartTwoResult({
-                    question_id: currentQuestion!.id.toString(),
-                    session_id: session.session_id,
-                    voice_audio: await makeBlob(audioUrl),
-                });
-            } else if (currentPart === 3 && session && audioUrl) {
+        try{
+            if( audioUrl && currentQuestion){
+                dispatch(submitPart({part: currentPart, question_id: currentQuestion.id, session_id: id, audio: await makeBlob(audioUrl)}));
 
-                await QuestionService.createPartThreeResult({
-                    question_id: currentQuestion!.id.toString(),
-                    session_id: session.session_id,
-                    voice_audio: await makeBlob(audioUrl),
-                });
-            }
+                setAudioUrl(null);
+                setRecordingDuration(0);
+                setRecordingStartTime(0);
 
-
-            setAudioUrl(null);
-            setRecordingDuration(0);
-            setRecordingStartTime(0);
-            if (questions) {
-                const partKey = `part${currentPart}` as keyof typeof questions;
-                const partQuestions = questions[partKey] ?? [];
-
-                if (currentQuestionIndex < partQuestions.length - 1) {
-                    dispatch(setCurrentQuestionIndex(currentQuestionIndex + 1));
-                    dispatch(setShowPartComplete(false));
-                }
-                else {
-                    if (currentPart < 3) {
-                        dispatch(setShowPartComplete(true));
-                    } else {
-                        // await fetchExamResult(session.user_id,session.session_id);
-                        dispatch(setCurrentPart(4));
+                if(currentPart === 3 && currentQuestionIndex === partLength - 1){
+                    dispatch(setCurrentPart(4))
+                }else{
+                    if(currentPart !== 2){
+                        if( partLength - 1 >  currentQuestionIndex ){
+                            dispatch(setCurrentQuestionIndex(currentQuestionIndex + 1));
+                        }else{
+                            dispatch(setShowPartComplete(true))
+                        }
+                    }else{
+                        dispatch(setShowPartComplete(true))
                     }
                 }
             }
 
-        } catch (err) {
-            console.error(`Failed to save part ${currentPart} result:`, err);
-            toast.error("Failed to save your response. Please try again.");
+        }catch (error){
+            console.log(error)
+            return error;
         }
-    };
+
+    }
+
 
 
     return (
@@ -197,7 +172,7 @@ const QuestionCompound : FC<IQCompound> = (props) => {
 
                 <Question/>
 
-                {isQuestionPlaying ? null : <MicrophoneButton  isRecording={isRecording} setIsRecording={setIsRecording} />}
+                {!isQuestionPlaying && <MicrophoneButton  isRecording={isRecording} setIsRecording={setIsRecording} />}
 
                 {audioUrl && <AudioReview audioUrl={audioUrl} />}
             </div>

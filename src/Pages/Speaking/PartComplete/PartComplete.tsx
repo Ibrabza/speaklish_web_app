@@ -3,21 +3,21 @@ import VoiceAnimation from "@/components/VoiceAnimation/VoiceAnimation.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {
     setCurrentPart,
-    setCurrentQuestionIndex,
     setShowPartComplete
-} from "@/Features/Speaking/Session/sessionSlice.ts";
+} from "@/Features/Speaking/speakingSlice.ts";
 import {AppDispatch, RootState} from "@/Store/store.ts";
+
+
 
 
 const PartComplete : FC = () => {
     const dispatch = useDispatch<AppDispatch>();
 
-    const currentPart = useSelector((state : RootState) => state.session.currentPart);
+    const currentPart = useSelector((state : RootState) => state.speaking.currentPart);
 
     function handleOnNext (){
         const newPart = currentPart + 1;
         dispatch(setCurrentPart(newPart));
-        dispatch(setCurrentQuestionIndex(0));
         dispatch(setShowPartComplete(false));
     }
 
@@ -28,11 +28,11 @@ const PartComplete : FC = () => {
             </div>
             <p className="text-gray-600">
                 Now let’s move to the Part {currentPart + 1}.
-                You have 1 minute to prepare and 2 minutes for your speech.
+                {currentPart === 1 && "You have 1 minute to prepare and 2 minutes for your speech."}
             </p>
             <button
                 onClick={handleOnNext}
-                className="mt-4 px-4 py-2 bg-primary text-white rounded-lg"
+                className="mt-4 px-4 py-2 bg-green-400 text-white rounded-lg"
             >
                 Start Part {currentPart + 1}
             </button>

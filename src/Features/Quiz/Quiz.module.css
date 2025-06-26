@@ -9,11 +9,15 @@
 }
 .quiz_header{
     display: flex;
-    width: 180px;
-    justify-content: space-between;
+    width: 100%;
+    font-size: 18px;
+    font-weight: bold;
+    /*letter-spacing: 1px;*/
+    justify-content: center;
     align-items: center;
     justify-items: center;
 }
+
 
 .quiz_main{
     display: flex;

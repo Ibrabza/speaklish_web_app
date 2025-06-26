@@ -5,10 +5,12 @@
     padding: 0.5rem 1rem;
     margin: 0 auto;
     position: relative;
+    height: 100dvh;
 }
 
 .content {
     overflow: visible;
-    min-height: 100vh;
     position: relative;
+    padding-bottom: 2rem;
+    padding-top: var(--tg-content-safe-area-inset-top, 10px);
 }

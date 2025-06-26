@@ -10,15 +10,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^7.0.1",
+    "@mui/material": "^7.0.1",
     "@radix-ui/react-slot": "^1.1.2",
     "@reduxjs/toolkit": "^2.5.1",
     "@tailwindcss/postcss": "^4.0.6",
     "@tailwindcss/vite": "^4.0.6",
-    "@telegram-apps/bridge": "^2.3.2",
-    "@telegram-apps/sdk": "^3.4.0",
-    "@telegram-apps/signals": "^1.1.1",
-    "@telegram-web-app/react": "^0.0.1-beta.1",
+    "@telegram-apps/sdk": "^3.6.0",
+    "@telegram-apps/sdk-react": "^3.2.4",
+    "@twa-dev/sdk": "^8.0.2",
     "@types/axios": "^0.14.4",
+    "@types/telegram-web-app": "^7.10.1",
+    "@types/video.js": "^7.3.58",
     "axios": "^1.7.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -36,8 +41,10 @@
     "react-player": "^2.16.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.1.5",
+    "screenfull": "^6.0.2",
     "tailwind-merge": "^3.0.1",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "video.js": "^8.22.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",

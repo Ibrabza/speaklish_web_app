@@ -40,7 +40,7 @@
     flex-direction: column;
     padding: 8px 16px;
 }
-.score p,h2 {
+.score p,h2,a {
     margin: 0;
     padding: 0;
 }
@@ -55,7 +55,7 @@
     color: #07DA83;
 }
 
-.score h2{
+.score h2,a{
     display: flex;
     gap: 4px;
     font-size: 24px;

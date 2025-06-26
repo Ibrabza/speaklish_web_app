@@ -1,9 +1,10 @@
 import {FC} from "react";
 
 import styles from "./MaskGroup.module.css"
-import mask1 from "./../../../assets/Container.png"
+// import mask1 from "./../../../assets/Container.png"
 import {useSelector} from "react-redux";
 import {RootState} from "@/Store/store.ts";
+import MainLogo from "@/assets/MainLogo.tsx";
 
 const MaskGroup:FC = () => {
 
@@ -12,10 +13,11 @@ const MaskGroup:FC = () => {
     return <div className={styles.container}>
         <div className={styles.images}>
             <div className={styles.fimg}>
-                <img src={mask1} alt={"speaklish1"}/>
+                <MainLogo width={33.14} height={39}/>
+                {/*<img src={"/mainLogo.svg"} alt={"speaklish1"}/>*/}
             </div>
             <div className={styles.simg}>
-                <img src={photo_url} alt={"speaklish2"}/>
+                <img src={photo_url ? photo_url : "#"} alt={"speaklish2"}/>
             </div>
         </div>
     </div>

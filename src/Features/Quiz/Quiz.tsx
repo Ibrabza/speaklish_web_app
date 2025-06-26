@@ -1,17 +1,16 @@
-import {FC, useEffect, useState} from "react";
+import {FC, useCallback, useEffect, useState} from "react";
 import styles from "./Quiz.module.css";
-import ConfirmButton from "@/components/ConfirmButton/ConfirmButton.tsx";
-import BackButton from "@/components/ui/BackButton.tsx";
+// import ConfirmButton from "@/components/ConfirmButton/ConfirmButton.tsx";
 import QuizButton from "@/Features/Quiz/QuizButton/QuizButton.tsx";
 import QuizOption from "@/Features/Quiz/QuizOption/QuizOption.tsx";
 import Timer from "@/components/Timer/Timer.tsx";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "@/Store/store.ts";
 import Loading from "@/components/Loading.tsx";
-import {handleGetQuiz, setCurrentIndex, setLoading, submitAnswer} from "@/Features/Quiz/quizSlice.ts";
+import {handleGetQuiz, setCurrentIndex, submitAnswer} from "@/Features/Quiz/quizSlice.ts";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
-
+import {useNavigate, useParams} from "react-router-dom";
+import { mainButton } from '@telegram-apps/sdk-react';
 
 
 
@@ -23,11 +22,12 @@ const Quiz : FC = () => {
     const { error, loading, quizzes, currentIndex } = useSelector( (state : RootState ) => state.quiz)
     const answers = useSelector( (state : RootState) => state.quiz.answers)
     const navigate = useNavigate()
+    const {id : lesson_id} = useParams();
+    const textForButton = (currentIndex+1) === quizzes?.length ? "Submit" : "Confirm";
 
     const dispatch = useDispatch<AppDispatch>();
 
-
-    const handleConfirm = () => {
+    const handleConfirm = useCallback(() => {
         console.log("confirm")
         if(!answer) return;
 
@@ -36,14 +36,45 @@ const Quiz : FC = () => {
             answer: answer,
         }))
         if( currentIndex+1 === quizzes?.length) {
-            dispatch(setLoading(true))
-            navigate(`/test/lessons/quiz/result/1`)
+            // dispatch(setLoading(true))
+            if(answers.length+1 !== quizzes!.length){
+                toast.error("You should answer every question!")
+                console.log("You should answer every question!")
+                return;
+            }
+            navigate(`/app/lessons/quiz/result/${lesson_id}`)
         }
-    }
+    },[answer, answers.length, currentIndex, dispatch, lesson_id, navigate, quizzes])
 
     useEffect(() => {
-        dispatch(handleGetQuiz({lesson_id:1}))
-    }, [dispatch]);
+        mainButton.mount()
+        mainButton.setParams({
+            isEnabled:true,
+            isVisible:true,
+            text: textForButton,
+            textColor: "#FFFFFF",
+            backgroundColor: "#07DA83"
+        })
+
+        return () => {
+            mainButton.setParams({
+                isEnabled: false,
+                isVisible: false,
+            })
+        }
+
+
+    }, [textForButton]);
+
+    useEffect(() => {
+        mainButton.onClick(handleConfirm);
+
+        return () => mainButton.offClick(handleConfirm);
+    }, [handleConfirm]);
+
+    useEffect(() => {
+        dispatch(handleGetQuiz({lesson_id:Number(lesson_id)}))
+    }, [lesson_id,dispatch]);
 
     useEffect(() => {
         if(answers.length && quizzes){
@@ -65,20 +96,17 @@ const Quiz : FC = () => {
         }
     }
 
-
     if(loading && !quizzes) return <Loading/>
     if(error) {
         console.log(error)
         return null;
     }
 
-
     return (
         <div className={styles.container}>
             <div className={styles.quiz_header}>
-                <BackButton/>
                 <p className={styles.quiz_question_index}>
-                    {currentIndex+1}/{quizzes && quizzes.length}
+                    {currentIndex+1} / {quizzes && quizzes.length}
                 </p>
             </div>
 
@@ -102,7 +130,7 @@ const Quiz : FC = () => {
             </div>
 
 
-            <ConfirmButton handler={handleConfirm} text={(currentIndex+1) === quizzes?.length ? "Submit" : "Confirm"}/>
+            {/*<ConfirmButton handler={handleConfirm} text={(currentIndex+1) === quizzes?.length ? "Submit" : "Confirm"}/>*/}
         </div>
     )
 }

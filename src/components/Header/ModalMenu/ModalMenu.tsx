@@ -1,7 +1,7 @@
 import {FC, useState} from "react";
 import styles from "./ModalMenu.module.css"
 import ModalWindow from "./ModalWindow/ModalWindow.tsx";
-import {useClickOutside} from "../../../hooks/useClickOutside.ts";
+import {useClickOutside} from "@/hooks/useClickOutside.ts";
 
 const ModalMenu:FC = () => {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
@@ -9,7 +9,7 @@ const ModalMenu:FC = () => {
 
     function handleCloseModalWindow(){
         setIsMenuOpen(false)
-        console.log("closed")
+        // console.log("closed")
     }
 
     return (

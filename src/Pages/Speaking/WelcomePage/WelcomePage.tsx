@@ -1,6 +1,6 @@
 import {FC} from "react";
 import VoiceAnimation from "@/components/VoiceAnimation/VoiceAnimation.tsx";
-import {setCurrentPart} from "@/Features/Speaking/Session/sessionSlice.ts";
+import { setCurrentPart } from "@/Features/Speaking/speakingSlice.ts"
 import {useDispatch} from "react-redux";
 import {AppDispatch} from "@/Store/store.ts";
 import CustomModalWindow from "@/components/CustomModalWindow/CustomModalWindow.tsx";
@@ -8,7 +8,7 @@ import CustomModalWindow from "@/components/CustomModalWindow/CustomModalWindow.
 interface IWPage {
     handleGetSessionData: () => void,
     handleGetMicro: () => void,
-    onStartTest: (x:string) => void,
+    onStartTest: () => void,
     setShowConfirmation: (x:boolean) => void,
     showConfirmation: boolean,
 }
@@ -21,12 +21,12 @@ const WelcomePage : FC<IWPage> = (props) => {
     const handleStartClick = async () => {
         await handleGetMicro()
         setShowConfirmation(true);
+        handleGetSessionData();
     };
 
     const handleConfirmStart = () => {
         setShowConfirmation(false);
-        handleGetSessionData();
-        onStartTest('speaking');
+        onStartTest();
         dispatch(setCurrentPart(1));
     };
 

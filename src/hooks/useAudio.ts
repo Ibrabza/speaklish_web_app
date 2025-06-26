@@ -7,6 +7,7 @@ type UseAudioHook = {
     audioUrl: string | null;
     scale: number;
     setAudioUrl: (url: string | null) => void;
+    mediaRecorderRef: React.RefObject<MediaRecorder | null>;
 };
 
 type UseAudioProps = {
@@ -131,8 +132,8 @@ export default function useAudio({
         };
     }, [stopRecording, startRecording, isRecording]);
     if(stream === null) {
-        return { audioUrl, scale, setAudioUrl };
+        return { audioUrl, scale, setAudioUrl, mediaRecorderRef };
     }
 
-    return { audioUrl, scale, setAudioUrl };
+    return { audioUrl, scale, setAudioUrl, mediaRecorderRef };
 }

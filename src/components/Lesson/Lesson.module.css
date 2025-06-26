@@ -27,11 +27,19 @@
     height: 60px;
     color: #606E80;
 }
+.lesson_dropdown {
+    border: 1px solid #E1E5EA;
+    border-radius: 8px;
+    background: inherit;
+    box-shadow: none;
+}
+
 .lesson_video{
     background-color: #F5F6FA;
     border-radius: 24px;
     height: 190px;
     width: 100%;
+    margin-bottom: 2rem;
 }
 
 .lesson_video video{
@@ -63,7 +71,7 @@
 
 .backButton{
     position: absolute;
-    left: 0;
+    left: 1rem;
     top: 5px;
 }
 
@@ -92,6 +100,10 @@
     display: flex;
     gap: 8px;
     /*height: max-content;*/
+}
+.lesson_action__button span {
+    font-size: 20px;
+    font-weight: 400;
 }
 
 .lesson_action{
