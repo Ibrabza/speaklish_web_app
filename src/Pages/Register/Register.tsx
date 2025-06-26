@@ -8,6 +8,7 @@ import {useNavigate} from "react-router-dom";
 import { requestContact } from '@telegram-apps/sdk';
 import {formatPhoneNumber, isValidPhoneNumber} from "@/Helpers/helper.ts";
 import { useRawLaunchParams } from '@telegram-apps/sdk-react';
+import Loading from "@/components/Loading.tsx";
 
 
 
@@ -283,11 +284,13 @@ const Register: FC = () => {
                     
                     // Call the login API directly
                     console.log('Calling login API with initData and generated password');
+                    console.log(initData)
                     await dispatch(handleAuth({
-                        initData: `#tgWebAppData=user%${initData.split('user%')[1]}`,
+                        initData: `${initData}`,
                         password: generatedPassword,
                         username: userName
                     }));
+
                     
                     // Navigate to the main page after successful login
                     console.log('Login successful, redirecting to main page');
@@ -307,6 +310,8 @@ const Register: FC = () => {
             console.log(err)
         }
     };
+
+    if(loading) return <Loading/>
 
     return (
         <>

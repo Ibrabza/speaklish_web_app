@@ -8,10 +8,12 @@ import { getGroupData } from "@/Features/User/userSlice";
 import { init, swipeBehavior } from '@telegram-apps/sdk';
 import Loading from "@/components/Loading.tsx";
 
+const Auth = lazy(() => import("@/Pages/Auth/Auth"));
+const Home = lazy(() => import("@/Pages/Home/Home"));
+const Register = lazy(() => import("@/Pages/Register/Register"));
+const History = lazy(() => import("@/Pages/History/History"));
 const AppLayout = lazy(() => import('@/Pages/AppLayout.tsx'))
 const LessonsLayout = lazy(() => import("@/Pages/Lessons/LessonsLayout.tsx"));
-const ErrorPage = lazy(() => import("@/Pages/Error/ErrorPage.tsx"))
-const Home = lazy(() => import("@/Pages/Home/Home"));
 const Lessons = lazy(() => import("@/Pages/Lessons/Lessons"));
 const Speaking = lazy(() => import("@/Pages/Speaking/Speaking"));
 const Lesson = lazy(() => import("@/components/Lesson/Lesson"));
@@ -19,9 +21,7 @@ const Quiz = lazy(() => import("@/Features/Quiz/Quiz"));
 const QuizResult = lazy(() => import("@/Features/Quiz/QuizResult/QuizResult"));
 const QuizReview = lazy(() => import("@/Pages/Quiz/QuizReview/QuizReview"));
 const Pronunciation = lazy(() => import("@/Features/Pronunciation/Pronunciation"));
-const Auth = lazy(() => import("@/Pages/Auth/Auth"));
-const Register = lazy(() => import("@/Pages/Register/Register"));
-const History = lazy(() => import("@/Pages/History/History"));
+const ErrorPage = lazy(() => import("@/Pages/Error/ErrorPage.tsx"))
 
 
 init();
